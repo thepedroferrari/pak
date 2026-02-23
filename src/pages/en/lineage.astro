@@ -1,0 +1,85 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+
+const instructors = [
+  'Si-Fu Flávio',
+  'Si-Fu Robson Nobre',
+  'Si-Fu Pedro Ferrari',
+];
+---
+
+<ContentLayout
+  title="Lineage"
+  description="Pak Shao Lin lineage family tree."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.lineage') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        The Pak Shao Lin lineage traces a direct line from the Northern Shaolin Temple of China
+        to present-day Brazil. Our school preserves the authentic teachings passed down through
+        generations of masters, ensuring the tradition remains alive and unbroken.
+      </p>
+    </div>
+
+    <div>
+      <h2>Family Tree</h2>
+      <div class="not-prose flex flex-col items-center gap-0 mt-6">
+        <!-- Grand Master -->
+        <div class="w-full max-w-md p-6 bg-gold/10 rounded-xl border-2 border-gold text-center">
+          <p class="text-xs font-semibold text-gold-dark uppercase tracking-wider mb-1">Grand Master</p>
+          <h3 class="text-xl font-black text-gray-dark">Chan Kowk Wai</h3>
+          <p class="text-sm text-gray-medium mt-1">Pioneer of Chinese Kung Fu in Brazil</p>
+        </div>
+
+        <!-- Connector -->
+        <div class="w-px h-8 bg-gray-light"></div>
+        <svg class="w-4 h-4 text-gray-light -mt-1" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 12l-6-6h12l-6 6z" />
+        </svg>
+
+        <!-- Master -->
+        <div class="w-full max-w-md p-6 bg-red-dark/5 rounded-xl border-2 border-red-primary text-center mt-1">
+          <p class="text-xs font-semibold text-red-primary uppercase tracking-wider mb-1">Master</p>
+          <h3 class="text-xl font-black text-gray-dark">Gilmar Dantas</h3>
+          <p class="text-sm text-gray-medium mt-1">Founder of the Pak Shao Lin Association (1984)</p>
+        </div>
+
+        <!-- Connector -->
+        <div class="w-px h-8 bg-gray-light"></div>
+        <svg class="w-4 h-4 text-gray-light -mt-1" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 12l-6-6h12l-6 6z" />
+        </svg>
+
+        <!-- Instructors -->
+        <div class="w-full max-w-2xl mt-1">
+          <p class="text-xs font-semibold text-gray-medium uppercase tracking-wider mb-3 text-center">Instructors</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {instructors.map((name) => (
+              <div class="p-4 bg-white rounded-xl border border-gray-light text-center hover:border-gold/30 hover:shadow-sm transition-all">
+                <h3 class="font-bold text-gray-dark">{name}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2>The Northern Shaolin Tradition</h2>
+      <p>
+        Grand Master Chan Kowk Wai emigrated from China to Brazil, bringing with him the
+        traditional teachings of Northern Shaolin Kung Fu. He trained numerous disciples,
+        among them Master Gilmar Dantas, who founded the Pak Shao Lin Association in 1984
+        and has since dedicated his life to preserving and spreading these teachings.
+      </p>
+    </div>
+  </section>
+</ContentLayout>

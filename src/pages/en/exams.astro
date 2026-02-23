@@ -1,0 +1,66 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+
+const beltLevels = [
+  { belt: 'White', description: 'Beginner — foundation techniques and basic forms.' },
+  { belt: 'Yellow', description: 'Fundamentals solidified — first traditional form.' },
+  { belt: 'Orange', description: 'Expanding repertoire — additional forms and techniques.' },
+  { belt: 'Green', description: 'Intermediate — sparring fundamentals introduced.' },
+  { belt: 'Blue', description: 'Advanced intermediate — weapons training begins.' },
+  { belt: 'Brown', description: 'Advanced — mastery of multiple styles and weapons.' },
+  { belt: 'Black', description: 'Expert — deep knowledge of tradition and technique.' },
+];
+---
+
+<ContentLayout
+  title="Exams"
+  description="Graduation exam dates and information."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.exams') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Graduation exams are held periodically throughout the year and are an important milestone
+        in every student's journey. Exams evaluate technique, forms (Kati), theory, and physical
+        conditioning. Students must be recommended by their instructor to participate.
+      </p>
+    </div>
+
+    <div>
+      <h2>Upcoming Exams</h2>
+      <div class="not-prose p-6 bg-gold/5 rounded-xl border border-gold/20 text-center">
+        <p class="text-gray-medium">
+          Exam dates for the current semester will be announced soon. Check with your instructor for details.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <h2>Belt Progression</h2>
+      <div class="not-prose space-y-3 mt-6">
+        {beltLevels.map((level) => (
+          <div class="flex gap-4 items-center p-4 bg-white rounded-xl border border-gray-light hover:border-gold/30 hover:shadow-sm transition-all">
+            <span class="shrink-0 inline-flex items-center justify-center w-20 h-10 bg-gray-dark text-white text-sm font-bold rounded-lg">
+              {level.belt}
+            </span>
+            <p class="text-gray-medium text-sm">{level.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="not-prose p-6 bg-red-dark/5 rounded-xl border border-red-primary/10">
+      <h3 class="text-lg font-bold text-gray-dark mb-2">Exam preparation</h3>
+      <p class="text-gray-medium">
+        Speak with your instructor about your readiness and what to prepare for your next graduation exam.
+      </p>
+    </div>
+  </section>
+</ContentLayout>

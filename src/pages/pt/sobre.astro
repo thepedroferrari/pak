@@ -1,0 +1,79 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<ContentLayout
+  title={t(lang, 'about.title')}
+  description="Conheça a história da Associação Pak Shao Lin, fundada em 1984 por Mestre Gilmar Dantas."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.about') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <h2>{t(lang, 'about.history')}</h2>
+      <p>
+        A <strong>Associação Pak Shao Lin de Kung Fu</strong> foi fundada em <strong>1º de julho de 1984</strong> pelo
+        <strong>Mestre Gilmar Dantas</strong>, na cidade de São Paulo. A associação é filiada à
+        Confederação Brasileira de Kung Fu e à International Wushu Federation.
+      </p>
+      <p>
+        Mestre Gilmar Dantas é discípulo direto do <strong>Grão Mestre Chan Kowk Wai</strong>, responsável
+        pela introdução e difusão do Kung Fu tradicional chinês no Brasil. Sob sua orientação,
+        a Pak Shao Lin tornou-se uma das mais respeitadas escolas de artes marciais chinesas do país.
+      </p>
+    </div>
+
+    <div>
+      <h2>Tradição e Linhagem</h2>
+      <p>
+        A escola segue a linhagem do Templo Shaolin do Norte da China, preservando os ensinamentos
+        tradicionais que foram transmitidos de geração em geração. Nossa linhagem conecta-se
+        diretamente aos mestres históricos do Kung Fu chinês, garantindo a autenticidade e pureza
+        dos estilos ensinados.
+      </p>
+    </div>
+
+    <div>
+      <h2>Estilos Ensinados</h2>
+      <p>
+        A Pak Shao Lin ensina mais de 20 estilos tradicionais de Kung Fu, incluindo:
+      </p>
+      <ul>
+        <li><strong>Shaolin do Norte</strong> — Base fundamental do treinamento</li>
+        <li><strong>Louva-a-Deus (Tang Lang)</strong> — Estilo rápido e preciso</li>
+        <li><strong>Garra de Águia (Ying Jow)</strong> — Técnicas de agarramento</li>
+        <li><strong>Tai Chi Chuan</strong> — Arte interna para saúde e combate</li>
+        <li><strong>Pa Kua Chang</strong> — Movimentos circulares e palmas</li>
+        <li><strong>Hsing Yi Chuan</strong> — Estilo linear e explosivo</li>
+        <li><strong>Choy Lay Fut</strong> — Estilo de longo alcance</li>
+        <li><strong>Wing Chun</strong> — Combate de curta distância</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>Competições e Conquistas</h2>
+      <p>
+        Desde <strong>1995</strong>, a equipe de competição da Pak Shao Lin participa de
+        campeonatos estaduais, nacionais e internacionais, acumulando centenas de medalhas
+        e formando atletas de alto rendimento. Nossos alunos representam o Brasil em
+        competições mundiais de Wushu.
+      </p>
+    </div>
+
+    <div>
+      <h2>{t(lang, 'about.mission')}</h2>
+      <p>
+        Nossa missão é preservar e difundir as artes marciais tradicionais chinesas,
+        promovendo o desenvolvimento físico, mental e espiritual de nossos alunos.
+        Acreditamos que o Kung Fu é mais do que uma prática esportiva — é um caminho
+        de autoconhecimento, disciplina e respeito à tradição milenar.
+      </p>
+    </div>
+  </section>
+</ContentLayout>

@@ -1,0 +1,76 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+
+const topics = [
+  {
+    title: 'Budismo',
+    description: 'A filosofia budista e sua influência nas artes marciais e na cultura chinesa.',
+    icon: '🪷',
+  },
+  {
+    title: 'Taoísmo',
+    description: 'O caminho (Tao) e os princípios da naturalidade, espontaneidade e harmonia.',
+    icon: '☯',
+  },
+  {
+    title: 'Horóscopo Chinês',
+    description: 'Os 12 animais do zodíaco chinês e seus significados.',
+    icon: '🐉',
+  },
+  {
+    title: 'Pa Kua',
+    description: 'Os oito trigramas e sua representação das forças da natureza.',
+    icon: '☰',
+  },
+  {
+    title: 'I Ching',
+    description: 'O Livro das Mutações, um dos textos mais antigos da civilização chinesa.',
+    icon: '📖',
+  },
+  {
+    title: 'Feng Shui',
+    description: 'A arte milenar de harmonizar os ambientes com a energia vital.',
+    icon: '🏯',
+  },
+  {
+    title: 'Meditação',
+    description: 'Práticas meditativas para o cultivo da mente e da energia interna.',
+    icon: '🧘',
+  },
+];
+---
+
+<ContentLayout
+  title="Cultura"
+  description="Cultura chinesa e suas tradições."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.culture') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        A prática do Kung Fu está profundamente enraizada na cultura chinesa. Conheça os pilares
+        culturais e filosóficos que fundamentam as artes marciais tradicionais.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 not-prose">
+      {topics.map((topic) => (
+        <div class="group p-6 bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all">
+          <div class="text-3xl mb-3">{topic.icon}</div>
+          <h3 class="font-bold text-gray-dark text-lg group-hover:text-red-primary transition-colors">
+            {topic.title}
+          </h3>
+          <p class="text-sm text-gray-medium mt-2 leading-relaxed">{topic.description}</p>
+          <span class="inline-block mt-3 text-xs text-gray-400 italic">Em breve</span>
+        </div>
+      ))}
+    </div>
+  </section>
+</ContentLayout>

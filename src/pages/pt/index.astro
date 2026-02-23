@@ -1,0 +1,125 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import LocationCard from '@/components/LocationCard.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<BaseLayout lang={lang}>
+  <Hero lang={lang} />
+
+  <!-- About Preview -->
+  <section class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
+          {t(lang, 'home.about.title')}
+        </h2>
+        <div class="mt-4 h-1 w-16 bg-gradient-to-r from-red-primary to-gold rounded-full mx-auto"></div>
+        <p class="mt-6 text-lg text-gray-medium leading-relaxed">
+          A Associação Pak Shao Lin foi fundada em 1º de julho de 1984 pelo Mestre Gilmar Dantas,
+          discípulo do Grão Mestre Chan Kowk Wai. Com mais de 40 anos de tradição, nossa escola
+          preserva e transmite os estilos tradicionais do Kung Fu chinês, formando atletas campeões
+          e cultivando a disciplina, o respeito e a arte marcial como caminho de vida.
+        </p>
+        <a
+          href="/pt/sobre"
+          class="mt-8 inline-flex items-center gap-2 text-red-primary font-semibold hover:text-red-dark transition-colors"
+        >
+          {t(lang, 'common.readMore')}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Styles Preview -->
+  <section class="py-16 sm:py-20 bg-gray-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
+          {t(lang, 'home.styles.title')}
+        </h2>
+        <div class="mt-4 h-1 w-16 bg-gradient-to-r from-red-primary to-gold rounded-full mx-auto"></div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {[
+          'Shaolin do Norte', 'Louva-a-Deus', 'Garra de Águia',
+          'Tai Chi Chuan', 'Pa Kua Chang', 'Hsing Yi Chuan',
+          'Choy Lay Fut', 'Wing Chun',
+        ].map((style) => (
+          <div class="bg-white rounded-lg p-4 text-center border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all">
+            <span class="text-sm font-medium text-gray-dark">{style}</span>
+          </div>
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a
+          href="/pt/estilos"
+          class="inline-flex items-center gap-2 text-red-primary font-semibold hover:text-red-dark transition-colors"
+        >
+          {t(lang, 'common.viewAll')}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Locations Preview -->
+  <section class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
+          {t(lang, 'home.locations.title')}
+        </h2>
+        <div class="mt-4 h-1 w-16 bg-gradient-to-r from-red-primary to-gold rounded-full mx-auto"></div>
+        <p class="mt-4 text-gray-medium">{t(lang, 'home.locations.subtitle')}</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <LocationCard
+          lang={lang}
+          name="Santana (Matriz)"
+          address="Rua Piracema, 156 - Santana, São Paulo - SP"
+          schedule={['Seg/Qua: 20h–22h', 'Sáb: 11h–13h']}
+          instructor="Mestre Gilmar Dantas"
+          isHQ={true}
+        />
+        <LocationCard
+          lang={lang}
+          name="Vila Maria"
+          address="Av. das Cerejeiras, 632 - Jardim Japão, São Paulo - SP"
+          schedule={['Qua: 20h–22h', 'Sex: 19h30–21h30']}
+          instructor="Mestre Gilmar Dantas / Si-Fu Flávio"
+        />
+        <LocationCard
+          lang={lang}
+          name="São José dos Campos"
+          address="DCTA, Praça Marechal Eduardo Gomes, 50 - São José dos Campos - SP"
+          schedule={['Ter/Qui: 18h–21h']}
+          instructor="Si-Fu Robson Nobre"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 sm:py-20 bg-red-dark text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold">{t(lang, 'home.cta.title')}</h2>
+      <p class="mt-4 text-lg text-white/80">{t(lang, 'home.cta.description')}</p>
+      <a
+        href="/pt/contato"
+        class="mt-8 inline-block px-8 py-3.5 bg-gold text-black font-bold rounded-lg hover:bg-gold-light transition-colors text-lg shadow-lg"
+      >
+        {t(lang, 'home.cta.button')}
+      </a>
+    </div>
+  </section>
+</BaseLayout>

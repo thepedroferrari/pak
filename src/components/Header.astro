@@ -1,0 +1,118 @@
+---
+import type { Lang } from '@/i18n/ui';
+import { t, getAlternatePath } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const alternatePath = getAlternatePath(lang, currentPath);
+
+const navItems = [
+  { key: 'nav.about' as const, pt: 'sobre', en: 'about' },
+  { key: 'nav.classes' as const, pt: 'aulas', en: 'classes' },
+  { key: 'nav.styles' as const, pt: 'estilos', en: 'styles' },
+  { key: 'nav.instructors' as const, pt: 'instrutores', en: 'instructors' },
+  { key: 'nav.gallery' as const, pt: 'galeria', en: 'gallery' },
+  { key: 'nav.contact' as const, pt: 'contato', en: 'contact' },
+];
+
+function getNavHref(item: typeof navItems[number]): string {
+  return `/${lang}/${lang === 'pt' ? item.pt : item.en}`;
+}
+---
+
+<header class="sticky top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-gold/20">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href={`/${lang}/`} class="flex items-center gap-3 group">
+        <span class="text-gold font-bold text-xl tracking-tight group-hover:text-gold-light transition-colors">
+          PAK SHAO LIN
+        </span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-1">
+        {navItems.map((item) => (
+          <a
+            href={getNavHref(item)}
+            class:list={[
+              'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+              currentPath.includes(lang === 'pt' ? item.pt : item.en)
+                ? 'text-gold bg-white/10'
+                : 'text-gray-light/80 hover:text-gold hover:bg-white/5',
+            ]}
+          >
+            {t(lang, item.key)}
+          </a>
+        ))}
+
+        <!-- Language Switcher -->
+        <a
+          href={alternatePath}
+          class="ml-4 px-3 py-1.5 text-sm font-medium border border-gold/40 text-gold rounded-md hover:bg-gold hover:text-black transition-colors"
+          aria-label={lang === 'pt' ? 'Switch to English' : 'Mudar para Português'}
+        >
+          {lang === 'pt' ? 'EN' : 'PT'}
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-btn"
+        class="lg:hidden p-2 text-gray-light/80 hover:text-gold transition-colors"
+        aria-label={t(lang, 'common.menu')}
+        aria-expanded="false"
+      >
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden lg:hidden pb-4">
+      <div class="flex flex-col gap-1">
+        {navItems.map((item) => (
+          <a
+            href={getNavHref(item)}
+            class:list={[
+              'px-3 py-2.5 text-sm font-medium rounded-md transition-colors',
+              currentPath.includes(lang === 'pt' ? item.pt : item.en)
+                ? 'text-gold bg-white/10'
+                : 'text-gray-light/80 hover:text-gold hover:bg-white/5',
+            ]}
+          >
+            {t(lang, item.key)}
+          </a>
+        ))}
+        <a
+          href={alternatePath}
+          class="mt-2 px-3 py-2.5 text-sm font-medium border border-gold/40 text-gold rounded-md hover:bg-gold hover:text-black transition-colors text-center"
+        >
+          {lang === 'pt' ? 'English' : 'Português'}
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  btn?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('hidden') === false;
+    btn.setAttribute('aria-expanded', String(isOpen));
+    iconOpen?.classList.toggle('hidden', isOpen);
+    iconClose?.classList.toggle('hidden', !isOpen);
+  });
+</script>

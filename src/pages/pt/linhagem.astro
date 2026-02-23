@@ -1,0 +1,82 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<ContentLayout
+  title="Linhagem"
+  description="Árvore genealógica da linhagem Pak Shao Lin."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.lineage') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        A linhagem da Pak Shao Lin remonta aos antigos mestres do Templo Shaolin do Norte da China.
+        Esta tradição milenar foi transmitida de geração em geração, preservando a autenticidade
+        e a pureza dos ensinamentos marciais.
+      </p>
+    </div>
+
+    <div class="not-prose">
+      <h2 class="text-2xl font-bold text-gray-dark mb-8">Árvore de Linhagem</h2>
+      <div class="flex flex-col items-center gap-2">
+        <!-- Grão Mestre -->
+        <div class="w-full max-w-md p-6 bg-gradient-to-br from-gold/15 to-gold/5 rounded-xl border-2 border-gold/40 text-center shadow-sm">
+          <div class="text-xs font-semibold uppercase tracking-wider text-gold mb-1">Grão Mestre</div>
+          <div class="text-xl font-black text-gray-dark">Chan Kowk Wai</div>
+          <div class="text-sm text-gray-medium mt-1">Introdutor do Kung Fu tradicional no Brasil</div>
+        </div>
+
+        <!-- Connector -->
+        <div class="w-px h-8 bg-gradient-to-b from-gold/40 to-red-primary/40"></div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-primary/40" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+
+        <!-- Mestre -->
+        <div class="w-full max-w-md p-6 bg-gradient-to-br from-red-primary/10 to-red-primary/5 rounded-xl border-2 border-red-primary/30 text-center shadow-sm">
+          <div class="text-xs font-semibold uppercase tracking-wider text-red-primary mb-1">Mestre</div>
+          <div class="text-xl font-black text-gray-dark">Gilmar Dantas</div>
+          <div class="text-sm text-gray-medium mt-1">Fundador da Associação Pak Shao Lin (1984)</div>
+        </div>
+
+        <!-- Connector -->
+        <div class="w-px h-8 bg-gradient-to-b from-red-primary/40 to-gray-300"></div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+
+        <!-- Instrutores -->
+        <div class="w-full max-w-lg p-6 bg-white rounded-xl border border-gray-light text-center shadow-sm">
+          <div class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Instrutores e Discípulos</div>
+          <div class="flex flex-wrap justify-center gap-2">
+            {['Si-Fu Flávio', 'Si-Fu Robson Nobre', 'Si-Fu César', 'Si-Fu Marcos'].map((name) => (
+              <span class="px-3 py-1.5 bg-gray-100 rounded-full text-sm font-medium text-gray-dark">
+                {name}
+              </span>
+            ))}
+            <span class="px-3 py-1.5 bg-gray-50 rounded-full text-sm text-gray-400 italic">
+              e outros...
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2>A Tradição Shaolin</h2>
+      <p>
+        O nome <strong>Pak Shao Lin</strong> significa "Pequena Floresta do Norte", em referência
+        ao Templo Shaolin da província de Henan, berço das artes marciais chinesas. Nossa escola
+        mantém viva essa tradição milenar, transmitindo os ensinamentos com fidelidade e respeito
+        às origens.
+      </p>
+    </div>
+  </section>
+</ContentLayout>

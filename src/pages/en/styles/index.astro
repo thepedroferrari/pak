@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+const styles = await getCollection('styles');
+const external = styles.filter((s) => s.data.category === 'external');
+const internal = styles.filter((s) => s.data.category === 'internal');
+const weapon = styles.filter((s) => s.data.category === 'weapon');
+
+const groups = [
+  { title: 'External Styles', items: external },
+  { title: 'Internal Styles', items: internal },
+  { title: 'Weapons', items: weapon },
+].filter((g) => g.items.length > 0);
+---
+
+<ContentLayout
+  title={t(lang, 'styles.title')}
+  description="Discover the 20+ traditional Kung Fu styles taught at Pak Shao Lin."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.styles') },
+  ]}
+>
+  {groups.map((group) => (
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-gray-dark mb-6">{group.title}</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 not-prose">
+        {group.items.map((style) => (
+          <a
+            href={`/en/styles/${style.id}`}
+            class="group p-5 bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all"
+          >
+            <h3 class="font-bold text-gray-dark group-hover:text-red-primary transition-colors">
+              {style.data.name_en}
+            </h3>
+            <p class="text-sm text-gray-medium mt-1">{style.data.origin_en}</p>
+            <p class="text-sm text-gray-medium mt-2 line-clamp-2">
+              {style.data.description_en}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+</ContentLayout>

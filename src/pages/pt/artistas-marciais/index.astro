@@ -1,0 +1,76 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+
+const artists = [
+  {
+    name: 'Bruce Lee',
+    chinese: '李小龍',
+    years: '1940–1973',
+    description: 'O mais influente artista marcial de todos os tempos. Criador do Jeet Kune Do e ícone do cinema.',
+  },
+  {
+    name: 'Jackie Chan',
+    chinese: '成龍',
+    years: '1954–',
+    description: 'Mestre do Kung Fu cômico e das acrobacias. Um dos maiores astros do cinema de ação.',
+  },
+  {
+    name: 'Jet Li',
+    chinese: '李連杰',
+    years: '1963–',
+    description: 'Campeão de Wushu e estrela internacional. Cinco vezes campeão nacional da China.',
+  },
+  {
+    name: 'Sammo Hung',
+    chinese: '洪金寶',
+    years: '1952–',
+    description: 'Ator, diretor e coreógrafo de artes marciais. Pioneiro do cinema de ação de Hong Kong.',
+  },
+  {
+    name: 'Donnie Yen',
+    chinese: '甄子丹',
+    years: '1963–',
+    description: 'Estrela do cinema de artes marciais, famoso pela série Ip Man. Mestre em múltiplos estilos.',
+  },
+];
+---
+
+<ContentLayout
+  title="Artistas Marciais Famosos"
+  description="Conheça os grandes mestres das artes marciais."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.martial-artists') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Conheça alguns dos artistas marciais mais famosos e influentes da história,
+        cujo legado inspira praticantes em todo o mundo.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 not-prose">
+      {artists.map((artist) => (
+        <div class="group p-6 bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-red-primary/20 transition-all">
+          <div class="w-16 h-16 bg-gradient-to-br from-red-primary/10 to-gold/10 rounded-full flex items-center justify-center mb-4">
+            <span class="text-2xl font-black text-red-primary">{artist.name.charAt(0)}</span>
+          </div>
+          <h3 class="font-bold text-gray-dark text-lg group-hover:text-red-primary transition-colors">
+            {artist.name}
+          </h3>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-sm text-gold font-medium">{artist.chinese}</span>
+            <span class="text-xs text-gray-400">{artist.years}</span>
+          </div>
+          <p class="text-sm text-gray-medium mt-3 leading-relaxed">{artist.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</ContentLayout>

@@ -1,0 +1,60 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<ContentLayout
+  title="Competições"
+  description="Histórico de competições e conquistas da equipe Pak Shao Lin."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.competitions') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Desde <strong>1995</strong>, a equipe de competição da Pak Shao Lin participa ativamente
+        de campeonatos estaduais, nacionais e internacionais de Kung Fu e Wushu. Ao longo de
+        quase três décadas, nossos atletas acumularam <strong>centenas de medalhas</strong> e
+        troféus, representando o Brasil em competições ao redor do mundo.
+      </p>
+      <p>
+        A equipe é formada por alunos dedicados que, além do treinamento regular, participam
+        de treinos específicos voltados para a preparação competitiva, desenvolvendo formas
+        (taolu) e combate (sanda).
+      </p>
+    </div>
+
+    <div class="not-prose">
+      <h2 class="text-2xl font-bold text-gray-dark mb-6">Conquistas em Destaque</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="p-6 bg-gradient-to-br from-gold/10 to-gold/5 rounded-xl border border-gold/20 text-center">
+          <div class="text-3xl font-black text-gold">500+</div>
+          <div class="text-sm text-gray-medium mt-1">Medalhas Conquistadas</div>
+        </div>
+        <div class="p-6 bg-gradient-to-br from-red-primary/10 to-red-primary/5 rounded-xl border border-red-primary/20 text-center">
+          <div class="text-3xl font-black text-red-primary">30+</div>
+          <div class="text-sm text-gray-medium mt-1">Anos de Competição</div>
+        </div>
+        <div class="p-6 bg-gradient-to-br from-gray-200/50 to-gray-100 rounded-xl border border-gray-light text-center">
+          <div class="text-3xl font-black text-gray-dark">50+</div>
+          <div class="text-sm text-gray-medium mt-1">Campeonatos Participados</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2>Modalidades</h2>
+      <ul>
+        <li><strong>Taolu (Formas)</strong> — Apresentação de formas tradicionais e modernas</li>
+        <li><strong>Sanda (Combate)</strong> — Luta esportiva de Kung Fu</li>
+        <li><strong>Tai Chi Chuan</strong> — Competições de formas internas</li>
+        <li><strong>Armas Tradicionais</strong> — Espada, sabre, lança, bastão e outras</li>
+      </ul>
+    </div>
+  </section>
+</ContentLayout>

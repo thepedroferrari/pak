@@ -1,0 +1,60 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<ContentLayout
+  title="Imprensa"
+  description="Cobertura da mídia sobre a Pak Shao Lin."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.press') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Ao longo de mais de 40 anos de história, a Pak Shao Lin tem sido destaque em diversos
+        veículos de comunicação, incluindo jornais, revistas, programas de televisão e portais
+        de notícias. Confira abaixo a cobertura da mídia sobre nossa escola.
+      </p>
+    </div>
+
+    <div class="not-prose">
+      <h2 class="text-2xl font-bold text-gray-dark mb-6">Aparições na Mídia</h2>
+      <div class="space-y-4">
+        {[
+          { veiculo: 'TV', titulo: 'Matérias em breve', ano: '—' },
+          { veiculo: 'Jornal', titulo: 'Matérias em breve', ano: '—' },
+          { veiculo: 'Revista', titulo: 'Matérias em breve', ano: '—' },
+        ].map((item) => (
+          <div class="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-light shadow-sm">
+            <div class="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+              <span class="text-xs font-bold text-gray-400 uppercase">{item.veiculo}</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-dark">{item.titulo}</h3>
+              <p class="text-sm text-gray-400">{item.ano}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="p-6 bg-red-dark/5 rounded-xl border border-red-primary/10 not-prose">
+      <h3 class="text-lg font-bold text-gray-dark mb-2">Assessoria de Imprensa</h3>
+      <p class="text-gray-medium mb-4">
+        Para entrevistas, pautas ou informações sobre a Pak Shao Lin, entre em contato conosco.
+      </p>
+      <a
+        href="/pt/contato"
+        class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-primary text-white font-semibold rounded-lg hover:bg-red-dark transition-colors"
+      >
+        Contato para Imprensa
+      </a>
+    </div>
+  </section>
+</ContentLayout>

@@ -1,0 +1,76 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import ContactForm from '@/components/ContactForm.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<ContentLayout
+  title={t(lang, 'contact.title')}
+  description="Entre em contato com a Pak Shao Lin. Agende sua aula experimental."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.contact') },
+  ]}
+>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 not-prose">
+    <!-- Contact Form -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-dark mb-6">Envie uma Mensagem</h2>
+      <ContactForm lang={lang} />
+    </div>
+
+    <!-- Contact Info -->
+    <div class="space-y-8">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-dark mb-6">{t(lang, 'contact.info')}</h2>
+
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-red-primary shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <div>
+              <p class="font-medium text-gray-dark">E-mail</p>
+              <a href="mailto:pakshaolin@gmail.com" class="text-red-primary hover:text-red-dark transition-colors">
+                pakshaolin@gmail.com
+              </a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-red-primary shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <div>
+              <p class="font-medium text-gray-dark">Sede (Santana)</p>
+              <p class="text-gray-medium">Rua Piracema, 156 - Santana</p>
+              <p class="text-gray-medium">São Paulo - SP</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-bold text-gray-dark mb-4">{t(lang, 'contact.social')}</h3>
+        <div class="flex gap-4">
+          <a href="https://instagram.com/pakshaolin" target="_blank" rel="noopener noreferrer"
+             class="flex items-center gap-2 px-4 py-2 bg-gray-light rounded-lg hover:bg-gold/10 transition-colors text-sm font-medium text-gray-dark">
+            Instagram
+          </a>
+          <a href="https://facebook.com/pakshaolin" target="_blank" rel="noopener noreferrer"
+             class="flex items-center gap-2 px-4 py-2 bg-gray-light rounded-lg hover:bg-gold/10 transition-colors text-sm font-medium text-gray-dark">
+            Facebook
+          </a>
+          <a href="https://youtube.com/@pakshaolin" target="_blank" rel="noopener noreferrer"
+             class="flex items-center gap-2 px-4 py-2 bg-gray-light rounded-lg hover:bg-gold/10 transition-colors text-sm font-medium text-gray-dark">
+            YouTube
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ContentLayout>

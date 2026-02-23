@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color palette: traditional Chinese martial arts aesthetic */
+  --color-red-dark: #8B0000;
+  --color-red-primary: #C41E3A;
+  --color-red-light: #E8384F;
+  --color-gold: #D4AF37;
+  --color-gold-light: #F0D060;
+  --color-gold-dark: #B8960C;
+  --color-black: #0A0A0A;
+  --color-gray-dark: #1A1A1A;
+  --color-gray-medium: #374151;
+  --color-gray-light: #F3F4F6;
+  --color-white: #FFFFFF;
+
+  /* Typography */
+  --font-sans: 'Inter', 'Noto Sans', system-ui, -apple-system, sans-serif;
+
+  /* Spacing scale extensions */
+  --spacing-18: 4.5rem;
+  --spacing-88: 22rem;
+  --spacing-128: 32rem;
+}

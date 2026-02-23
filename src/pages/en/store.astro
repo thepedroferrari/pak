@@ -1,0 +1,50 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+
+const products = [
+  { name: 'T-Shirt', price: 'R$ 80', icon: '👕', description: 'Official Pak Shao Lin training t-shirt. Available in black and white.' },
+  { name: 'Pants', price: 'R$ 120', icon: '👖', description: 'Traditional Kung Fu training pants. Lightweight and comfortable.' },
+  { name: 'Jacket', price: 'R$ 200', icon: '🥋', description: 'Official Pak Shao Lin Kung Fu jacket with embroidered logo.' },
+  { name: 'Backpack', price: 'R$ 150', icon: '🎒', description: 'Durable backpack with the Pak Shao Lin logo. Perfect for training gear.' },
+];
+---
+
+<ContentLayout
+  title="Store"
+  description="Official Pak Shao Lin products and uniforms."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.store') },
+  ]}
+>
+  <p class="text-lg text-gray-medium mb-10">
+    Get official Pak Shao Lin gear and uniforms. All products are available at our headquarters or can be ordered through your instructor.
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 not-prose">
+    {products.map((product) => (
+      <div class="bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all overflow-hidden">
+        <div class="aspect-square bg-gray-light flex items-center justify-center">
+          <span class="text-6xl">{product.icon}</span>
+        </div>
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-dark">{product.name}</h3>
+          <p class="text-sm text-gray-medium mt-1">{product.description}</p>
+          <p class="text-lg font-bold text-red-primary mt-3">{product.price}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="mt-12 p-6 bg-red-dark/5 rounded-xl border border-red-primary/10 not-prose">
+    <h3 class="text-lg font-bold text-gray-dark mb-2">How to purchase</h3>
+    <p class="text-gray-medium">
+      Products can be purchased directly at our headquarters in Santana or through your instructor.
+      For questions about availability and sizes, please <a href="/en/contact" class="text-red-primary hover:underline font-medium">contact us</a>.
+    </p>
+  </div>
+</ContentLayout>

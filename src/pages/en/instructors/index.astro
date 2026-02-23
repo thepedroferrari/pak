@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+const instructors = (await getCollection('instructors')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<ContentLayout
+  title={t(lang, 'instructors.title')}
+  description="Meet the instructors of the Pak Shao Lin Association."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.instructors') },
+  ]}
+>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 not-prose">
+    {instructors.map((instructor) => (
+      <a
+        href={`/en/instructors/${instructor.id}`}
+        class="group bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all overflow-hidden"
+      >
+        <div class="aspect-[4/3] bg-gray-light flex items-center justify-center">
+          <span class="text-6xl text-gray-medium/30 font-bold">
+            {instructor.data.name.charAt(0)}
+          </span>
+        </div>
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-dark group-hover:text-red-primary transition-colors">
+            {instructor.data.name}
+          </h3>
+          <p class="text-sm text-gold-dark font-medium mt-1">{instructor.data.title_en}</p>
+          <p class="text-sm text-gray-medium mt-1">{instructor.data.rank_en}</p>
+          <p class="text-sm text-gray-medium mt-2">{instructor.data.location_en}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</ContentLayout>

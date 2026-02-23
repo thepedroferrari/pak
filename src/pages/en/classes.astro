@@ -1,0 +1,61 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import LocationCard from '@/components/LocationCard.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+---
+
+<ContentLayout
+  title={t(lang, 'classes.title')}
+  description="Find a Pak Shao Lin location near you. Kung Fu classes for all ages."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.classes') },
+  ]}
+>
+  <p class="text-lg text-gray-medium mb-10">
+    Pak Shao Lin has training centers in São Paulo and surrounding areas.
+    We offer classes for all ages, from children aged 5 and up to adults.
+    The first trial class is free.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 not-prose">
+    <LocationCard
+      lang={lang}
+      name="Santana (Headquarters)"
+      address="Rua Piracema, 156 - Santana, São Paulo - SP"
+      schedule={['Monday & Wednesday: 8:00–10:00 PM', 'Saturday: 11:00 AM–1:00 PM']}
+      instructor="Master Gilmar Dantas"
+      isHQ={true}
+    />
+    <LocationCard
+      lang={lang}
+      name="Vila Maria"
+      address="Av. das Cerejeiras, 632 - Jardim Japão, São Paulo - SP"
+      schedule={['Wednesday: 8:00–10:00 PM', 'Friday: 7:30–9:30 PM']}
+      instructor="Master Gilmar Dantas / Si-Fu Flávio"
+    />
+    <LocationCard
+      lang={lang}
+      name="São José dos Campos"
+      address="DCTA, Praça Marechal Eduardo Gomes, 50 - São José dos Campos - SP"
+      schedule={['Tuesday & Thursday: 6:00–9:00 PM']}
+      instructor="Si-Fu Robson Nobre"
+    />
+  </div>
+
+  <div class="mt-12 p-6 bg-red-dark/5 rounded-xl border border-red-primary/10 not-prose">
+    <h3 class="text-lg font-bold text-gray-dark mb-2">Want to try a class?</h3>
+    <p class="text-gray-medium mb-4">
+      Contact us to schedule your free trial class.
+    </p>
+    <a
+      href="/en/contact"
+      class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-primary text-white font-semibold rounded-lg hover:bg-red-dark transition-colors"
+    >
+      {t(lang, 'home.cta.button')}
+    </a>
+  </div>
+</ContentLayout>

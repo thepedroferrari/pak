@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+
+export async function getStaticPaths() {
+  const styles = await getCollection('styles');
+  return styles.map((style) => ({
+    params: { slug: style.id },
+    props: { style },
+  }));
+}
+
+const { style } = Astro.props;
+const { name_en, origin_en, description_en, characteristics_en } = style.data;
+---
+
+<ContentLayout
+  title={name_en}
+  description={description_en}
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.styles'), href: '/en/styles/' },
+    { label: name_en },
+  ]}
+>
+  <div class="space-y-6 not-prose">
+    <div>
+      <p class="text-sm text-gold-dark font-medium">{t(lang, 'styles.origin')}: {origin_en}</p>
+    </div>
+    <div>
+      <p class="text-lg text-gray-medium leading-relaxed">{description_en}</p>
+    </div>
+    <div>
+      <h2 class="text-xl font-bold text-gray-dark mb-3">{t(lang, 'styles.characteristics')}</h2>
+      <ul class="space-y-2">
+        {characteristics_en.map((c) => (
+          <li class="flex items-center gap-2 text-gray-medium">
+            <span class="w-2 h-2 bg-red-primary rounded-full shrink-0"></span>
+            {c}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</ContentLayout>

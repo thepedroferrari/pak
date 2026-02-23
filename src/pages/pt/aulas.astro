@@ -1,0 +1,61 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import LocationCard from '@/components/LocationCard.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<ContentLayout
+  title={t(lang, 'classes.title')}
+  description="Encontre uma unidade da Pak Shao Lin perto de você. Aulas de Kung Fu para todas as idades."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.classes') },
+  ]}
+>
+  <p class="text-lg text-gray-medium mb-10">
+    A Pak Shao Lin possui núcleos de treinamento em São Paulo e no interior.
+    Oferecemos aulas para todas as idades, desde crianças a partir de 5 anos até adultos.
+    A primeira aula experimental é gratuita.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 not-prose">
+    <LocationCard
+      lang={lang}
+      name="Santana (Matriz)"
+      address="Rua Piracema, 156 - Santana, São Paulo - SP"
+      schedule={['Segunda e Quarta: 20h às 22h', 'Sábado: 11h às 13h']}
+      instructor="Mestre Gilmar Dantas"
+      isHQ={true}
+    />
+    <LocationCard
+      lang={lang}
+      name="Vila Maria"
+      address="Av. das Cerejeiras, 632 - Jardim Japão, São Paulo - SP"
+      schedule={['Quarta: 20h às 22h', 'Sexta: 19h30 às 21h30']}
+      instructor="Mestre Gilmar Dantas / Si-Fu Flávio"
+    />
+    <LocationCard
+      lang={lang}
+      name="São José dos Campos"
+      address="DCTA, Praça Marechal Eduardo Gomes, 50 - São José dos Campos - SP"
+      schedule={['Terça e Quinta: 18h às 21h']}
+      instructor="Si-Fu Robson Nobre"
+    />
+  </div>
+
+  <div class="mt-12 p-6 bg-red-dark/5 rounded-xl border border-red-primary/10 not-prose">
+    <h3 class="text-lg font-bold text-gray-dark mb-2">Quer experimentar uma aula?</h3>
+    <p class="text-gray-medium mb-4">
+      Entre em contato conosco para agendar sua aula experimental gratuita.
+    </p>
+    <a
+      href="/pt/contato"
+      class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-primary text-white font-semibold rounded-lg hover:bg-red-dark transition-colors"
+    >
+      {t(lang, 'home.cta.button')}
+    </a>
+  </div>
+</ContentLayout>

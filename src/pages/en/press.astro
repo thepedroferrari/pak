@@ -1,0 +1,58 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+
+const pressItems = [
+  { title: 'Pak Shao Lin celebrates 40 years of tradition', source: 'Coming soon', year: '2024' },
+  { title: 'Brazilian Kung Fu team shines at international championship', source: 'Coming soon', year: '2023' },
+  { title: 'The art of Northern Shaolin in São Paulo', source: 'Coming soon', year: '2022' },
+];
+---
+
+<ContentLayout
+  title="Press"
+  description="Media coverage of Pak Shao Lin."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.press') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Over the years, Pak Shao Lin has been featured in newspapers, magazines, television,
+        and online media. Below is a selection of press coverage and media appearances.
+      </p>
+    </div>
+
+    <div>
+      <h2>Media Coverage</h2>
+      <div class="not-prose space-y-4 mt-6">
+        {pressItems.map((item) => (
+          <div class="p-5 bg-white rounded-xl border border-gray-light hover:border-gold/30 hover:shadow-sm transition-all">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="font-bold text-gray-dark">{item.title}</h3>
+                <p class="text-sm text-gray-medium mt-1">{item.source}</p>
+              </div>
+              <span class="shrink-0 text-sm font-semibold text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
+                {item.year}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="not-prose p-6 bg-red-dark/5 rounded-xl border border-red-primary/10">
+      <h3 class="text-lg font-bold text-gray-dark mb-2">Press inquiries</h3>
+      <p class="text-gray-medium">
+        For press inquiries, interview requests, or media partnerships, please
+        <a href="/en/contact" class="text-red-primary hover:underline font-medium">contact us</a>.
+      </p>
+    </div>
+  </section>
+</ContentLayout>

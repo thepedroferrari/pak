@@ -1,0 +1,102 @@
+---
+import type { Lang } from '@/i18n/ui';
+import { t, getAlternatePath } from '@/i18n/ui';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  lang: Lang;
+  currentPath: string;
+  type?: 'website' | 'article';
+  publishedDate?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-image.jpg',
+  canonicalUrl,
+  lang,
+  currentPath,
+  type = 'website',
+  publishedDate,
+} = Astro.props;
+
+const siteUrl = 'https://pakshaolin.org';
+const pageTitle = title
+  ? `${title} | Pak Shao Lin`
+  : t(lang, 'seo.defaultTitle');
+const pageDescription = description ?? t(lang, 'seo.defaultDescription');
+const canonical = canonicalUrl ?? `${siteUrl}${currentPath}`;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+const alternateLang = lang === 'pt' ? 'en' : 'pt';
+const alternatePath = getAlternatePath(lang, currentPath);
+const alternateUrl = `${siteUrl}${alternatePath}`;
+---
+
+<!-- Primary Meta Tags -->
+<title>{pageTitle}</title>
+<meta name="title" content={pageTitle} />
+<meta name="description" content={pageDescription} />
+<link rel="canonical" href={canonical} />
+
+<!-- Language Alternates -->
+<link rel="alternate" hreflang={lang} href={canonical} />
+<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
+<link rel="alternate" hreflang="x-default" href={`${siteUrl}/pt/`} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={pageDescription} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:locale" content={lang === 'pt' ? 'pt_BR' : 'en_US'} />
+<meta property="og:site_name" content="Pak Shao Lin" />
+{publishedDate && <meta property="article:published_time" content={publishedDate} />}
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonical} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={pageDescription} />
+<meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:site" content="@pakshaolin" />
+
+<!-- Structured Data: Organization -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  "name": "Pak Shao Lin - Kung Fu Tradicional Chinês",
+  "alternateName": "Associação Pak Shao Lin",
+  "url": siteUrl,
+  "logo": `${siteUrl}/og-image.jpg`,
+  "foundingDate": "1984-07-01",
+  "founder": {
+    "@type": "Person",
+    "name": "Gilmar Dantas",
+    "jobTitle": "Mestre"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rua Piracema, 156",
+    "addressLocality": "São Paulo",
+    "addressRegion": "SP",
+    "addressCountry": "BR",
+    "neighborhood": "Santana"
+  },
+  "telephone": "",
+  "email": "pakshaolin@gmail.com",
+  "sameAs": [
+    "https://instagram.com/pakshaolin",
+    "https://facebook.com/pakshaolin",
+    "https://youtube.com/@pakshaolin",
+    "https://twitter.com/pakshaolin"
+  ],
+  "sport": "Kung Fu",
+  "description": lang === 'pt'
+    ? "Escola de Kung Fu tradicional chinês em São Paulo, fundada em 1984."
+    : "Traditional Chinese Kung Fu school in São Paulo, founded in 1984."
+})} />

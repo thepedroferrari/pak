@@ -1,0 +1,71 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+
+const artists = [
+  {
+    name: 'Bruce Lee',
+    years: '1940–1973',
+    desc: 'Legendary martial artist, actor, and philosopher who founded Jeet Kune Do and popularized martial arts worldwide.',
+  },
+  {
+    name: 'Jackie Chan',
+    years: 'Born 1954',
+    desc: 'Actor, martial artist, and stuntman known for his acrobatic fighting style, comic timing, and innovative stunts.',
+  },
+  {
+    name: 'Jet Li',
+    years: 'Born 1963',
+    desc: 'Wushu champion turned film star, known for his speed and precision in both traditional and contemporary martial arts.',
+  },
+  {
+    name: 'Sammo Hung',
+    years: 'Born 1952',
+    desc: 'Actor, director, and martial artist renowned for blending kung fu, comedy, and action choreography.',
+  },
+  {
+    name: 'Donnie Yen',
+    years: 'Born 1963',
+    desc: 'Martial artist and actor celebrated for his role as Ip Man and his mastery of multiple fighting disciplines.',
+  },
+];
+---
+
+<ContentLayout
+  title="Famous Martial Artists"
+  description="Meet the great masters of martial arts."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.martial-artists') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Throughout history, martial artists have inspired millions with their skill, dedication,
+        and philosophy. These are some of the most influential figures in martial arts who have
+        shaped the way the world sees Kung Fu and Chinese martial arts.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 not-prose">
+      {artists.map((artist) => (
+        <div class="bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all overflow-hidden">
+          <div class="aspect-[4/3] bg-gray-light flex items-center justify-center">
+            <span class="text-6xl text-gray-medium/30 font-bold">
+              {artist.name.charAt(0)}
+            </span>
+          </div>
+          <div class="p-5">
+            <h3 class="text-lg font-bold text-gray-dark">{artist.name}</h3>
+            <p class="text-sm text-gold-dark font-medium mt-1">{artist.years}</p>
+            <p class="text-sm text-gray-medium mt-2">{artist.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</ContentLayout>

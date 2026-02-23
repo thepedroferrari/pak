@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pakshaolin.org/sitemap-index.xml

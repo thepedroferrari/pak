@@ -1,0 +1,52 @@
+---
+import type { Lang } from '@/i18n/ui';
+import { t } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  name: string;
+  address: string;
+  schedule: string[];
+  instructor: string;
+  isHQ?: boolean;
+}
+
+const { lang, name, address, schedule, instructor, isHQ = false } = Astro.props;
+---
+
+<div class="bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md transition-shadow p-6">
+  <div class="flex items-start justify-between mb-4">
+    <h3 class="text-xl font-bold text-gray-dark">{name}</h3>
+    {isHQ && (
+      <span class="px-2.5 py-0.5 bg-gold/10 text-gold-dark text-xs font-semibold rounded-full uppercase tracking-wider">
+        {t(lang, 'classes.headquarters')}
+      </span>
+    )}
+  </div>
+
+  <div class="space-y-3 text-sm">
+    <div class="flex items-start gap-3">
+      <svg class="w-5 h-5 text-red-primary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      <span class="text-gray-medium">{address}</span>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <svg class="w-5 h-5 text-red-primary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <div class="text-gray-medium">
+        {schedule.map((s) => <p>{s}</p>)}
+      </div>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <svg class="w-5 h-5 text-red-primary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+      <span class="text-gray-medium">{instructor}</span>
+    </div>
+  </div>
+</div>

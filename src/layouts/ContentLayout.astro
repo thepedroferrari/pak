@@ -1,0 +1,34 @@
+---
+import type { Lang } from '@/i18n/ui';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang: Lang;
+  breadcrumbs?: { label: string; href?: string }[];
+}
+
+const { title, description, lang, breadcrumbs } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    {breadcrumbs && <Breadcrumb items={breadcrumbs} />}
+
+    <header class="mb-10">
+      <h1 class="text-4xl sm:text-5xl font-black text-gray-dark tracking-tight">
+        {title}
+      </h1>
+      {description && (
+        <p class="mt-4 text-lg text-gray-medium max-w-3xl">{description}</p>
+      )}
+      <div class="mt-6 h-1 w-20 bg-gradient-to-r from-red-primary to-gold rounded-full"></div>
+    </header>
+
+    <div class="prose prose-lg max-w-none prose-headings:text-gray-dark prose-a:text-red-primary prose-a:no-underline hover:prose-a:underline">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>

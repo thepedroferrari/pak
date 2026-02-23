@@ -1,0 +1,59 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<ContentLayout
+  title="Filosofia"
+  description="Filosofia e pensamentos sobre as artes marciais."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.philosophy') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        O Kung Fu vai muito além do aspecto físico e marcial. Sua prática é fundamentada em
+        uma filosofia milenar que busca o equilíbrio entre corpo, mente e espírito. Na Pak Shao Lin,
+        acreditamos que o verdadeiro artista marcial cultiva não apenas a técnica, mas também
+        a virtude, a sabedoria e a compaixão.
+      </p>
+    </div>
+
+    <div class="not-prose">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[
+          {
+            title: 'Wu De (Virtude Marcial)',
+            text: 'O conjunto de valores morais que todo praticante deve cultivar: humildade, respeito, retidão, confiança e perseverança.',
+          },
+          {
+            title: 'Yin e Yang',
+            text: 'O princípio da dualidade complementar. Força e suavidade, movimento e quietude coexistem em harmonia no treinamento.',
+          },
+          {
+            title: 'Chi Kung (Qi Gong)',
+            text: 'A arte de cultivar a energia vital através da respiração, meditação e movimentos suaves, promovendo saúde e longevidade.',
+          },
+          {
+            title: 'Disciplina e Respeito',
+            text: 'O respeito ao mestre, aos colegas e à tradição é a base do aprendizado. A disciplina forja o caráter do praticante.',
+          },
+        ].map((item) => (
+          <div class="p-6 bg-white rounded-xl border border-gray-light shadow-sm">
+            <h3 class="font-bold text-gray-dark text-lg mb-2">{item.title}</h3>
+            <p class="text-gray-medium text-sm leading-relaxed">{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <blockquote class="border-l-4 border-gold pl-6 italic text-gray-medium">
+      "O verdadeiro mestre ensina sem palavras. O verdadeiro guerreiro conquista sem lutar."
+    </blockquote>
+  </section>
+</ContentLayout>

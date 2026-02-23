@@ -1,0 +1,53 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+
+const products = [
+  { name: 'Camiseta', price: 'R$ 89,90', icon: '👕' },
+  { name: 'Calça', price: 'R$ 119,90', icon: '👖' },
+  { name: 'Jaqueta', price: 'R$ 199,90', icon: '🧥' },
+  { name: 'Mochila', price: 'R$ 149,90', icon: '🎒' },
+];
+---
+
+<ContentLayout
+  title="Loja"
+  description="Produtos e uniformes oficiais da Pak Shao Lin."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.store') },
+  ]}
+>
+  <p class="text-lg text-gray-medium mb-8">
+    Adquira uniformes e acessórios oficiais da Pak Shao Lin. Entre em contato para encomendas e disponibilidade.
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 not-prose">
+    {products.map((product) => (
+      <div class="group p-6 bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all text-center">
+        <div class="text-5xl mb-4">{product.icon}</div>
+        <h3 class="font-bold text-gray-dark text-lg">{product.name}</h3>
+        <p class="text-red-primary font-semibold mt-2">{product.price}</p>
+        <span class="inline-block mt-4 text-sm text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
+          Em breve
+        </span>
+      </div>
+    ))}
+  </div>
+
+  <div class="mt-12 p-6 bg-red-dark/5 rounded-xl border border-red-primary/10 not-prose">
+    <h3 class="text-lg font-bold text-gray-dark mb-2">Quer adquirir um produto?</h3>
+    <p class="text-gray-medium mb-4">
+      Entre em contato conosco para consultar disponibilidade e fazer sua encomenda.
+    </p>
+    <a
+      href="/pt/contato"
+      class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-primary text-white font-semibold rounded-lg hover:bg-red-dark transition-colors"
+    >
+      Fale Conosco
+    </a>
+  </div>
+</ContentLayout>

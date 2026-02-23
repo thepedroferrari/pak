@@ -1,0 +1,63 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+
+const highlights = [
+  { year: '1995', event: 'First official competition entry at the São Paulo State Championship.' },
+  { year: '2000', event: 'National Championship — multiple gold medals in forms and sparring.' },
+  { year: '2005', event: 'International Wushu Championship representation for Brazil.' },
+  { year: '2010', event: 'South American Championship — record medal count for the team.' },
+  { year: '2015', event: '20th anniversary of the competition team celebrated with exhibition.' },
+  { year: '2020', event: 'Continued training and virtual competitions during the pandemic.' },
+];
+---
+
+<ContentLayout
+  title="Competitions"
+  description="Competition history and achievements of the Pak Shao Lin team."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.competitions') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Since <strong>1995</strong>, the Pak Shao Lin competition team has been a force in both
+        traditional Kung Fu and modern Wushu tournaments. Our athletes compete at the state,
+        national, and international level, representing Brazil in world championships and
+        accumulating hundreds of medals across all categories.
+      </p>
+      <p>
+        The team trains under the direct supervision of <strong>Master Gilmar Dantas</strong> and
+        senior instructors, focusing on traditional forms (Taolu), sparring (Sanda), and weapons.
+        New members are welcome to join the competition team after demonstrating commitment
+        and reaching the required skill level.
+      </p>
+    </div>
+
+    <div>
+      <h2>Timeline</h2>
+      <div class="not-prose space-y-4 mt-6">
+        {highlights.map((item) => (
+          <div class="flex gap-4 items-start p-4 bg-white rounded-xl border border-gray-light hover:border-gold/30 hover:shadow-sm transition-all">
+            <span class="shrink-0 inline-flex items-center justify-center w-16 h-10 bg-red-primary text-white text-sm font-bold rounded-lg">
+              {item.year}
+            </span>
+            <p class="text-gray-medium">{item.event}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="not-prose p-6 bg-red-dark/5 rounded-xl border border-red-primary/10">
+      <h3 class="text-lg font-bold text-gray-dark mb-2">Join the competition team</h3>
+      <p class="text-gray-medium">
+        Interested in competing? Talk to your instructor about joining the Pak Shao Lin competition team.
+      </p>
+    </div>
+  </section>
+</ContentLayout>

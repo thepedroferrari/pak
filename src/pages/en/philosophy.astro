@@ -1,0 +1,66 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'en';
+---
+
+<ContentLayout
+  title="Philosophy"
+  description="Philosophy and thoughts on martial arts."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/en/' },
+    { label: t(lang, 'nav.philosophy') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Kung Fu is far more than a fighting system. It is a philosophy of life rooted in
+        thousands of years of Chinese wisdom. At Pak Shao Lin, we believe that the practice
+        of martial arts cultivates not only the body, but also the mind and spirit.
+      </p>
+    </div>
+
+    <div>
+      <h2>The Five Virtues of Wude</h2>
+      <p>
+        Traditional martial arts ethics are guided by <strong>Wude</strong> (martial virtue),
+        which encompasses both moral character and the attitude of the practitioner.
+      </p>
+      <div class="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        {[
+          { virtue: 'Humility', chinese: '謙虛', desc: 'Recognizing there is always more to learn.' },
+          { virtue: 'Respect', chinese: '尊敬', desc: 'Honoring teachers, peers, and the art itself.' },
+          { virtue: 'Righteousness', chinese: '義', desc: 'Acting with justice and moral integrity.' },
+          { virtue: 'Trust', chinese: '信', desc: 'Being reliable and true to your word.' },
+          { virtue: 'Loyalty', chinese: '忠', desc: 'Commitment to your school and lineage.' },
+          { virtue: 'Perseverance', chinese: '毅力', desc: 'Enduring hardship and continuing to train.' },
+        ].map((item) => (
+          <div class="p-5 bg-white rounded-xl border border-gray-light hover:border-gold/30 hover:shadow-sm transition-all">
+            <p class="text-2xl text-gold-dark mb-1">{item.chinese}</p>
+            <h3 class="font-bold text-gray-dark">{item.virtue}</h3>
+            <p class="text-sm text-gray-medium mt-1">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <h2>Mind, Body, and Spirit</h2>
+      <p>
+        The goal of Kung Fu training goes beyond physical fitness. Through disciplined practice,
+        the student develops mental clarity, emotional balance, and spiritual awareness. The
+        journey of a martial artist is one of constant self-improvement and self-discovery.
+      </p>
+    </div>
+
+    <div class="not-prose p-6 bg-gold/5 rounded-xl border border-gold/20 text-center">
+      <blockquote class="text-lg italic text-gray-dark">
+        "The supreme art of war is to subdue the enemy without fighting."
+      </blockquote>
+      <p class="text-sm text-gray-medium mt-2">-- Sun Tzu, The Art of War</p>
+    </div>
+  </section>
+</ContentLayout>

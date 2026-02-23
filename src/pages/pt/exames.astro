@@ -1,0 +1,53 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import { t } from '@/i18n/ui';
+
+const lang = 'pt';
+---
+
+<ContentLayout
+  title="Exames"
+  description="Datas e informações sobre exames de graduação."
+  lang={lang}
+  breadcrumbs={[
+    { label: t(lang, 'nav.home'), href: '/pt/' },
+    { label: t(lang, 'nav.exams') },
+  ]}
+>
+  <section class="space-y-8">
+    <div>
+      <p>
+        Os exames de graduação da Pak Shao Lin são realizados periodicamente para avaliar
+        o progresso técnico e teórico dos alunos. Cada faixa representa um nível de
+        conhecimento e dedicação na prática do Kung Fu.
+      </p>
+    </div>
+
+    <div class="not-prose">
+      <h2 class="text-2xl font-bold text-gray-dark mb-6">Sistema de Graduação</h2>
+      <div class="space-y-3">
+        {[
+          { faixa: 'Branca', nivel: 'Iniciante', cor: 'bg-gray-100 border-gray-300' },
+          { faixa: 'Amarela', nivel: '1.º Grau', cor: 'bg-yellow-50 border-yellow-300' },
+          { faixa: 'Laranja', nivel: '2.º Grau', cor: 'bg-orange-50 border-orange-300' },
+          { faixa: 'Verde', nivel: '3.º Grau', cor: 'bg-green-50 border-green-300' },
+          { faixa: 'Azul', nivel: '4.º Grau', cor: 'bg-blue-50 border-blue-300' },
+          { faixa: 'Marrom', nivel: '5.º Grau', cor: 'bg-amber-50 border-amber-600' },
+          { faixa: 'Preta', nivel: 'Instrutor', cor: 'bg-gray-900/5 border-gray-900' },
+        ].map((item) => (
+          <div class={`flex items-center gap-4 p-4 rounded-lg border ${item.cor}`}>
+            <div class="font-bold text-gray-dark w-24">{item.faixa}</div>
+            <div class="text-gray-medium">{item.nivel}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="p-6 bg-red-dark/5 rounded-xl border border-red-primary/10 not-prose">
+      <h3 class="text-lg font-bold text-gray-dark mb-2">Próximo Exame</h3>
+      <p class="text-gray-medium">
+        As datas dos próximos exames serão divulgadas em breve. Fique atento aos comunicados da sua unidade.
+      </p>
+    </div>
+  </section>
+</ContentLayout>
