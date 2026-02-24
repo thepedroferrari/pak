@@ -161,6 +161,11 @@
       color: rgba(255, 255, 255, 0.7);
       margin-top: 0.35rem;
       white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .instructor.active .name {
+      opacity: 1;
     }
 
     /* Default: muted/ghostly state */
@@ -292,7 +297,7 @@
       margin-left: -19.6%;
       margin-top: -19.6%;
       opacity: 0;
-      pointer-events: none;
+      pointer-events: auto;
       z-index: 2;
     }
     #gilmar-portrait img {
@@ -322,11 +327,7 @@
 
     /* ── Responsive ── */
     @media (max-width: 640px) {
-      .instructor .name {
-        display: none;
-      }
       .instructor.center .name {
-        display: block;
         font-size: 0.55rem;
       }
       /* Smaller circles, no borders on mobile */
@@ -614,6 +615,7 @@
 
         // Mouse hover
         el.addEventListener('mouseenter', () => {
+          el.classList.add('active');
           gsap.to(line, { opacity: 0.7, duration: 0.3 });
           line.classList.add('active');
           // Pulse Gilmar's glow ring + fade portrait to reveal yin-yang
@@ -625,6 +627,7 @@
           gsap.to('#gilmar-portrait img', { opacity: 0.45, duration: 0.3 });
         });
         el.addEventListener('mouseleave', () => {
+          el.classList.remove('active');
           gsap.to(line, { opacity: 0, duration: 0.3 });
           line.classList.remove('active');
           gsap.to('#gilmar-glow-ring', {
@@ -640,6 +643,7 @@
           e.preventDefault();
           if (activeInstructor === i) {
             // Deactivate current
+            el.classList.remove('active');
             gsap.to(line, { opacity: 0, duration: 0.3 });
             line.classList.remove('active');
             gsap.to('#gilmar-portrait img', { opacity: 0.85, duration: 0.3 });
@@ -651,11 +655,20 @@
             activeInstructor = null;
           } else {
             // Deactivate previous
-            if (activeInstructor !== null && pathLines[activeInstructor]) {
-              gsap.to(pathLines[activeInstructor], { opacity: 0, duration: 0.3 });
-              pathLines[activeInstructor].classList.remove('active');
+            if (activeInstructor !== null) {
+              if (activeInstructor === 'gilmar') {
+                document.getElementById('gilmar').classList.remove('active');
+              } else {
+                var prevEl = document.querySelector('.instructor[data-index="' + activeInstructor + '"]');
+                if (prevEl) prevEl.classList.remove('active');
+                if (pathLines[activeInstructor]) {
+                  gsap.to(pathLines[activeInstructor], { opacity: 0, duration: 0.3 });
+                  pathLines[activeInstructor].classList.remove('active');
+                }
+              }
             }
             // Activate new
+            el.classList.add('active');
             gsap.to(line, { opacity: 0.7, duration: 0.3 });
             line.classList.add('active');
             gsap.to('#gilmar-portrait img', { opacity: 0.45, duration: 0.3 });
@@ -668,6 +681,42 @@
           }
         }, { passive: false });
       });
+
+      // ── Gilmar Portrait Hover / Touch ──
+      const gilmarPortrait = document.getElementById('gilmar-portrait');
+      const gilmarEl = document.getElementById('gilmar');
+
+      gilmarPortrait.addEventListener('mouseenter', () => {
+        gilmarEl.classList.add('active');
+      });
+      gilmarPortrait.addEventListener('mouseleave', () => {
+        gilmarEl.classList.remove('active');
+      });
+      gilmarPortrait.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (activeInstructor === 'gilmar') {
+          gilmarEl.classList.remove('active');
+          activeInstructor = null;
+        } else {
+          // Deactivate previous orbit instructor
+          if (activeInstructor !== null && activeInstructor !== 'gilmar') {
+            var prevEl = document.querySelector('.instructor[data-index="' + activeInstructor + '"]');
+            if (prevEl) prevEl.classList.remove('active');
+            if (pathLines[activeInstructor]) {
+              gsap.to(pathLines[activeInstructor], { opacity: 0, duration: 0.3 });
+              pathLines[activeInstructor].classList.remove('active');
+            }
+            gsap.to('#gilmar-portrait img', { opacity: 0.85, duration: 0.3 });
+            gsap.to('#gilmar-glow-ring', {
+              borderWidth: 2,
+              borderColor: 'rgba(212,175,55,0.5)',
+              duration: 0.3,
+            });
+          }
+          gilmarEl.classList.add('active');
+          activeInstructor = 'gilmar';
+        }
+      }, { passive: false });
 
       // ── Master Timeline ──
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
