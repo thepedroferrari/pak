@@ -8,7 +8,7 @@ const lang = 'en';
 const allInstructors = (await getCollection('instructors')).sort((a, b) => a.data.order - b.data.order);
 
 // Tier groups
-const spotlights = allInstructors.filter((i) => i.data.tier === 'grandmaster' || i.data.tier === 'founder');
+const spotlights = allInstructors.filter((i) => i.data.tier === 'founder');
 const masters = allInstructors.filter((i) => i.data.tier === 'master' || i.data.tier === 'founder');
 const sifus = allInstructors.filter((i) => i.data.tier === 'sifu');
 const sipaks = allInstructors.filter((i) => i.data.tier === 'sipak');
@@ -16,7 +16,7 @@ const sipaks = allInstructors.filter((i) => i.data.tier === 'sipak');
 // Spotlight ideograms (alternating sides)
 const spotlightData = spotlights.map((inst, i) => ({
   inst,
-  ideogram: inst.data.tier === 'grandmaster' ? '宗' : '師',
+  ideogram: '師',
   ideogramRight: i % 2 !== 0,
 }));
 

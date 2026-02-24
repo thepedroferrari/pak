@@ -16,7 +16,7 @@ const instructors = defineCollection({
     location_en: z.string(),
     image: z.string().optional(),
     order: z.number().default(0),
-    tier: z.enum(['grandmaster', 'founder', 'master', 'sifu', 'sipak']),
+    tier: z.enum(['founder', 'master', 'sifu', 'sipak']),
     chinese_rank: z.string(),
     gallery: z.array(z.string()).optional(),
   }),
