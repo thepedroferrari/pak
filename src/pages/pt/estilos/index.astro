@@ -1,53 +1,235 @@
 ---
-import { getCollection } from 'astro:content';
-import ContentLayout from '@/layouts/ContentLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import StylesAnimation from '@/components/StylesAnimation.astro';
 import { t } from '@/i18n/ui';
+import { stylesData, externalStyles, internalStyles } from '@/data/styles-showcase';
 
 const lang = 'pt';
-const styles = await getCollection('styles');
-const external = styles.filter((s) => s.data.category === 'external');
-const internal = styles.filter((s) => s.data.category === 'internal');
-const weapon = styles.filter((s) => s.data.category === 'weapon');
-
-function renderGroup(title: string, items: typeof styles) {
-  return { title, items };
-}
-
-const groups = [
-  renderGroup('Estilos Externos', external),
-  renderGroup('Estilos Internos', internal),
-  renderGroup('Armas', weapon),
-].filter((g) => g.items.length > 0);
 ---
 
-<ContentLayout
-  title={t(lang, 'styles.title')}
-  description="Conheça os mais de 20 estilos tradicionais de Kung Fu ensinados na Pak Shao Lin."
-  lang={lang}
-  breadcrumbs={[
-    { label: t(lang, 'nav.home'), href: '/pt/' },
-    { label: t(lang, 'nav.styles') },
-  ]}
->
-  {groups.map((group) => (
-    <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-dark mb-6">{group.title}</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 not-prose">
-        {group.items.map((style) => (
+<BaseLayout lang={lang}>
+  <!-- Hero -->
+  <section class="relative bg-black overflow-hidden py-20 sm:py-28">
+    <div class="absolute inset-0 styles-hero-bg"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="font-chinese text-gold/10 text-7xl sm:text-8xl mb-4 tracking-[0.3em]" aria-hidden="true" data-gsap="hero-zh">武術</div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight" data-gsap="hero-title">
+        {t(lang, 'styles.title')}
+      </h1>
+      <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-6" data-gsap="hero-divider">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/40"></div>
+        <div class="w-2 h-2 rotate-45 border border-gold/50"></div>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/40"></div>
+      </div>
+      <p class="mt-6 text-lg text-gray-light/50 max-w-2xl mx-auto" data-gsap="hero-desc">
+        A Pak Shao Lin preserva mais de 20 estilos tradicionais de Kung Fu chinês,
+        divididos entre estilos externos — de movimentos explosivos e acrobáticos — e
+        estilos internos — focados na energia, fluidez e equilíbrio.
+      </p>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+  </section>
+
+  <!-- Sticky Style Navigation -->
+  <nav class="sticky top-16 z-40 bg-black/95 backdrop-blur-sm border-b border-gold/15" id="styles-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="styles-nav-scroll flex gap-1 py-2 overflow-x-auto">
+        {stylesData.map((s) => (
           <a
-            href={`/pt/estilos/${style.id}`}
-            class="group p-5 bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all"
+            href={`#${s.id}`}
+            class="style-nav-item flex items-center gap-2 px-3 py-2 rounded-md text-sm whitespace-nowrap transition-colors text-gray-light/50 hover:text-gold hover:bg-white/5"
+            data-style-nav={s.id}
           >
-            <h3 class="font-bold text-gray-dark group-hover:text-red-primary transition-colors">
-              {style.data.name_pt}
-            </h3>
-            <p class="text-sm text-gray-medium mt-1">{style.data.origin_pt}</p>
-            <p class="text-sm text-gray-medium mt-2 line-clamp-2">
-              {style.data.description_pt}
-            </p>
+            <span class="font-chinese text-base">{s.zh}</span>
+            <span class="font-medium">{s.name_pt}</span>
           </a>
         ))}
       </div>
     </div>
-  ))}
-</ContentLayout>
+  </nav>
+
+  <!-- External Styles -->
+  <section class="styles-dark-bg">
+    <!-- Category Header -->
+    <div class="py-12 sm:py-16 border-b border-gold/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-gsap="cat-head">
+        <div class="font-chinese text-gold/12 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">外拳</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">Estilos Externos</h2>
+        <p class="mt-3 text-gray-light/40 max-w-xl mx-auto text-sm">
+          Caracterizados por movimentos explosivos, acrobáticos e fisicamente intensos.
+          Desenvolvem força, velocidade e resistência.
+        </p>
+      </div>
+    </div>
+
+    <!-- External Style Sections -->
+    {externalStyles.map((style, index) => (
+      <div
+        id={style.id}
+        class="style-section border-b border-white/5 scroll-mt-28"
+        data-style-section={style.id}
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <!-- Ideogram Column -->
+            <div class:list={['flex items-center justify-center', index % 2 !== 0 && 'lg:order-last']}>
+              <div class="ideogram-container relative flex items-center justify-center py-8">
+                <!-- Ambient glow behind character -->
+                <div class="ideogram-glow absolute inset-0 rounded-full" data-gsap="ideogram-glow"></div>
+                <!-- The character -->
+                <span
+                  class="ideogram-char font-chinese text-8xl sm:text-[10rem] lg:text-[14rem] text-gold leading-none select-none"
+                  data-gsap="ideogram"
+                  aria-hidden="true"
+                >{style.zh}</span>
+              </div>
+            </div>
+
+            <!-- Content Column -->
+            <div class:list={[index % 2 !== 0 && 'lg:order-first']}>
+              <div data-gsap="style-content">
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="font-chinese text-gold/30 text-2xl" aria-hidden="true">{style.zh}</span>
+                  <div class="h-px flex-1 bg-gold/15"></div>
+                </div>
+                <h3 class="text-3xl sm:text-4xl font-black text-white mb-2">{style.name_pt}</h3>
+                <p class="text-sm text-gold/60 font-medium uppercase tracking-wider mb-6">{style.origin_pt}</p>
+                <p class="text-gray-light/60 leading-relaxed mb-8">{style.description_pt}</p>
+                <ul class="space-y-3">
+                  {style.characteristics_pt.map((c) => (
+                    <li class="flex items-center gap-3 text-gray-light/70">
+                      <span class="w-1.5 h-1.5 bg-red-primary rounded-full shrink-0"></span>
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- Internal Styles -->
+  <section class="styles-dark-bg-alt">
+    <!-- Category Header -->
+    <div class="py-12 sm:py-16 border-b border-gold/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-gsap="cat-head">
+        <div class="font-chinese text-gold/12 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">內拳</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">Estilos Internos</h2>
+        <p class="mt-3 text-gray-light/40 max-w-xl mx-auto text-sm">
+          Focados na energia interna (Chi), movimentos fluidos e equilíbrio entre corpo e mente.
+          Unem saúde, meditação e eficiência marcial.
+        </p>
+      </div>
+    </div>
+
+    <!-- Internal Style Sections -->
+    {internalStyles.map((style, index) => (
+      <div
+        id={style.id}
+        class="style-section border-b border-white/5 scroll-mt-28"
+        data-style-section={style.id}
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <!-- Ideogram Column -->
+            <div class:list={['flex items-center justify-center', index % 2 !== 0 && 'lg:order-last']}>
+              <div class="ideogram-container relative flex items-center justify-center py-8">
+                <div class="ideogram-glow absolute inset-0 rounded-full" data-gsap="ideogram-glow"></div>
+                <span
+                  class="ideogram-char font-chinese text-8xl sm:text-[10rem] lg:text-[14rem] text-gold leading-none select-none"
+                  data-gsap="ideogram"
+                  aria-hidden="true"
+                >{style.zh}</span>
+              </div>
+            </div>
+
+            <!-- Content Column -->
+            <div class:list={[index % 2 !== 0 && 'lg:order-first']}>
+              <div data-gsap="style-content">
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="font-chinese text-gold/30 text-2xl" aria-hidden="true">{style.zh}</span>
+                  <div class="h-px flex-1 bg-gold/15"></div>
+                </div>
+                <h3 class="text-3xl sm:text-4xl font-black text-white mb-2">{style.name_pt}</h3>
+                <p class="text-sm text-gold/60 font-medium uppercase tracking-wider mb-6">{style.origin_pt}</p>
+                <p class="text-gray-light/60 leading-relaxed mb-8">{style.description_pt}</p>
+                <ul class="space-y-3">
+                  {style.characteristics_pt.map((c) => (
+                    <li class="flex items-center gap-3 text-gray-light/70">
+                      <span class="w-1.5 h-1.5 bg-red-primary rounded-full shrink-0"></span>
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold">Comece Sua Jornada</h2>
+      <p class="mt-4 text-lg text-white/80">
+        Venha conhecer os estilos tradicionais na prática. Agende uma aula experimental.
+      </p>
+      <a
+        href="/pt/aulas"
+        class="mt-8 inline-block px-8 py-3.5 bg-gold text-black font-bold rounded-lg hover:bg-gold-light transition-colors text-lg shadow-lg"
+      >
+        Agendar Aula Experimental
+      </a>
+    </div>
+  </section>
+
+  <StylesAnimation />
+</BaseLayout>
+
+<style>
+  .styles-hero-bg {
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(139, 0, 0, 0.15), transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.05), transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.05), transparent 50%);
+  }
+  .styles-dark-bg {
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(212, 175, 55, 0.04), transparent 50%),
+      repeating-linear-gradient(45deg, transparent, transparent 39px, rgba(212, 175, 55, 0.015) 39px, rgba(212, 175, 55, 0.015) 40px),
+      repeating-linear-gradient(-45deg, transparent, transparent 39px, rgba(212, 175, 55, 0.015) 39px, rgba(212, 175, 55, 0.015) 40px);
+  }
+  .styles-dark-bg-alt {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 90% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 175, 55, 0.04), transparent 50%),
+      repeating-linear-gradient(45deg, transparent, transparent 39px, rgba(212, 175, 55, 0.015) 39px, rgba(212, 175, 55, 0.015) 40px),
+      repeating-linear-gradient(-45deg, transparent, transparent 39px, rgba(212, 175, 55, 0.015) 39px, rgba(212, 175, 55, 0.015) 40px);
+  }
+  .styles-nav-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .styles-nav-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .style-nav-item.active {
+    color: var(--color-gold);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .ideogram-container {
+    min-height: 200px;
+  }
+  .ideogram-glow {
+    background: radial-gradient(circle, rgba(196, 30, 58, 0.15) 0%, rgba(139, 0, 0, 0.08) 40%, transparent 70%);
+    filter: blur(40px);
+  }
+</style>

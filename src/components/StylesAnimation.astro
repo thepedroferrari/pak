@@ -1,0 +1,182 @@
+---
+// Script-only component — renders no HTML, just client-side animation logic.
+// Imported at the bottom of styles pages to layer GSAP animations on top of static content.
+---
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ─── Smooth-scroll nav clicks (works even without animations) ─────
+  document.querySelectorAll<HTMLAnchorElement>('.style-nav-item').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = link.getAttribute('href')?.replace('#', '');
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  if (!prefersReducedMotion) {
+    // ─── Hero entrance ──────────────────────────────────────────────
+    gsap.set('[data-gsap="hero-zh"]', { opacity: 0, scale: 0.8 });
+    gsap.set('[data-gsap="hero-title"]', { opacity: 0, y: 30 });
+    gsap.set('[data-gsap="hero-divider"]', { opacity: 0, scaleX: 0 });
+    gsap.set('[data-gsap="hero-desc"]', { opacity: 0, y: 20 });
+
+    const heroTl = gsap.timeline({ delay: 0.2 });
+    heroTl
+      .to('[data-gsap="hero-zh"]', { opacity: 1, scale: 1, duration: 1, ease: 'power2.out' })
+      .to('[data-gsap="hero-title"]', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+      .to('[data-gsap="hero-divider"]', { opacity: 1, scaleX: 1, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+      .to('[data-gsap="hero-desc"]', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2');
+
+    // ─── Category headers: fade + slide up ──────────────────────────
+    gsap.set('[data-gsap="cat-head"]', { opacity: 0, y: 30 });
+    document.querySelectorAll('[data-gsap="cat-head"]').forEach((el) => {
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ─── Burning ideogram reveal ────────────────────────────────────
+    document.querySelectorAll('[data-gsap="ideogram"]').forEach((char) => {
+      const section = char.closest('.style-section');
+      const glow = section?.querySelector('[data-gsap="ideogram-glow"]');
+      const content = section?.querySelector('[data-gsap="style-content"]');
+
+      // Initial states
+      gsap.set(char, {
+        clipPath: 'inset(100% 0 0 0)',
+        textShadow: '0 0 0px transparent',
+      });
+      if (glow) gsap.set(glow, { opacity: 0, scale: 0.4 });
+      if (content) gsap.set(content, { opacity: 0, x: 40 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      // 1. Background glow expands
+      if (glow) {
+        tl.to(glow, {
+          opacity: 0.7,
+          scale: 1,
+          duration: 1.2,
+          ease: 'power2.out',
+        }, 0);
+      }
+
+      // 2. Character burns in — clip-path reveals top to bottom
+      tl.to(char, {
+        clipPath: 'inset(0% 0 0 0)',
+        duration: 1.5,
+        ease: 'power1.inOut',
+      }, 0.1);
+
+      // 3. Ember glow peaks during reveal
+      tl.to(char, {
+        textShadow: '0 0 40px rgba(196, 30, 58, 0.8), 0 0 80px rgba(139, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.6)',
+        duration: 0.8,
+        ease: 'power2.in',
+      }, 0.3);
+
+      // 4. Ember glow settles to warm ambient
+      tl.to(char, {
+        textShadow: '0 0 15px rgba(212, 175, 55, 0.25), 0 0 40px rgba(212, 175, 55, 0.08)',
+        duration: 1.0,
+        ease: 'power2.out',
+      }, 1.3);
+
+      // 5. Background glow settles
+      if (glow) {
+        tl.to(glow, {
+          opacity: 0.25,
+          duration: 1.0,
+          ease: 'power2.out',
+        }, 1.3);
+      }
+
+      // 6. Content slides in from right
+      if (content) {
+        tl.to(content, {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+        }, 0.6);
+      }
+    });
+
+    // ─── CTA section fade ───────────────────────────────────────────
+    const ctaSection = document.querySelector('[data-gsap="cta-section"]');
+    if (ctaSection) {
+      const ctaInner = ctaSection.querySelector(':scope > div');
+      if (ctaInner) {
+        gsap.set(ctaInner.children, { opacity: 0, y: 20 });
+        gsap.to(ctaInner.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: ctaSection,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+    }
+
+    // ─── Scroll-linked nav highlighting ─────────────────────────────
+    const navItems = document.querySelectorAll<HTMLElement>('.style-nav-item');
+    const navScroll = document.querySelector('.styles-nav-scroll');
+
+    function setActiveNav(id: string) {
+      navItems.forEach((item) => {
+        const isActive = item.getAttribute('data-style-nav') === id;
+        item.classList.toggle('active', isActive);
+        // Auto-scroll nav to keep active item visible
+        if (isActive && navScroll) {
+          const navRect = navScroll.getBoundingClientRect();
+          const itemRect = item.getBoundingClientRect();
+          if (itemRect.left < navRect.left || itemRect.right > navRect.right) {
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        }
+      });
+    }
+
+    document.querySelectorAll<HTMLElement>('.style-section').forEach((section) => {
+      const id = section.getAttribute('data-style-section');
+      if (!id) return;
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top 40%',
+        end: 'bottom 40%',
+        onEnter: () => setActiveNav(id),
+        onEnterBack: () => setActiveNav(id),
+      });
+    });
+  }
+</script>

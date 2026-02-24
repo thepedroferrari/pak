@@ -14,22 +14,102 @@ const lang = 'pt';
     { label: t(lang, 'nav.gallery') },
   ]}
 >
-  <p class="text-lg text-gray-medium mb-8">
+  <p class="text-lg text-gray-medium mb-10">
     Confira registros fotográficos de treinos, competições, exames de graduação e eventos especiais da Pak Shao Lin.
   </p>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 not-prose">
-    {Array.from({ length: 6 }).map((_, i) => (
-      <div class="aspect-[4/3] rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center border border-gray-light shadow-sm">
-        <div class="text-center text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z" />
-          </svg>
-          <span class="text-sm font-medium">Foto {i + 1}</span>
+  <div class="space-y-12 not-prose">
+    <!-- Instrutores e Professores -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-dark mb-4">Instrutores e Professores</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {[
+          'chtfrontgil', 'chtlatgil', 'egon01', 'egon02', 'egon03',
+          'felipe-giorgi-kwantao', 'flafac', 'flav-rob-desarm', 'flav6kt',
+          'gil-mario', 'gil2mach', 'gil4louv',
+        ].map((name) => (
+          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
+            <img src={`/images/gallery/instructors-professors/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Treinos em Grupo -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-dark mb-4">Treinos em Grupo</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {[
+          'col-matriz2', 'colabcan', 'colabd', 'colbatebarr',
+          'colbtbra', 'colcass1', 'colcass2', 'colcass3',
+        ].map((name) => (
+          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
+            <img src={`/images/gallery/group-training/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Alunos Avançados -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-dark mb-4">Alunos Avançados</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {[
+          'alexandre-fatu-bast', 'allan-assan-bast', 'andre-f2-2k', 'caio-f2-3k',
+          'diego-5kt', 'diego-e-glaucia-base-cav', 'dr-joao-tecnica-do-tigre',
+          'erick-munekata-louva-deus',
+        ].map((name) => (
+          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
+            <img src={`/images/gallery/advanced-students/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Monges Shaolin -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-dark mb-4">Monges Shaolin</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {[
+          'mongaber', 'mongbana2ded', 'mongbeb', 'mongcabferr',
+          'mongcav', 'mongchikun1', 'mongchikung', 'mongcruz',
+        ].map((name) => (
+          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
+            <img src={`/images/gallery/shaolin-monks/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Armas Tradicionais -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-dark mb-4">Armas Tradicionais</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {[
+          'bastao', 'espada-do-dragao', 'faca-lingua-do-dragao', 'faca-rabo-de-peixe',
+          'banco', 'bengala', 'corrente', 'espada-gancho--orelha-de-tigre',
+        ].map((name) => (
+          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
+            <img src={`/images/gallery/weapons/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 40º Aniversário -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-dark mb-4">Momentos Especiais</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div class="aspect-[4/3] rounded-lg overflow-hidden bg-gray-light shadow-sm">
+          <img src="/images/gallery/40th-anniversary.jpg" alt="40º Aniversário" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="aspect-[4/3] rounded-lg overflow-hidden bg-gray-light shadow-sm">
+          <img src="/images/gallery/training.jpg" alt="Treino" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="aspect-[4/3] rounded-lg overflow-hidden bg-gray-light shadow-sm">
+          <img src="/images/gallery/athlete-room.jpg" alt="Sala do Atleta" class="w-full h-full object-cover" loading="lazy" />
         </div>
       </div>
-    ))}
+    </div>
   </div>
-
-  <p class="mt-8 text-sm text-gray-400 italic">Mais fotos e vídeos em breve.</p>
 </ContentLayout>

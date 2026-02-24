@@ -1,0 +1,159 @@
+---
+// Script-only component — renders no HTML, just client-side animation logic.
+// Imported at the bottom of homepage to layer GSAP animations on top of static content.
+---
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    // ─── Hero: staggered entrance ───────────────────────────────────
+    gsap.set('[data-gsap="hero-line"]', { opacity: 0, y: -20 });
+    gsap.set('[data-gsap="hero-title"]', { opacity: 0, y: 30 });
+    gsap.set('[data-gsap="hero-subtitle"]', { opacity: 0, y: 20 });
+    gsap.set('[data-gsap="hero-desc"]', { opacity: 0, y: 20 });
+    gsap.set('[data-gsap="hero-ctas"]', { opacity: 0, y: 20 });
+
+    const heroTl = gsap.timeline({ delay: 0.2 });
+    heroTl
+      .to('[data-gsap="hero-line"]', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
+      .to('[data-gsap="hero-title"]', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3')
+      .to('[data-gsap="hero-subtitle"]', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+      .to('[data-gsap="hero-desc"]', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+      .to('[data-gsap="hero-ctas"]', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3');
+
+    // Hero background parallax
+    const heroBg = document.querySelector('[data-gsap="hero-bg"]');
+    if (heroBg) {
+      gsap.to(heroBg, {
+        yPercent: 20,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroBg.closest('section'),
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    }
+
+    // ─── About Preview: image slides from left, text from right ─────
+    gsap.set('[data-gsap="about-img"]', { opacity: 0, x: -60 });
+    gsap.set('[data-gsap="about-text"]', { opacity: 0, x: 60 });
+
+    const aboutImg = document.querySelector('[data-gsap="about-img"]');
+    if (aboutImg) {
+      const aboutSection = aboutImg.closest('section');
+      const aboutTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: aboutSection,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+      aboutTl
+        .to('[data-gsap="about-img"]', { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out' })
+        .to('[data-gsap="about-text"]', { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out' }, '-=0.5');
+    }
+
+    // ─── Section headings: fade + slide up ──────────────────────────
+    gsap.set('[data-gsap="section-head"]', { opacity: 0, y: 30 });
+    document.querySelectorAll('[data-gsap="section-head"]').forEach((el) => {
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ─── Styles cards: stagger in ───────────────────────────────────
+    gsap.set('[data-gsap="style-card"]', { opacity: 0, y: 30, scale: 0.95 });
+    document.querySelectorAll('[data-gsap="styles-grid"]').forEach((grid) => {
+      const cards = grid.querySelectorAll('[data-gsap="style-card"]');
+      if (cards.length === 0) return;
+      gsap.to(cards, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        ease: 'back.out(1.4)',
+        stagger: 0.08,
+        scrollTrigger: {
+          trigger: grid,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ─── Gallery items: fade + scale in ─────────────────────────────
+    gsap.set('[data-gsap="gallery-item"]', { opacity: 0, scale: 0.9 });
+    document.querySelectorAll('[data-gsap="gallery-grid"]').forEach((grid) => {
+      const items = grid.querySelectorAll('[data-gsap="gallery-item"]');
+      if (items.length === 0) return;
+      gsap.to(items, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: grid,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ─── Location cards: stagger left to right ──────────────────────
+    document.querySelectorAll('[data-gsap="locations-grid"]').forEach((grid) => {
+      const cards = grid.children;
+      if (cards.length === 0) return;
+      gsap.set(cards, { opacity: 0, y: 40 });
+      gsap.to(cards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: grid,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ─── CTA section: simple fade in ────────────────────────────────
+    const ctaSection = document.querySelector('[data-gsap="cta-section"]');
+    if (ctaSection) {
+      const ctaInner = ctaSection.querySelector(':scope > div');
+      if (ctaInner) {
+        gsap.set(ctaInner.children, { opacity: 0, y: 20 });
+        gsap.to(ctaInner.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: ctaSection,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+    }
+  }
+</script>

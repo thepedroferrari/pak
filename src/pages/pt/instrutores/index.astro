@@ -22,10 +22,14 @@ const instructors = (await getCollection('instructors')).sort((a, b) => a.data.o
         href={`/pt/instrutores/${instructor.id}`}
         class="group bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all overflow-hidden"
       >
-        <div class="aspect-[4/3] bg-gray-light flex items-center justify-center">
-          <span class="text-6xl text-gray-medium/30 font-bold">
-            {instructor.data.name.charAt(0)}
-          </span>
+        <div class="aspect-[4/3] bg-gray-light overflow-hidden">
+          {instructor.data.image ? (
+            <img src={instructor.data.image} alt={instructor.data.name} class="w-full h-full object-cover" loading="lazy" />
+          ) : (
+            <div class="w-full h-full flex items-center justify-center">
+              <span class="text-6xl text-gray-medium/30 font-bold">{instructor.data.name.charAt(0)}</span>
+            </div>
+          )}
         </div>
         <div class="p-5">
           <h3 class="text-lg font-bold text-gray-dark group-hover:text-red-primary transition-colors">

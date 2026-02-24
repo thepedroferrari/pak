@@ -10,15 +10,16 @@ const { lang } = Astro.props;
 ---
 
 <section class="relative bg-black overflow-hidden">
-  <!-- Background pattern -->
-  <div class="absolute inset-0 opacity-10">
-    <div class="absolute inset-0" style="background-image: radial-gradient(circle at 25% 25%, #D4AF37 1px, transparent 1px); background-size: 40px 40px;"></div>
+  <!-- Background image with parallax wrapper -->
+  <div class="absolute inset-0" data-gsap="hero-bg">
+    <img src="/images/layout/homepage-banner.jpg" alt="" class="w-full h-full object-cover opacity-30" loading="eager" />
+    <div class="absolute inset-0 bg-black/50"></div>
   </div>
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
     <div class="text-center">
       <!-- Decorative line -->
-      <div class="flex items-center justify-center gap-4 mb-8">
+      <div class="flex items-center justify-center gap-4 mb-8" data-gsap="hero-line">
         <div class="h-px w-12 bg-gold/60"></div>
         <span class="text-gold/80 text-sm uppercase tracking-[0.3em] font-medium">
           {lang === 'pt' ? 'Desde 1984' : 'Since 1984'}
@@ -26,19 +27,19 @@ const { lang } = Astro.props;
         <div class="h-px w-12 bg-gold/60"></div>
       </div>
 
-      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight">
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight" data-gsap="hero-title">
         {t(lang, 'home.hero.title')}
       </h1>
 
-      <p class="mt-6 text-xl sm:text-2xl text-gold font-medium">
+      <p class="mt-6 text-xl sm:text-2xl text-gold font-medium" data-gsap="hero-subtitle">
         {t(lang, 'home.hero.subtitle')}
       </p>
 
-      <p class="mt-4 max-w-2xl mx-auto text-gray-light/60 text-lg">
+      <p class="mt-4 max-w-2xl mx-auto text-gray-light/60 text-lg" data-gsap="hero-desc">
         {t(lang, 'home.about.description')}
       </p>
 
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" data-gsap="hero-ctas">
         <a
           href={`/${lang}/${lang === 'pt' ? 'aulas' : 'classes'}`}
           class="px-8 py-3.5 bg-red-primary text-white font-semibold rounded-lg hover:bg-red-dark transition-colors text-lg shadow-lg shadow-red-primary/25"

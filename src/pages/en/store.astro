@@ -5,10 +5,10 @@ import { t } from '@/i18n/ui';
 const lang = 'en';
 
 const products = [
-  { name: 'T-Shirt', price: 'R$ 80', icon: '👕', description: 'Official Pak Shao Lin training t-shirt. Available in black and white.' },
-  { name: 'Pants', price: 'R$ 120', icon: '👖', description: 'Traditional Kung Fu training pants. Lightweight and comfortable.' },
-  { name: 'Jacket', price: 'R$ 200', icon: '🥋', description: 'Official Pak Shao Lin Kung Fu jacket with embroidered logo.' },
-  { name: 'Backpack', price: 'R$ 150', icon: '🎒', description: 'Durable backpack with the Pak Shao Lin logo. Perfect for training gear.' },
+  { name: 'T-Shirt', price: 'R$ 80', image: '/images/store/regata-treino.jpg', description: 'Official Pak Shao Lin training t-shirt. Available in black and white.' },
+  { name: 'Pants', price: 'R$ 120', image: '/images/store/calca-espec-loja.jpg', description: 'Traditional Kung Fu training pants. Lightweight and comfortable.' },
+  { name: 'Polo', price: 'R$ 100', image: '/images/store/camisa-polo2.jpg', description: 'Official Pak Shao Lin Kung Fu polo with embroidered logo.' },
+  { name: 'Backpack', price: 'R$ 150', image: '/images/store/mochila-da-pak.jpg', description: 'Durable backpack with the Pak Shao Lin logo. Perfect for training gear.' },
 ];
 ---
 
@@ -21,15 +21,20 @@ const products = [
     { label: t(lang, 'nav.store') },
   ]}
 >
+  <!-- Store Banner -->
+  <div class="not-prose rounded-xl overflow-hidden shadow-lg mb-10">
+    <img src="/images/store/store-banner.jpg" alt="Pak Shao Lin Store" class="w-full h-48 sm:h-56 object-cover" loading="lazy" />
+  </div>
+
   <p class="text-lg text-gray-medium mb-10">
     Get official Pak Shao Lin gear and uniforms. All products are available at our headquarters or can be ordered through your instructor.
   </p>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 not-prose">
     {products.map((product) => (
-      <div class="bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all overflow-hidden">
-        <div class="aspect-square bg-gray-light flex items-center justify-center">
-          <span class="text-6xl">{product.icon}</span>
+      <div class="group bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all overflow-hidden">
+        <div class="aspect-square bg-gray-light overflow-hidden">
+          <img src={product.image} alt={product.name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
         </div>
         <div class="p-5">
           <h3 class="text-lg font-bold text-gray-dark">{product.name}</h3>

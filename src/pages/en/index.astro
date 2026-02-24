@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import LocationCard from '@/components/LocationCard.astro';
+import HomepageAnimation from '@/components/HomepageAnimation.astro';
 import { t } from '@/i18n/ui';
 
 const lang = 'en';
@@ -13,56 +14,129 @@ const lang = 'en';
   <!-- About Preview -->
   <section class="py-16 sm:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
-          {t(lang, 'home.about.title')}
-        </h2>
-        <div class="mt-4 h-1 w-16 bg-gradient-to-r from-red-primary to-gold rounded-full mx-auto"></div>
-        <p class="mt-6 text-lg text-gray-medium leading-relaxed">
-          The Pak Shao Lin Association was founded on July 1, 1984 by Master Gilmar Dantas,
-          disciple of Grand Master Chan Kowk Wai. With over 40 years of tradition, our school
-          preserves and teaches the traditional styles of Chinese Kung Fu, training champion
-          athletes and cultivating discipline, respect, and martial arts as a way of life.
-        </p>
-        <a
-          href="/en/about"
-          class="mt-8 inline-flex items-center gap-2 text-red-primary font-semibold hover:text-red-dark transition-colors"
-        >
-          {t(lang, 'common.readMore')}
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div class="rounded-xl overflow-hidden shadow-lg" data-gsap="about-img">
+          <img src="/images/instructors/gilmar-chan-homenagem.jpg" alt="Master Gilmar Dantas and Grand Master Chan Kowk Wai" class="w-full h-auto" loading="lazy" />
+        </div>
+        <div class="text-center md:text-left" data-gsap="about-text">
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
+            {t(lang, 'home.about.title')}
+          </h2>
+          <div class="mt-4 h-1 w-16 bg-gradient-to-r from-red-primary to-gold rounded-full md:mx-0 mx-auto"></div>
+          <p class="mt-6 text-lg text-gray-medium leading-relaxed">
+            The Pak Shao Lin Association was founded on July 1, 1984 by Master Gilmar Dantas,
+            disciple of Grand Master Chan Kowk Wai. With over 40 years of tradition, our school
+            preserves and teaches the traditional styles of Chinese Kung Fu, training champion
+            athletes and cultivating discipline, respect, and martial arts as a way of life.
+          </p>
+          <a
+            href="/en/about"
+            class="mt-8 inline-flex items-center gap-2 text-red-primary font-semibold hover:text-red-dark transition-colors"
+          >
+            {t(lang, 'common.readMore')}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Styles Preview -->
-  <section class="py-16 sm:py-20 bg-gray-light">
+  <section class="py-16 sm:py-20 homepage-dark-panel">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
-          {t(lang, 'home.styles.title')}
-        </h2>
-        <div class="mt-4 h-1 w-16 bg-gradient-to-r from-red-primary to-gold rounded-full mx-auto"></div>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {[
-          'Northern Shaolin', 'Praying Mantis', 'Eagle Claw',
-          'Tai Chi Chuan', 'Pa Kua Chang', 'Hsing Yi Chuan',
-          'Choy Lay Fut', 'Wing Chun',
-        ].map((style) => (
-          <div class="bg-white rounded-lg p-4 text-center border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all">
-            <span class="text-sm font-medium text-gray-dark">{style}</span>
+      <!-- Corner ornaments -->
+      <div class="relative">
+        <div class="absolute -top-4 -left-2 w-6 h-6 border-t-2 border-l-2 border-gold/25 hidden sm:block"></div>
+        <div class="absolute -top-4 -right-2 w-6 h-6 border-t-2 border-r-2 border-gold/25 hidden sm:block"></div>
+
+        <!-- Section heading with Chinese characters -->
+        <div class="text-center mb-12" data-gsap="section-head">
+          <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">武術</div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-white">
+            {t(lang, 'home.styles.title')}
+          </h2>
+          <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+            <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+            <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+            <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
           </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" data-gsap="styles-grid">
+          {[
+            { name: 'Northern Shaolin', zh: '北少林' },
+            { name: 'Praying Mantis', zh: '螳螂' },
+            { name: 'Eagle Claw', zh: '鷹爪' },
+            { name: 'Tai Chi Chuan', zh: '太極拳' },
+            { name: 'Pa Kua Chang', zh: '八卦掌' },
+            { name: 'Hsing Yi Chuan', zh: '形意拳' },
+            { name: 'Choy Lay Fut', zh: '蔡李佛' },
+            { name: 'Wing Chun', zh: '詠春' },
+          ].map((style) => (
+            <div class="style-card rounded-lg p-5 text-center border border-gold/10 hover:border-gold/40 transition-all" data-gsap="style-card">
+              <div class="font-chinese text-gold/25 text-2xl mb-1" aria-hidden="true">{style.zh}</div>
+              <span class="text-sm font-semibold text-white/90 tracking-wide">{style.name}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-center mt-8">
+          <a
+            href="/en/styles"
+            class="inline-flex items-center gap-2 text-gold font-semibold hover:text-gold-light transition-colors"
+          >
+            {t(lang, 'common.viewAll')}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="absolute -bottom-4 -left-2 w-6 h-6 border-b-2 border-l-2 border-gold/25 hidden sm:block"></div>
+        <div class="absolute -bottom-4 -right-2 w-6 h-6 border-b-2 border-r-2 border-gold/25 hidden sm:block"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery / Action Preview -->
+  <section class="py-16 sm:py-20 bg-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12" data-gsap="section-head">
+        <h2 class="text-3xl sm:text-4xl font-bold text-white">
+          In Action
+        </h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-red-primary/40"></div>
+          <div class="w-2 h-2 rotate-45 border border-red-primary/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-red-primary/40"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" data-gsap="gallery-grid">
+        {[
+          { src: '/images/gallery/group-training/colmatriz.jpg', label: 'Group Training' },
+          { src: '/images/gallery/weapons/kwantao.jpg', label: 'Traditional Weapons' },
+          { src: '/images/gallery/advanced-students/mariovoadora.jpg', label: 'Advanced Techniques' },
+          { src: '/images/gallery/shaolin-monks/mongvoad.jpg', label: 'Shaolin Tradition' },
+        ].map((item) => (
+          <a href="/en/gallery" class="group relative block aspect-[4/3] rounded-lg overflow-hidden" data-gsap="gallery-item">
+            <img src={item.src} alt={item.label} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span class="text-white font-semibold text-sm tracking-wide">{item.label}</span>
+            </div>
+          </a>
         ))}
       </div>
+
       <div class="text-center mt-8">
         <a
-          href="/en/styles"
-          class="inline-flex items-center gap-2 text-red-primary font-semibold hover:text-red-dark transition-colors"
+          href="/en/gallery"
+          class="inline-flex items-center gap-2 text-red-primary font-semibold hover:text-red-light transition-colors"
         >
-          {t(lang, 'common.viewAll')}
+          View Full Gallery
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
@@ -74,7 +148,7 @@ const lang = 'en';
   <!-- Locations Preview -->
   <section class="py-16 sm:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
+      <div class="text-center mb-12" data-gsap="section-head">
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
           {t(lang, 'home.locations.title')}
         </h2>
@@ -82,7 +156,7 @@ const lang = 'en';
         <p class="mt-4 text-gray-medium">{t(lang, 'home.locations.subtitle')}</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-gsap="locations-grid">
         <LocationCard
           lang={lang}
           name="Santana (Headquarters)"
@@ -110,7 +184,7 @@ const lang = 'en';
   </section>
 
   <!-- CTA Section -->
-  <section class="py-16 sm:py-20 bg-red-dark text-white">
+  <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="text-3xl sm:text-4xl font-bold">{t(lang, 'home.cta.title')}</h2>
       <p class="mt-4 text-lg text-white/80">{t(lang, 'home.cta.description')}</p>
@@ -122,4 +196,27 @@ const lang = 'en';
       </a>
     </div>
   </section>
+
+  <HomepageAnimation />
 </BaseLayout>
+
+<style>
+  .homepage-dark-panel {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 15% 20%, rgba(139, 0, 0, 0.12), transparent 50%),
+      radial-gradient(ellipse at 85% 70%, rgba(212, 175, 55, 0.06), transparent 50%),
+      repeating-linear-gradient(45deg, transparent, transparent 29px, rgba(212, 175, 55, 0.02) 29px, rgba(212, 175, 55, 0.02) 30px),
+      repeating-linear-gradient(-45deg, transparent, transparent 29px, rgba(212, 175, 55, 0.02) 29px, rgba(212, 175, 55, 0.02) 30px);
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  }
+  .style-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(4px);
+  }
+  .style-card:hover {
+    background: rgba(212, 175, 55, 0.06);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.08);
+  }
+</style>

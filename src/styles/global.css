@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Ma+Shan+Zheng&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -16,6 +17,8 @@
 
   /* Typography */
   --font-sans: 'Inter', 'Noto Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Cinzel Decorative', 'Georgia', serif;
+  --font-chinese: 'Ma Shan Zheng', cursive;
 
   /* Spacing scale extensions */
   --spacing-18: 4.5rem;

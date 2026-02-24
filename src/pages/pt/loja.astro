@@ -5,10 +5,10 @@ import { t } from '@/i18n/ui';
 const lang = 'pt';
 
 const products = [
-  { name: 'Camiseta', price: 'R$ 89,90', icon: '👕' },
-  { name: 'Calça', price: 'R$ 119,90', icon: '👖' },
-  { name: 'Jaqueta', price: 'R$ 199,90', icon: '🧥' },
-  { name: 'Mochila', price: 'R$ 149,90', icon: '🎒' },
+  { name: 'Camiseta', price: 'R$ 89,90', image: '/images/store/regata-treino.jpg' },
+  { name: 'Calça', price: 'R$ 119,90', image: '/images/store/calca-espec-loja.jpg' },
+  { name: 'Polo', price: 'R$ 99,90', image: '/images/store/camisa-polo2.jpg' },
+  { name: 'Mochila', price: 'R$ 149,90', image: '/images/store/mochila-da-pak.jpg' },
 ];
 ---
 
@@ -21,19 +21,25 @@ const products = [
     { label: t(lang, 'nav.store') },
   ]}
 >
+  <!-- Store Banner -->
+  <div class="not-prose rounded-xl overflow-hidden shadow-lg mb-8">
+    <img src="/images/store/store-banner.jpg" alt="Loja Pak Shao Lin" class="w-full h-48 sm:h-56 object-cover" loading="lazy" />
+  </div>
+
   <p class="text-lg text-gray-medium mb-8">
     Adquira uniformes e acessórios oficiais da Pak Shao Lin. Entre em contato para encomendas e disponibilidade.
   </p>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 not-prose">
     {products.map((product) => (
-      <div class="group p-6 bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all text-center">
-        <div class="text-5xl mb-4">{product.icon}</div>
-        <h3 class="font-bold text-gray-dark text-lg">{product.name}</h3>
-        <p class="text-red-primary font-semibold mt-2">{product.price}</p>
-        <span class="inline-block mt-4 text-sm text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
-          Em breve
-        </span>
+      <div class="group bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all overflow-hidden text-center">
+        <div class="aspect-square bg-gray-light overflow-hidden">
+          <img src={product.image} alt={product.name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+        </div>
+        <div class="p-4">
+          <h3 class="font-bold text-gray-dark text-lg">{product.name}</h3>
+          <p class="text-red-primary font-semibold mt-2">{product.price}</p>
+        </div>
       </div>
     ))}
   </div>
