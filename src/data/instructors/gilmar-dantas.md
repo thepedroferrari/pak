@@ -9,5 +9,21 @@ bio_en: Founder of the Pak Shao Lin Association in 1984, Master Gilmar Dantas is
 location_pt: Santana (Matriz) e Vila Maria
 location_en: Santana (Headquarters) and Vila Maria
 image: /images/instructors/gilmar-dantas.jpg
-order: 1
+order: 2
+tier: founder
+chinese_rank: 師父
+gallery:
+  - /images/instructors/gilmar-dantas-2.jpg
+  - /images/instructors/gilmar-dantas-biography.jpg
+  - /images/instructors/gilmar-chute-frontal.jpg
+  - /images/instructors/gilmar-chute-coice.jpg
+  - /images/instructors/gilmar-facao.jpg
+  - /images/instructors/gilmar-aula-coletiva.jpg
+  - /images/instructors/gilmar-formatura.jpg
+  - /images/instructors/gilmar-chan-academia.jpg
+  - /images/instructors/gilmar-chan-diploma.jpg
+  - /images/instructors/gilmar-chan-homenagem.jpg
+  - /images/instructors/gilmar-40-anos.jpg
+  - /images/instructors/gilmar-homenagem-fpkf-2007.jpg
+  - /images/instructors/gilmar-primeiro-campeonato.jpg
 ---

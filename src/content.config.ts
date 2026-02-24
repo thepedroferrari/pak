@@ -10,12 +10,15 @@ const instructors = defineCollection({
     title_en: z.string(),
     rank_pt: z.string(),
     rank_en: z.string(),
-    bio_pt: z.string(),
-    bio_en: z.string(),
+    bio_pt: z.string().optional(),
+    bio_en: z.string().optional(),
     location_pt: z.string(),
     location_en: z.string(),
     image: z.string().optional(),
     order: z.number().default(0),
+    tier: z.enum(['grandmaster', 'founder', 'master', 'sifu', 'sipak']),
+    chinese_rank: z.string(),
+    gallery: z.array(z.string()).optional(),
   }),
 });
 

@@ -1,45 +1,240 @@
 ---
 import { getCollection } from 'astro:content';
-import ContentLayout from '@/layouts/ContentLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import InstructorsAnimation from '@/components/InstructorsAnimation.astro';
 import { t } from '@/i18n/ui';
 
 const lang = 'pt';
-const instructors = (await getCollection('instructors')).sort((a, b) => a.data.order - b.data.order);
+const allInstructors = (await getCollection('instructors')).sort((a, b) => a.data.order - b.data.order);
+
+// Tier groups
+const spotlights = allInstructors.filter((i) => i.data.tier === 'grandmaster' || i.data.tier === 'founder');
+const masters = allInstructors.filter((i) => i.data.tier === 'master');
+const sifus = allInstructors.filter((i) => i.data.tier === 'sifu');
+const sipaks = allInstructors.filter((i) => i.data.tier === 'sipak');
+
+// Spotlight ideograms (alternating sides)
+const spotlightData = spotlights.map((inst, i) => ({
+  inst,
+  ideogram: inst.data.tier === 'grandmaster' ? '宗' : '師',
+  ideogramRight: i % 2 !== 0,
+}));
+
+// Tier display config
+const tierSections = [
+  { key: 'masters' as const, label: t(lang, 'instructors.tier.masters'), zh: '師傅', items: masters, cols: 'grid-cols-1 sm:grid-cols-2' },
+  { key: 'sifus' as const, label: t(lang, 'instructors.tier.sifus'), zh: '師兄', items: sifus, cols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' },
+  { key: 'sipaks' as const, label: t(lang, 'instructors.tier.sipaks'), zh: '師伯', items: sipaks, cols: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4' },
+];
 ---
 
-<ContentLayout
+<BaseLayout
   title={t(lang, 'instructors.title')}
-  description="Conheça os instrutores da Associação Pak Shao Lin."
+  description="Conheça os mestres e instrutores da Associação Pak Shao Lin."
   lang={lang}
-  breadcrumbs={[
-    { label: t(lang, 'nav.home'), href: '/pt/' },
-    { label: t(lang, 'nav.instructors') },
-  ]}
 >
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 not-prose">
-    {instructors.map((instructor) => (
-      <a
-        href={`/pt/instrutores/${instructor.id}`}
-        class="group bg-white rounded-xl border border-gray-light shadow-sm hover:shadow-md hover:border-gold/30 transition-all overflow-hidden"
-      >
-        <div class="aspect-[4/3] bg-gray-light overflow-hidden">
-          {instructor.data.image ? (
-            <img src={instructor.data.image} alt={instructor.data.name} class="w-full h-full object-cover" loading="lazy" />
-          ) : (
-            <div class="w-full h-full flex items-center justify-center">
-              <span class="text-6xl text-gray-medium/30 font-bold">{instructor.data.name.charAt(0)}</span>
+  <!-- Hero -->
+  <section class="relative bg-black overflow-hidden py-20 sm:py-28">
+    <div class="absolute inset-0 instructors-hero-bg"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="font-chinese text-gold/10 text-7xl sm:text-8xl mb-4 tracking-[0.3em]" aria-hidden="true" data-gsap="hero-zh">師</div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight" data-gsap="hero-title">
+        {t(lang, 'instructors.title')}
+      </h1>
+      <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-6" data-gsap="hero-divider">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/40"></div>
+        <div class="w-2 h-2 rotate-45 border border-gold/50"></div>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/40"></div>
+      </div>
+      <p class="mt-6 text-lg text-gray-light/50 max-w-2xl mx-auto" data-gsap="hero-desc">
+        {t(lang, 'instructors.hero.subtitle')}
+      </p>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+  </section>
+
+  <!-- Featured Spotlights (Grand Master + Founder) -->
+  <section class="instructors-dark-bg">
+    {spotlightData.map(({ inst, ideogram, ideogramRight }) => (
+      <div class="border-b border-white/5" data-gsap="spotlight-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <!-- Ideogram Column -->
+            <div class:list={['flex items-center justify-center', ideogramRight && 'lg:order-last']}>
+              <div class="ideogram-container relative flex items-center justify-center py-8">
+                <div class="ideogram-glow absolute inset-0 rounded-full" data-gsap="spotlight-glow"></div>
+                <span
+                  class="font-chinese text-8xl sm:text-[10rem] lg:text-[14rem] text-gold leading-none select-none"
+                  data-gsap="spotlight-ideogram"
+                  aria-hidden="true"
+                >{ideogram}</span>
+              </div>
             </div>
-          )}
+
+            <!-- Content Column -->
+            <div class:list={[ideogramRight && 'lg:order-first']}>
+              <div data-gsap="spotlight-content">
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="font-chinese text-gold/30 text-2xl" aria-hidden="true">{inst.data.chinese_rank}</span>
+                  <div class="h-px flex-1 bg-gold/15"></div>
+                </div>
+
+                <!-- Circular photo with ember glow border -->
+                <div class="mb-6 flex items-center gap-5">
+                  <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-gold/30 shadow-lg shrink-0">
+                    {inst.data.image && (
+                      <img src={inst.data.image} alt={inst.data.name} class="w-full h-full object-cover" loading="lazy" />
+                    )}
+                  </div>
+                  <div>
+                    <span class:list={[
+                      'inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2',
+                      inst.data.tier === 'grandmaster' ? 'bg-gold/20 text-gold' : 'bg-red-primary/20 text-red-light',
+                    ]}>
+                      {inst.data.chinese_rank} · {inst.data.title_pt}
+                    </span>
+                    <h3 class="text-3xl sm:text-4xl font-black text-white">{inst.data.name}</h3>
+                    <p class="text-sm text-gold/60 font-medium uppercase tracking-wider mt-1">{inst.data.rank_pt}</p>
+                  </div>
+                </div>
+
+                {inst.data.bio_pt && (
+                  <p class="text-gray-light/60 leading-relaxed mb-6">{inst.data.bio_pt}</p>
+                )}
+
+                <div class="flex items-center gap-4 text-sm text-gray-light/50">
+                  <span class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-red-primary rounded-full"></span>
+                    {inst.data.location_pt}
+                  </span>
+                </div>
+
+                <a
+                  href={`/pt/instrutores/${inst.id}`}
+                  class="mt-6 inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors font-medium"
+                >
+                  {t(lang, 'instructors.viewProfile')}
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="p-5">
-          <h3 class="text-lg font-bold text-gray-dark group-hover:text-red-primary transition-colors">
-            {instructor.data.name}
-          </h3>
-          <p class="text-sm text-gold-dark font-medium mt-1">{instructor.data.title_pt}</p>
-          <p class="text-sm text-gray-medium mt-1">{instructor.data.rank_pt}</p>
-          <p class="text-sm text-gray-medium mt-2">{instructor.data.location_pt}</p>
-        </div>
-      </a>
+      </div>
     ))}
-  </div>
-</ContentLayout>
+  </section>
+
+  <!-- Tier Grid Sections -->
+  {tierSections.map((tier, tierIdx) => (
+    <section class:list={[tierIdx % 2 === 0 ? 'instructors-dark-bg' : 'instructors-dark-bg-alt']}>
+      <!-- Section Header -->
+      <div class="py-12 sm:py-16 border-b border-gold/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div class="font-chinese text-gold/12 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true" data-gsap="section-zh">{tier.zh}</div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-gold">{tier.label}</h2>
+        </div>
+      </div>
+
+      <!-- Card Grid -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div class:list={['grid gap-6', tier.cols]} data-gsap="instructor-grid">
+          {tier.items.map((inst) => (
+            <a
+              href={`/pt/instrutores/${inst.id}`}
+              class="group relative bg-white/[0.03] border border-white/8 rounded-xl p-6 transition-all hover:border-gold/25 hover:bg-white/[0.05] overflow-hidden"
+              data-gsap="instructor-card"
+              data-tier={inst.data.tier}
+            >
+              <!-- Corner ornaments (visible on hover) -->
+              <div class="absolute top-2 left-2 w-4 h-4 border-t border-l border-gold/0 group-hover:border-gold/30 transition-all"></div>
+              <div class="absolute top-2 right-2 w-4 h-4 border-t border-r border-gold/0 group-hover:border-gold/30 transition-all"></div>
+              <div class="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-gold/0 group-hover:border-gold/30 transition-all"></div>
+              <div class="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-gold/0 group-hover:border-gold/30 transition-all"></div>
+
+              <!-- Photo -->
+              <div class="flex justify-center mb-4">
+                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-gold/30 transition-all">
+                  {inst.data.image ? (
+                    <img src={inst.data.image} alt={inst.data.name} class="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center bg-white/5">
+                      <span class="text-3xl text-gray-light/20 font-bold">{inst.data.name.charAt(0)}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <!-- Rank badge with Chinese char -->
+              <div class="text-center mb-2">
+                <span class="inline-block px-2 py-0.5 bg-white/5 border border-white/10 rounded text-xs text-gray-light/50 font-medium">
+                  <span class="font-chinese mr-1">{inst.data.chinese_rank}</span>
+                  {inst.data.title_pt}
+                </span>
+              </div>
+
+              <!-- Name -->
+              <h3 class="text-center text-lg font-bold text-white group-hover:text-gold transition-colors" data-gsap="card-name">
+                {inst.data.name}
+              </h3>
+
+              <!-- Location -->
+              <p class="text-center text-sm text-gray-light/40 mt-1">
+                {inst.data.location_pt}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- CTA -->
+  <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold">{t(lang, 'instructors.cta.title')}</h2>
+      <p class="mt-4 text-lg text-white/80">
+        {t(lang, 'instructors.cta.subtitle')}
+      </p>
+      <a
+        href="/pt/contato"
+        class="mt-8 inline-block px-8 py-3.5 bg-gold text-black font-bold rounded-lg hover:bg-gold-light transition-colors text-lg shadow-lg"
+      >
+        {t(lang, 'instructors.cta.button')}
+      </a>
+    </div>
+  </section>
+
+  <InstructorsAnimation />
+</BaseLayout>
+
+<style>
+  .instructors-hero-bg {
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(139, 0, 0, 0.15), transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.05), transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.05), transparent 50%);
+  }
+  .instructors-dark-bg {
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(212, 175, 55, 0.04), transparent 50%),
+      repeating-linear-gradient(45deg, transparent, transparent 39px, rgba(212, 175, 55, 0.015) 39px, rgba(212, 175, 55, 0.015) 40px),
+      repeating-linear-gradient(-45deg, transparent, transparent 39px, rgba(212, 175, 55, 0.015) 39px, rgba(212, 175, 55, 0.015) 40px);
+  }
+  .instructors-dark-bg-alt {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 90% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 175, 55, 0.04), transparent 50%),
+      repeating-linear-gradient(45deg, transparent, transparent 39px, rgba(212, 175, 55, 0.015) 39px, rgba(212, 175, 55, 0.015) 40px),
+      repeating-linear-gradient(-45deg, transparent, transparent 39px, rgba(212, 175, 55, 0.015) 39px, rgba(212, 175, 55, 0.015) 40px);
+  }
+  .ideogram-container {
+    min-height: 200px;
+  }
+  .ideogram-glow {
+    background: radial-gradient(circle, rgba(196, 30, 58, 0.15) 0%, rgba(139, 0, 0, 0.08) 40%, transparent 70%);
+    filter: blur(40px);
+  }
+</style>
