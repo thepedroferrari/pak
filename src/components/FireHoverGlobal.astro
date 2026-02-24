@@ -1,0 +1,296 @@
+---
+// Script-only component — renders no HTML.
+// Provides fire hover + scroll-entrance fire on ALL .font-chinese elements site-wide.
+// Include once in BaseLayout.astro.
+---
+
+<script>
+  import { gsap } from 'gsap';
+
+  // ─── Guards ───────────────────────────────────────────────────────
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    // Track which elements are currently animating fire
+    const playing = new WeakMap<Element, boolean>();
+    // Track which elements have already played scroll-entrance fire
+    const entrancePlayed = new WeakSet<Element>();
+
+    // ─── Fire color palette (shadows) ──────────────────────────────
+    // Shadows carry the fire; orange = 'rgba(255, 140, 40,', amber = 'rgba(255, 180, 60,'
+    const S = {
+      orange:    'rgba(255, 140, 40,',   // core fire orange
+      amber:     'rgba(255, 180, 60,',   // warm amber
+      gold:      'rgba(212, 175, 55,',   // gold edges
+      redPrimary:'rgba(196, 30, 58,',    // brief red accent
+      redDark:   'rgba(139, 0, 0,',      // deep glow
+      warmWhite: 'rgba(255, 220, 150,',  // hot core
+    };
+
+    // Text color: gentle warm shift (stays in gold family, never red)
+    const COLOR_SPARK     = 'rgba(230, 190, 70, 0.25)';
+    const COLOR_PEAK      = 'rgba(240, 185, 55, 0.3)';
+    const COLOR_HEAT      = 'rgba(235, 170, 50, 0.25)';
+    const COLOR_FLARE     = 'rgba(225, 180, 55, 0.2)';
+    // Subtle tier
+    const COLOR_SUB_SPARK = 'rgba(225, 185, 65, 0.2)';
+    const COLOR_SUB_PEAK  = 'rgba(220, 180, 55, 0.18)';
+
+    // ─── Shadow builders (these carry the fire visual) ────────────
+    function spark() {
+      return `0 0 20px ${S.warmWhite}0.6), 0 0 45px ${S.amber}0.5), 0 0 80px ${S.orange}0.3), 0 0 10px ${S.gold}0.35)`;
+    }
+    function peakBurst() {
+      return `0 0 35px ${S.orange}0.65), 0 0 70px ${S.amber}0.5), 0 0 120px ${S.orange}0.3), 0 0 20px ${S.warmWhite}0.4), 0 0 160px ${S.gold}0.18)`;
+    }
+    function redFlash() {
+      return `0 0 40px ${S.orange}0.65), 0 0 80px ${S.redPrimary}0.25), 0 0 20px ${S.amber}0.4), 0 0 120px ${S.orange}0.2)`;
+    }
+    function orangeFlare() {
+      return `0 0 30px ${S.orange}0.55), 0 0 60px ${S.amber}0.4), 0 0 100px ${S.gold}0.25), 0 0 15px ${S.warmWhite}0.3)`;
+    }
+    function fadingEmber() {
+      return `0 0 20px ${S.amber}0.35), 0 0 50px ${S.orange}0.2), 0 0 80px ${S.gold}0.1)`;
+    }
+
+    // Subtle tier
+    function subtleSpark() {
+      return `0 0 12px ${S.warmWhite}0.35), 0 0 25px ${S.amber}0.3), 0 0 50px ${S.orange}0.15)`;
+    }
+    function subtlePeak() {
+      return `0 0 20px ${S.orange}0.4), 0 0 45px ${S.amber}0.3), 0 0 10px ${S.gold}0.3)`;
+    }
+
+    // ─── Fire animation — full tier (font-size >= 40px) ───────────
+    //  Timeline: spark → orange peak → brief red flash → orange flare → ember → rest
+    function fireFullTier(el: Element, restingShadow: string, restingColor: string) {
+      const tl = gsap.timeline({
+        onComplete() {
+          playing.delete(el);
+          const breathe = (el as any).__breatheTween;
+          if (breathe) breathe.resume();
+        },
+      });
+
+      // Phase 1: Ignition — warm amber spark
+      tl.to(el, {
+        textShadow: spark(),
+        color: COLOR_SPARK,
+        scale: 1.015,
+        duration: 0.12,
+        ease: 'power3.in',
+      });
+
+      // Phase 2: Orange peak — soft bloom
+      tl.to(el, {
+        textShadow: peakBurst(),
+        color: COLOR_PEAK,
+        scale: 1.025,
+        duration: 0.28,
+        ease: 'power2.out',
+      });
+
+      // Phase 3: Heat peak — brief warm shadow flash
+      tl.to(el, {
+        textShadow: redFlash(),
+        color: COLOR_HEAT,
+        scale: 1.02,
+        duration: 0.07,
+        ease: 'power2.in',
+      });
+
+      // Phase 4: Orange flare — warm falloff
+      tl.to(el, {
+        textShadow: orangeFlare(),
+        color: COLOR_FLARE,
+        scale: 1.02,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+
+      // Phase 5: Fading ember — glow lingers
+      tl.to(el, {
+        textShadow: fadingEmber(),
+        color: restingColor,
+        scale: 1.005,
+        duration: 0.3,
+        ease: 'power1.out',
+      });
+
+      // Phase 6: Cool-down (1.1 → 1.6s) — return to resting
+      tl.to(el, {
+        textShadow: restingShadow,
+        scale: 1,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+
+      return tl;
+    }
+
+    // ─── Fire animation — subtle tier (18px–40px) ─────────────────
+    function fireSubtleTier(el: Element, restingShadow: string, restingColor: string) {
+      const tl = gsap.timeline({
+        onComplete() {
+          playing.delete(el);
+          const breathe = (el as any).__breatheTween;
+          if (breathe) breathe.resume();
+        },
+      });
+
+      // Phase 1: Spark (0 → 0.12s) — warm tint
+      tl.to(el, {
+        textShadow: subtleSpark(),
+        color: COLOR_SUB_SPARK,
+        duration: 0.12,
+        ease: 'power3.in',
+      });
+
+      // Phase 2: Orange glow (0.12 → 0.45s) — shadow-driven
+      tl.to(el, {
+        textShadow: subtlePeak(),
+        color: COLOR_SUB_PEAK,
+        duration: 0.33,
+        ease: 'power2.out',
+      });
+
+      // Phase 3: Cool-down (0.45 → 0.95s) — gentle fade
+      tl.to(el, {
+        textShadow: restingShadow,
+        color: restingColor,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+
+      return tl;
+    }
+
+    // ─── Helpers ─────────────────────────────────────────────────
+    function getRestingShadow(el: Element): string {
+      const stored = (el as any).__restingShadow;
+      if (stored) return stored;
+      const computed = getComputedStyle(el as HTMLElement).textShadow;
+      return computed && computed !== 'none' ? computed : '0 0 0px transparent';
+    }
+
+    function getRestingColor(el: HTMLElement): string {
+      return getComputedStyle(el).color;
+    }
+
+    function shouldSkip(el: HTMLElement): boolean {
+      const style = getComputedStyle(el);
+      if (style.pointerEvents === 'none') return true;
+      if (parseFloat(style.fontSize) < 18) return true;
+      return false;
+    }
+
+    function playFire(el: HTMLElement) {
+      if (playing.get(el)) return;
+      playing.set(el, true);
+
+      // Pause breathing tween if one exists
+      const breathe = (el as any).__breatheTween;
+      if (breathe) breathe.pause();
+
+      const restingShadow = getRestingShadow(el);
+      const restingColor = getRestingColor(el);
+      const fontSize = parseFloat(getComputedStyle(el).fontSize);
+
+      if (fontSize >= 40) {
+        fireFullTier(el, restingShadow, restingColor);
+      } else {
+        fireSubtleTier(el, restingShadow, restingColor);
+      }
+    }
+
+    // ─── Hover: event delegation (pointer devices only) ──────────
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+    if (hasFinePointer) {
+      // Set cursor: pointer on eligible elements for visual feedback
+      document.querySelectorAll<HTMLElement>('.font-chinese').forEach((el) => {
+        if (!shouldSkip(el)) {
+          el.style.cursor = 'pointer';
+        }
+      });
+
+      document.body.addEventListener('mouseover', (e) => {
+        const target = (e.target as HTMLElement).closest?.('.font-chinese') as HTMLElement | null;
+        if (!target || shouldSkip(target)) return;
+        playFire(target);
+      });
+    }
+
+    // ─── Cascading fire queue ──────────────────────────────────────
+    // Fires cascade through elements one by one, like a fuse burning.
+    const STAGGER = 300; // ms between each element igniting
+    let nextFireTime = 0;
+
+    function scheduleFire(el: HTMLElement, baseDelay: number) {
+      if (entrancePlayed.has(el)) return;
+      entrancePlayed.add(el);
+
+      const now = Date.now();
+      // Ensure this fire doesn't start before the previous one has had its stagger gap
+      const earliest = Math.max(now + baseDelay, nextFireTime);
+      const delay = earliest - now;
+      nextFireTime = earliest + STAGGER;
+
+      setTimeout(() => {
+        // Only play if element is visible (entrance animation has revealed it)
+        const style = getComputedStyle(el);
+        if (parseFloat(style.opacity) < 0.1) return;
+        playFire(el);
+      }, delay);
+    }
+
+    // ─── Initial wave: cascade through already-visible elements ──
+    const allEligible = Array.from(
+      document.querySelectorAll<HTMLElement>('.font-chinese'),
+    ).filter((el) => !shouldSkip(el));
+
+    // Split into visible-on-load vs off-screen
+    const initiallyVisible: HTMLElement[] = [];
+    const offScreen: HTMLElement[] = [];
+
+    allEligible.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        initiallyVisible.push(el);
+      } else {
+        offScreen.push(el);
+      }
+    });
+
+    // Sort visible elements top-to-bottom so fire cascades downward
+    initiallyVisible.sort(
+      (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+    );
+
+    // Schedule initial wave (1.2s base delay for page entrance animations)
+    initiallyVisible.forEach((el) => scheduleFire(el, 1200));
+
+    // ─── Scroll entrance: off-screen elements join the queue ─────
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Collect newly visible elements and sort top-to-bottom
+        const newlyVisible = entries
+          .filter((e) => e.isIntersecting && !entrancePlayed.has(e.target))
+          .map((e) => e.target as HTMLElement)
+          .sort(
+            (a, b) =>
+              a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+          );
+
+        newlyVisible.forEach((el) => {
+          observer.unobserve(el);
+          // 600ms base delay — shorter than load since scroll animations are faster
+          scheduleFire(el, 600);
+        });
+      },
+      { threshold: 0.1 },
+    );
+
+    offScreen.forEach((el) => observer.observe(el));
+  }
+</script>
