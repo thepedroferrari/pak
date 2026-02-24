@@ -15,9 +15,6 @@
   const EMBER_NONE = '0 0 0px transparent';
   const EMBER_INTENSE = '0 0 50px rgba(196, 30, 58, 1), 0 0 100px rgba(139, 0, 0, 0.7), 0 0 25px rgba(212, 175, 55, 0.8), 0 0 150px rgba(196, 30, 58, 0.4), 0 0 200px rgba(139, 0, 0, 0.15)';
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!prefersReducedMotion) {
     // ─── Hero entrance (staggered + ember glow) ─────────────────────
     gsap.set('[data-gsap="hero-zh"]', { opacity: 0, scale: 0.8, textShadow: EMBER_NONE });
     gsap.set('[data-gsap="hero-title"]', { opacity: 0, y: 30, textShadow: EMBER_NONE });
@@ -262,13 +259,4 @@
         });
       }
     }
-  } else {
-    // ─── Reduced motion: show ideograms statically ───────────────
-    document.querySelectorAll('[data-gsap="spotlight-ideogram"]').forEach((el) => {
-      (el as HTMLElement).style.clipPath = 'inset(0% 0 0 0)';
-    });
-    document.querySelectorAll('[data-gsap="section-zh"]').forEach((el) => {
-      (el as HTMLElement).style.clipPath = 'inset(0% 0 0 0)';
-    });
-  }
 </script>

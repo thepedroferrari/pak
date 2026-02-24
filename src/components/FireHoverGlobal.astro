@@ -8,9 +8,6 @@
   import { gsap } from 'gsap';
 
   // ─── Guards ───────────────────────────────────────────────────────
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!prefersReducedMotion) {
     // Track which elements are currently animating fire
     const playing = new WeakMap<Element, boolean>();
     // Track which elements have already played scroll-entrance fire
@@ -292,5 +289,4 @@
     );
 
     offScreen.forEach((el) => observer.observe(el));
-  }
 </script>
