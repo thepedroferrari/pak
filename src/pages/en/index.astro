@@ -6,24 +6,36 @@ import HomepageAnimation from '@/components/HomepageAnimation.astro';
 import { t } from '@/i18n/ui';
 
 const lang = 'en';
+
+const featuredStyles = [
+  { name: 'Northern Shaolin', zh: '北少林', descKey: 'home.styles.featured.shaolin' as const },
+  { name: 'Praying Mantis', zh: '螳螂', descKey: 'home.styles.featured.mantis' as const },
+  { name: 'Tai Chi Chuan', zh: '太極', descKey: 'home.styles.featured.taichi' as const },
+  { name: 'Wing Chun', zh: '詠春', descKey: 'home.styles.featured.wingchun' as const },
+];
 ---
 
 <BaseLayout lang={lang}>
   <Hero lang={lang} />
 
-  <!-- About Preview -->
-  <section class="py-16 sm:py-20 bg-white">
+  <!-- Section 2: About Preview — DARK -->
+  <section class="py-16 sm:py-20 homepage-dark-bg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div class="rounded-xl overflow-hidden shadow-lg" data-gsap="about-img">
           <img src="/images/instructors/gilmar-chan-homenagem.jpg" alt="Master Gilmar Dantas and Grand Master Chan Kowk Wai" class="w-full h-auto" loading="lazy" />
         </div>
         <div class="text-center md:text-left" data-gsap="about-text">
-          <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
+          <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">歷 史</div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-white">
             {t(lang, 'home.about.title')}
           </h2>
-          <div class="mt-4 h-1 w-16 bg-gradient-to-r from-red-primary to-gold rounded-full md:mx-0 mx-auto"></div>
-          <p class="mt-6 text-lg text-gray-medium leading-relaxed">
+          <div class="flex items-center gap-3 max-w-xs mt-4 md:mx-0 mx-auto">
+            <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+            <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+            <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+          </div>
+          <p class="mt-6 text-lg text-gray-light/60 leading-relaxed">
             The Pak Shao Lin Association was founded on July 1, 1984 by Master Gilmar Dantas,
             disciple of Grand Master Chan Kowk Wai. With over 40 years of tradition, our school
             preserves and teaches the traditional styles of Chinese Kung Fu, training champion
@@ -31,7 +43,7 @@ const lang = 'en';
           </p>
           <a
             href="/en/about"
-            class="mt-8 inline-flex items-center gap-2 text-red-primary font-semibold hover:text-red-dark transition-colors"
+            class="mt-8 inline-flex items-center gap-2 text-gold font-semibold hover:text-gold-light transition-colors"
           >
             {t(lang, 'common.readMore')}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,16 +55,15 @@ const lang = 'en';
     </div>
   </section>
 
-  <!-- Styles Preview -->
+  <!-- Section 3: Styles Preview — FIRE IDEOGRAM REVEALS -->
   <section class="py-16 sm:py-20 homepage-dark-panel">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Corner ornaments -->
       <div class="relative">
         <div class="absolute -top-4 -left-2 w-6 h-6 border-t-2 border-l-2 border-gold/25 hidden sm:block"></div>
         <div class="absolute -top-4 -right-2 w-6 h-6 border-t-2 border-r-2 border-gold/25 hidden sm:block"></div>
 
-        <!-- Section heading with Chinese characters -->
-        <div class="text-center mb-12" data-gsap="section-head">
+        <!-- Section heading -->
+        <div class="text-center mb-12 sm:mb-16" data-gsap="section-head">
           <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">武術</div>
           <h2 class="text-3xl sm:text-4xl font-bold text-white">
             {t(lang, 'home.styles.title')}
@@ -64,25 +75,40 @@ const lang = 'en';
           </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" data-gsap="styles-grid">
-          {[
-            { name: 'Northern Shaolin', zh: '北少林' },
-            { name: 'Praying Mantis', zh: '螳螂' },
-            { name: 'Eagle Claw', zh: '鷹爪' },
-            { name: 'Tai Chi Chuan', zh: '太極拳' },
-            { name: 'Pa Kua Chang', zh: '八卦掌' },
-            { name: 'Hsing Yi Chuan', zh: '形意拳' },
-            { name: 'Choy Lay Fut', zh: '蔡李佛' },
-            { name: 'Wing Chun', zh: '詠春' },
-          ].map((style) => (
-            <div class="style-card rounded-lg p-5 text-center border border-gold/10 hover:border-gold/40 transition-all" data-gsap="style-card">
-              <div class="font-chinese text-gold/25 text-2xl mb-1" aria-hidden="true">{style.zh}</div>
-              <span class="text-sm font-semibold text-white/90 tracking-wide">{style.name}</span>
+        <!-- Featured Styles with Burning Ideograms -->
+        <div class="space-y-16 sm:space-y-24">
+          {featuredStyles.map((style, index) => (
+            <div class="style-section" data-style-section={style.zh}>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <!-- Ideogram Column -->
+                <div class:list={['flex items-center justify-center', index % 2 !== 0 && 'lg:order-last']}>
+                  <div class="ideogram-container relative flex items-center justify-center py-8">
+                    <div class="ideogram-glow absolute inset-0 rounded-full" data-gsap="ideogram-glow"></div>
+                    <span
+                      class="ideogram-char font-chinese text-8xl sm:text-[10rem] lg:text-[12rem] text-gold leading-none select-none"
+                      data-gsap="ideogram"
+                      aria-hidden="true"
+                    >{style.zh}</span>
+                  </div>
+                </div>
+
+                <!-- Content Column -->
+                <div class:list={[index % 2 !== 0 && 'lg:order-first']}>
+                  <div data-gsap="style-content">
+                    <div class="flex items-center gap-3 mb-2">
+                      <span class="font-chinese text-gold/30 text-2xl" aria-hidden="true">{style.zh}</span>
+                      <div class="h-px flex-1 bg-gold/15"></div>
+                    </div>
+                    <h3 class="text-3xl sm:text-4xl font-black text-white mb-3">{style.name}</h3>
+                    <p class="text-gray-light/60 leading-relaxed text-lg">{t(lang, style.descKey)}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
 
-        <div class="text-center mt-8">
+        <div class="text-center mt-12">
           <a
             href="/en/styles"
             class="inline-flex items-center gap-2 text-gold font-semibold hover:text-gold-light transition-colors"
@@ -100,12 +126,13 @@ const lang = 'en';
     </div>
   </section>
 
-  <!-- Gallery / Action Preview -->
+  <!-- Section 4: Gallery "In Action" — ENHANCED -->
   <section class="py-16 sm:py-20 bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">實 戰</div>
         <h2 class="text-3xl sm:text-4xl font-bold text-white">
-          In Action
+          {t(lang, 'home.gallery.title')}
         </h2>
         <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
           <div class="h-px flex-1 bg-gradient-to-r from-transparent to-red-primary/40"></div>
@@ -136,7 +163,7 @@ const lang = 'en';
           href="/en/gallery"
           class="inline-flex items-center gap-2 text-red-primary font-semibold hover:text-red-light transition-colors"
         >
-          View Full Gallery
+          {t(lang, 'home.gallery.viewAll')}
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
@@ -145,45 +172,138 @@ const lang = 'en';
     </div>
   </section>
 
-  <!-- Locations Preview -->
-  <section class="py-16 sm:py-20 bg-white">
+  <!-- Section 5: Locations — DARK with Updated LocationCard -->
+  <section class="py-16 sm:py-24 homepage-dark-bg-alt">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12" data-gsap="section-head">
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-dark">
-          {t(lang, 'home.locations.title')}
-        </h2>
-        <div class="mt-4 h-1 w-16 bg-gradient-to-r from-red-primary to-gold rounded-full mx-auto"></div>
-        <p class="mt-4 text-gray-medium">{t(lang, 'home.locations.subtitle')}</p>
+      <div class="text-center mb-12 sm:mb-16" data-gsap="section-head">
+        <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">道 場</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'home.locations.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+        <p class="mt-4 text-gray-light/50">{t(lang, 'home.locations.subtitle')}</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-gsap="locations-grid">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         <LocationCard
           lang={lang}
-          name="Santana (Headquarters)"
-          address="Rua Piracema, 156 - Santana, São Paulo - SP"
-          schedule={['Mon/Wed: 8–10 PM', 'Sat: 11 AM–1 PM']}
+          name="Santana"
+          zhChar="聖"
+          address="Rua Piracema, 156 - Santana, São Paulo - SP (alt. 1450 da Av. Cons. Moreira de Barros)"
           instructor="Master Gilmar Dantas"
+          schedule={[
+            { days: 'Sat', time: '11:00 AM–1:00 PM' },
+            { days: 'Mon / Wed', time: '8:00–10:00 PM' },
+          ]}
+          partnership="Movement Gym"
+          hasParking={true}
           isHQ={true}
+          transit={{
+            metro: {
+              line: 'Line 1-Blue',
+              lineColor: 'blue',
+              stations: ['Parada Inglesa', 'Santana'],
+            },
+            bus: ['1743-10', '1744-10', '1760-10', '178L-10', '178T-10', '2030-10'],
+          }}
+          mapQuery="Rua+Piracema+156+Santana+São+Paulo+SP"
         />
+
         <LocationCard
           lang={lang}
-          name="Vila Maria"
+          name="Vila Maria / Jardim Japão"
+          zhChar="園"
           address="Av. das Cerejeiras, 632 - Jardim Japão, São Paulo - SP"
-          schedule={['Wed: 8–10 PM', 'Fri: 7:30–9:30 PM']}
-          instructor="Master Gilmar Dantas / Si-Fu Flávio"
+          instructor="Master Gilmar Dantas / Si-Fu Flávio Dantas"
+          schedule={[
+            { days: 'Wed', time: '8:00–10:00 PM' },
+            { days: 'Fri', time: '7:30–9:30 PM' },
+          ]}
+          partnership="Draleon Gym"
+          hasParking={true}
+          transit={{
+            metro: {
+              line: 'Line 1-Blue',
+              lineColor: 'blue',
+              stations: ['Parada Inglesa (~10 min walk)'],
+            },
+            bus: ['119C-10', '172R-10', '175', '2175-10', '2182-10'],
+          }}
+          mapQuery="Av+das+Cerejeiras+632+Jardim+Japão+São+Paulo+SP"
         />
+
         <LocationCard
           lang={lang}
           name="São José dos Campos"
+          zhChar="軍"
           address="DCTA, Praça Marechal Eduardo Gomes, 50 - São José dos Campos - SP"
-          schedule={['Tue/Thu: 6–9 PM']}
           instructor="Si-Fu Robson Nobre"
+          schedule={[
+            { days: 'Tue / Thu', time: '6:00–9:00 PM' },
+          ]}
+          partnership="DCTA"
+          hasParking={false}
+          transit={{
+            note: 'Access via DCTA',
+          }}
+          mapQuery="DCTA+Praça+Marechal+Eduardo+Gomes+50+São+José+dos+Campos+SP"
         />
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
+  <!-- Section 6: Wuxing Five Elements — Decorative -->
+  <section class="homepage-dark-bg py-12 sm:py-16" aria-hidden="true" data-gsap="wuxing-section">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-center gap-0">
+        <div class="absolute w-full max-w-md h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" style="pointer-events: none;"></div>
+
+        <!-- Wood 木 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-green-500/30 flex items-center justify-center bg-green-500/5">
+            <span class="font-chinese text-green-400 text-xl sm:text-2xl">木</span>
+          </div>
+          <span class="text-[10px] text-green-400/50 uppercase tracking-wider">Wood</span>
+        </div>
+
+        <!-- Fire 火 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-red-primary/30 flex items-center justify-center bg-red-primary/5">
+            <span class="font-chinese text-red-primary text-xl sm:text-2xl">火</span>
+          </div>
+          <span class="text-[10px] text-red-primary/50 uppercase tracking-wider">Fire</span>
+        </div>
+
+        <!-- Earth 土 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5">
+            <span class="font-chinese text-gold text-xl sm:text-2xl">土</span>
+          </div>
+          <span class="text-[10px] text-gold/50 uppercase tracking-wider">Earth</span>
+        </div>
+
+        <!-- Metal 金 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
+            <span class="font-chinese text-white/80 text-xl sm:text-2xl">金</span>
+          </div>
+          <span class="text-[10px] text-white/40 uppercase tracking-wider">Metal</span>
+        </div>
+
+        <!-- Water 水 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-blue-400/30 flex items-center justify-center bg-blue-400/5">
+            <span class="font-chinese text-blue-400 text-xl sm:text-2xl">水</span>
+          </div>
+          <span class="text-[10px] text-blue-400/50 uppercase tracking-wider">Water</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: CTA -->
   <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="text-3xl sm:text-4xl font-bold">{t(lang, 'home.cta.title')}</h2>
@@ -201,6 +321,18 @@ const lang = 'en';
 </BaseLayout>
 
 <style>
+  .homepage-dark-bg {
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
+  .homepage-dark-bg-alt {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 90% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
   .homepage-dark-panel {
     background-color: #0c0c0c;
     background-image:
@@ -211,12 +343,11 @@ const lang = 'en';
     border-top: 1px solid rgba(212, 175, 55, 0.15);
     border-bottom: 1px solid rgba(212, 175, 55, 0.15);
   }
-  .style-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(4px);
+  .ideogram-container {
+    min-height: 200px;
   }
-  .style-card:hover {
-    background: rgba(212, 175, 55, 0.06);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.08);
+  .ideogram-glow {
+    background: radial-gradient(circle, rgba(196, 30, 58, 0.15) 0%, rgba(139, 0, 0, 0.08) 40%, transparent 70%);
+    filter: blur(40px);
   }
 </style>

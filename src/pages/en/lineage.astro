@@ -1,205 +1,276 @@
 ---
-import ContentLayout from '@/layouts/ContentLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import LineageAnimation from '@/components/LineageAnimation.astro';
 import { t } from '@/i18n/ui';
 
 const lang = 'en';
 ---
 
-<ContentLayout
+<BaseLayout
   title="Lineage"
-  description="Pak Shao Lin lineage family tree."
+  description="Pak Shao Lin lineage family tree — from the Northern Shaolin Temple to the present day."
   lang={lang}
-  breadcrumbs={[
-    { label: t(lang, 'nav.home'), href: '/en/' },
-    { label: t(lang, 'nav.lineage') },
-  ]}
 >
-  <section class="space-y-8">
-    <div data-gsap="text">
-      <p>
+  <!-- Section 1: Hero — 傳 承 (Lineage / Inheritance) -->
+  <section class="relative bg-black overflow-hidden py-20 sm:py-28">
+    <div class="absolute inset-0 lineage-hero-bg"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="font-chinese text-gold/10 text-7xl sm:text-8xl mb-4 tracking-[0.3em]" aria-hidden="true" data-gsap="hero-zh">傳 承</div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight" data-gsap="hero-title">
+        Lineage
+      </h1>
+      <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-6" data-gsap="hero-divider">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/40"></div>
+        <div class="w-2 h-2 rotate-45 border border-gold/50"></div>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/40"></div>
+      </div>
+      <p class="mt-6 text-lg text-gray-light/50 max-w-2xl mx-auto" data-gsap="hero-desc">
         The Pak Shao Lin lineage traces a direct line from the Northern Shaolin Temple of China
         to present-day Brazil. Our school preserves the authentic teachings passed down through
         generations of masters, ensuring the tradition remains alive and unbroken.
       </p>
     </div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+  </section>
 
-    <div class="not-prose lineage-tree relative overflow-hidden rounded-lg p-6 sm:p-10">
-      <!-- Corner ornaments -->
-      <div class="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-gold/25"></div>
-      <div class="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-gold/25"></div>
-      <div class="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-gold/25"></div>
-      <div class="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-gold/25"></div>
+  <!-- Section 2: Lineage Tree -->
+  <section class="lineage-dark-bg py-16 sm:py-24">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <!-- Title with Chinese characters -->
-      <div class="text-center mb-10" data-gsap="label">
-        <div class="text-gold/20 text-4xl mb-2 tracking-[0.3em]" aria-hidden="true">族 譜</div>
-        <h2 class="text-2xl sm:text-3xl font-bold text-gold">Family Tree</h2>
-        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-3">
+      <div class="lineage-tree relative overflow-hidden rounded-lg p-6 sm:p-10">
+        <!-- Corner ornaments -->
+        <div class="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-gold/25"></div>
+        <div class="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-gold/25"></div>
+        <div class="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-gold/25"></div>
+        <div class="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-gold/25"></div>
+
+        <!-- Title with Chinese characters -->
+        <div class="text-center mb-10" data-gsap="label">
+          <div class="font-chinese text-gold/20 text-4xl mb-2 tracking-[0.3em]" aria-hidden="true" data-gsap="section-zh">族 譜</div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-gold">Family Tree</h2>
+          <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-3">
+            <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+            <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+            <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+          </div>
+        </div>
+
+        <!-- Burning 傳 ideogram -->
+        <div class="relative flex items-center justify-center py-6 mb-4" data-gsap="lineage-ideogram-container">
+          <div data-gsap="lineage-ideogram-glow"
+            class="absolute inset-0 rounded-full pointer-events-none"
+            style="background: radial-gradient(circle, rgba(196,30,58,0.15) 0%, rgba(139,0,0,0.08) 40%, transparent 70%); filter: blur(40px);"
+          ></div>
+          <span data-gsap="lineage-ideogram"
+            class="relative font-chinese text-[10rem] sm:text-[14rem] text-gold/80 leading-none select-none"
+            aria-hidden="true"
+          >傳</span>
+        </div>
+
+        <div class="flex flex-col items-center">
+
+          <!-- TIER 1: Grand Master -->
+          <div class="text-center py-4 cursor-pointer" data-gsap="tier" data-tier="grandmaster">
+            <div class="relative inline-block mb-3" data-gsap="photo" data-photo="grandmaster">
+              <div class="absolute -inset-3 rounded-full border border-gold/20"></div>
+              <div class="absolute inset-0 rounded-full bg-gold/10 blur-xl"></div>
+              <img src="/images/instructors/chan-kowk-wai.jpg" alt="Grand Master Chan Kowk Wai" class="relative w-36 h-36 rounded-full object-cover border-4 border-gold shadow-lg shadow-gold/20" loading="lazy" />
+            </div>
+            <div class="text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-1">Grand Master <span class="font-chinese text-gold/30 text-xs tracking-normal ml-0.5" aria-hidden="true">宗師</span></div>
+            <div class="text-2xl font-black text-white">Chan Kowk Wai</div>
+            <div class="text-sm text-gray-400 mt-1">Pioneer of traditional Kung Fu in Brazil</div>
+          </div>
+
+          <!-- CONNECTOR: 1→1 -->
+          <div class="w-0.5 h-12 bg-gradient-to-b from-gold/50 to-red-primary/40" data-gsap="connector"></div>
+
+          <!-- TIER 2: Founder -->
+          <div class="text-center py-4 cursor-pointer" data-gsap="tier">
+            <div class="relative inline-block mb-3" data-gsap="photo">
+              <div class="absolute -inset-3 rounded-full border border-red-primary/20"></div>
+              <div class="absolute inset-0 rounded-full bg-red-primary/10 blur-xl"></div>
+              <img src="/images/instructors/gilmar-dantas.jpg" alt="Master Gilmar Dantas" class="relative w-36 h-36 rounded-full object-cover border-4 border-red-primary shadow-lg shadow-red-primary/20" loading="lazy" />
+            </div>
+            <div class="text-xs font-semibold uppercase tracking-[0.2em] text-red-primary mb-1">Master <span class="font-chinese text-red-primary/30 text-xs tracking-normal ml-0.5" aria-hidden="true">師父</span></div>
+            <div class="text-2xl font-black text-white">Gilmar Dantas</div>
+            <div class="text-sm text-gray-400 mt-1">Founder of the Pak Shao Lin Association (1984)</div>
+          </div>
+
+          <!-- FORK: Founder → Masters (2 branches) -->
+          <div class="w-full max-w-2xl" data-gsap="fork">
+            <svg class="hidden sm:block w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="50" y1="0" x2="50" y2="25" stroke="#C41E3A" stroke-opacity="0.5" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="25" y1="25" x2="75" y2="25" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="25" y1="25" x2="25" y2="50" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="75" y1="25" x2="75" y2="50" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+            </svg>
+            <div class="sm:hidden w-0.5 h-8 mx-auto bg-gradient-to-b from-red-primary/40 to-red-primary/20" data-gsap="connector"></div>
+          </div>
+
+          <!-- TIER 3: Masters -->
+          <div class="w-full max-w-2xl">
+            <div class="text-xs font-semibold uppercase tracking-[0.2em] text-red-primary/70 mb-4 text-center" data-gsap="label">Masters <span class="font-chinese text-red-primary/30 text-xs tracking-normal ml-0.5" aria-hidden="true">師傅</span></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" data-gsap="grid">
+              {[
+                { name: 'Robson Nobre', img: '/images/instructors/robson-nobre.jpg' },
+                { name: 'Willians Correia', img: '/images/instructors/willians-correia.jpg' },
+              ].map((m) => (
+                <div class="text-center py-3 cursor-pointer" data-gsap="card">
+                  <img src={m.img} alt={m.name} class="w-24 h-24 rounded-full object-cover mx-auto mb-2 border-4 border-red-primary/40 shadow" loading="lazy" />
+                  <div class="text-[10px] font-semibold uppercase tracking-[0.2em] text-red-primary/60 mb-0.5">Master <span class="font-chinese text-red-primary/30 text-xs tracking-normal ml-0.5" aria-hidden="true">師傅</span></div>
+                  <div class="font-bold text-white">{m.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- FORK: Masters → Si-Fus (3 branches md, 2 branches sm) -->
+          <div class="w-full max-w-2xl" data-gsap="fork">
+            <svg class="hidden md:block w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="50" y1="0" x2="50" y2="25" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="16.67" y1="25" x2="83.33" y2="25" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="16.67" y1="25" x2="16.67" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="50" y1="25" x2="50" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="83.33" y1="25" x2="83.33" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+            </svg>
+            <svg class="hidden sm:block md:hidden w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="50" y1="0" x2="50" y2="25" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="25" y1="25" x2="75" y2="25" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="25" y1="25" x2="25" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="75" y1="25" x2="75" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+            </svg>
+            <div class="sm:hidden w-0.5 h-6 mx-auto bg-gradient-to-b from-red-primary/20 to-gray-500/30" data-gsap="connector"></div>
+          </div>
+
+          <!-- TIER 4: Si-Fus -->
+          <div class="w-full max-w-2xl">
+            <div class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 mb-4 text-center" data-gsap="label">Si-Fus <span class="font-chinese text-gray-400/30 text-xs tracking-normal ml-0.5" aria-hidden="true">師兄</span></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" data-gsap="grid">
+              {[
+                { name: 'Flávio Dantas', img: '/images/instructors/flavio-dantas.jpg' },
+                { name: 'Égon Ferreira', img: '/images/instructors/egon.jpg' },
+                { name: 'Felipe Giorgi', img: '/images/instructors/felipe-giorgi.jpg' },
+                { name: 'Felipe Novack', img: '/images/instructors/novack.jpg' },
+                { name: 'Érick Munekata', img: '/images/instructors/erick.jpg' },
+                { name: 'Veronaldo Félix', img: '/images/instructors/naldo.jpg' },
+              ].map((m) => (
+                <div class="text-center py-3 cursor-pointer" data-gsap="card">
+                  <img src={m.img} alt={m.name} class="w-20 h-20 rounded-full object-cover mx-auto mb-2 border-4 border-gray-600 shadow" loading="lazy" />
+                  <div class="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500 mb-0.5">Si-Fu <span class="font-chinese text-gray-500/30 text-xs tracking-normal ml-0.5" aria-hidden="true">師兄</span></div>
+                  <div class="font-bold text-white">{m.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- FORK: Si-Fus → Si-Paks (4 branches md, 2 branches sm) -->
+          <div class="w-full max-w-2xl" data-gsap="fork">
+            <svg class="hidden md:block w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="50" y1="0" x2="50" y2="25" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="12.5" y1="25" x2="87.5" y2="25" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="12.5" y1="25" x2="12.5" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="37.5" y1="25" x2="37.5" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="62.5" y1="25" x2="62.5" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="87.5" y1="25" x2="87.5" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+            </svg>
+            <svg class="hidden sm:block md:hidden w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="50" y1="0" x2="50" y2="25" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="25" y1="25" x2="75" y2="25" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="25" y1="25" x2="25" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+              <line x1="75" y1="25" x2="75" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
+            </svg>
+            <div class="sm:hidden w-0.5 h-6 mx-auto bg-gray-500/20" data-gsap="connector"></div>
+          </div>
+
+          <!-- TIER 5: Si-Paks -->
+          <div class="w-full max-w-2xl">
+            <div class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 mb-4 text-center" data-gsap="label">Si-Paks <span class="font-chinese text-gray-400/30 text-xs tracking-normal ml-0.5" aria-hidden="true">師伯</span></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" data-gsap="grid">
+              {[
+                { name: 'Mário Cavalini', img: '/images/instructors/mario.jpg' },
+                { name: 'Pedro Ferrari', img: '/images/gallery/genealogy-tree.jpg' },
+                { name: 'Felipe Santini', img: '/images/instructors/santini.jpg' },
+                { name: 'Gustavo Plácido', img: '/images/instructors/gustavo.jpg' },
+              ].map((m) => (
+                <div class="text-center py-3 cursor-pointer" data-gsap="card">
+                  <img src={m.img} alt={m.name} class="w-16 h-16 rounded-full object-cover mx-auto mb-2 border-4 border-gray-700 shadow" loading="lazy" />
+                  <div class="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500 mb-0.5">Si-Pak <span class="font-chinese text-gray-500/30 text-xs tracking-normal ml-0.5" aria-hidden="true">師伯</span></div>
+                  <div class="font-semibold text-white text-sm">{m.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom ornamental divider -->
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-10">
           <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
           <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
           <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
         </div>
       </div>
 
-      <div class="flex flex-col items-center">
+    </div>
+  </section>
 
-        <!-- TIER 1: Grand Master -->
-        <div class="text-center py-4" data-gsap="tier">
-          <div class="relative inline-block mb-3" data-gsap="photo">
-            <div class="absolute -inset-3 rounded-full border border-gold/20"></div>
-            <div class="absolute inset-0 rounded-full bg-gold/10 blur-xl"></div>
-            <img src="/images/instructors/chan-kowk-wai.jpg" alt="Grand Master Chan Kowk Wai" class="relative w-36 h-36 rounded-full object-cover border-4 border-gold shadow-lg shadow-gold/20" loading="lazy" />
-          </div>
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-1">Grand Master</div>
-          <div class="text-2xl font-black text-white">Chan Kowk Wai</div>
-          <div class="text-sm text-gray-400 mt-1">Pioneer of traditional Kung Fu in Brazil</div>
-        </div>
-
-        <!-- CONNECTOR: 1→1 -->
-        <div class="w-0.5 h-12 bg-gradient-to-b from-gold/50 to-red-primary/40" data-gsap="connector"></div>
-
-        <!-- TIER 2: Founder -->
-        <div class="text-center py-4" data-gsap="tier">
-          <div class="relative inline-block mb-3" data-gsap="photo">
-            <div class="absolute -inset-3 rounded-full border border-red-primary/20"></div>
-            <div class="absolute inset-0 rounded-full bg-red-primary/10 blur-xl"></div>
-            <img src="/images/instructors/gilmar-dantas.jpg" alt="Master Gilmar Dantas" class="relative w-36 h-36 rounded-full object-cover border-4 border-red-primary shadow-lg shadow-red-primary/20" loading="lazy" />
-          </div>
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-red-primary mb-1">Master</div>
-          <div class="text-2xl font-black text-white">Gilmar Dantas</div>
-          <div class="text-sm text-gray-400 mt-1">Founder of the Pak Shao Lin Association (1984)</div>
-        </div>
-
-        <!-- FORK: Founder → Masters (2 branches) -->
-        <div class="w-full max-w-2xl" data-gsap="fork">
-          <svg class="hidden sm:block w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
-            <line x1="50" y1="0" x2="50" y2="25" stroke="#C41E3A" stroke-opacity="0.5" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="25" y1="25" x2="75" y2="25" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="25" y1="25" x2="25" y2="50" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="75" y1="25" x2="75" y2="50" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-          </svg>
-          <div class="sm:hidden w-0.5 h-8 mx-auto bg-gradient-to-b from-red-primary/40 to-red-primary/20" data-gsap="connector"></div>
-        </div>
-
-        <!-- TIER 3: Masters -->
-        <div class="w-full max-w-2xl">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-red-primary/70 mb-4 text-center" data-gsap="label">Masters</div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" data-gsap="grid">
-            {[
-              { name: 'Robson Nobre', img: '/images/instructors/robson-nobre.jpg' },
-              { name: 'Willians Correia', img: '/images/instructors/willians-correia.jpg' },
-            ].map((m) => (
-              <div class="text-center py-3" data-gsap="card">
-                <img src={m.img} alt={m.name} class="w-24 h-24 rounded-full object-cover mx-auto mb-2 border-4 border-red-primary/40 shadow" loading="lazy" />
-                <div class="text-[10px] font-semibold uppercase tracking-[0.2em] text-red-primary/60 mb-0.5">Master</div>
-                <div class="font-bold text-white">{m.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- FORK: Masters → Si-Fus (3 branches md, 2 branches sm) -->
-        <div class="w-full max-w-2xl" data-gsap="fork">
-          <svg class="hidden md:block w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
-            <line x1="50" y1="0" x2="50" y2="25" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="16.67" y1="25" x2="83.33" y2="25" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="16.67" y1="25" x2="16.67" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="50" y1="25" x2="50" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="83.33" y1="25" x2="83.33" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-          </svg>
-          <svg class="hidden sm:block md:hidden w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
-            <line x1="50" y1="0" x2="50" y2="25" stroke="#C41E3A" stroke-opacity="0.35" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="25" y1="25" x2="75" y2="25" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="25" y1="25" x2="25" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="75" y1="25" x2="75" y2="50" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-          </svg>
-          <div class="sm:hidden w-0.5 h-6 mx-auto bg-gradient-to-b from-red-primary/20 to-gray-500/30" data-gsap="connector"></div>
-        </div>
-
-        <!-- TIER 4: Si-Fus -->
-        <div class="w-full max-w-2xl">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 mb-4 text-center" data-gsap="label">Si-Fus</div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" data-gsap="grid">
-            {[
-              { name: 'Flávio Dantas', img: '/images/instructors/flavio-dantas.jpg' },
-              { name: 'Égon Ferreira', img: '/images/instructors/egon.jpg' },
-              { name: 'Felipe Giorgi', img: '/images/instructors/felipe-giorgi.jpg' },
-              { name: 'Felipe Novack', img: '/images/instructors/novack.jpg' },
-              { name: 'Érick Munekata', img: '/images/instructors/erick.jpg' },
-              { name: 'Veronaldo Félix', img: '/images/instructors/naldo.jpg' },
-            ].map((m) => (
-              <div class="text-center py-3" data-gsap="card">
-                <img src={m.img} alt={m.name} class="w-20 h-20 rounded-full object-cover mx-auto mb-2 border-4 border-gray-600 shadow" loading="lazy" />
-                <div class="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500 mb-0.5">Si-Fu</div>
-                <div class="font-bold text-white">{m.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- FORK: Si-Fus → Si-Paks (4 branches md, 2 branches sm) -->
-        <div class="w-full max-w-2xl" data-gsap="fork">
-          <svg class="hidden md:block w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
-            <line x1="50" y1="0" x2="50" y2="25" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="12.5" y1="25" x2="87.5" y2="25" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="12.5" y1="25" x2="12.5" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="37.5" y1="25" x2="37.5" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="62.5" y1="25" x2="62.5" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="87.5" y1="25" x2="87.5" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-          </svg>
-          <svg class="hidden sm:block md:hidden w-full h-12" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
-            <line x1="50" y1="0" x2="50" y2="25" stroke="#9CA3AF" stroke-opacity="0.25" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="25" y1="25" x2="75" y2="25" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="25" y1="25" x2="25" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-            <line x1="75" y1="25" x2="75" y2="50" stroke="#9CA3AF" stroke-opacity="0.2" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1"/>
-          </svg>
-          <div class="sm:hidden w-0.5 h-6 mx-auto bg-gray-500/20" data-gsap="connector"></div>
-        </div>
-
-        <!-- TIER 5: Si-Paks -->
-        <div class="w-full max-w-2xl">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 mb-4 text-center" data-gsap="label">Si-Paks</div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" data-gsap="grid">
-            {[
-              { name: 'Mário Cavalini', img: '/images/instructors/mario.jpg' },
-              { name: 'Pedro Ferrari', img: '/images/gallery/genealogy-tree.jpg' },
-              { name: 'Felipe Santini', img: '/images/instructors/santini.jpg' },
-              { name: 'Gustavo Plácido', img: '/images/instructors/gustavo.jpg' },
-            ].map((m) => (
-              <div class="text-center py-3" data-gsap="card">
-                <img src={m.img} alt={m.name} class="w-16 h-16 rounded-full object-cover mx-auto mb-2 border-4 border-gray-700 shadow" loading="lazy" />
-                <div class="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500 mb-0.5">Si-Pak</div>
-                <div class="font-semibold text-white text-sm">{m.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Bottom ornamental divider -->
-      <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-10">
+  <!-- Section 3: Tradition + CTA -->
+  <section class="lineage-dark-bg-alt py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true" data-gsap="section-zh">傳 統</div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-gold" data-gsap="tradition-title">The Northern Shaolin Tradition</h2>
+      <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
         <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
         <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
         <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
       </div>
-    </div>
-
-    <div data-gsap="text">
-      <h2>The Northern Shaolin Tradition</h2>
-      <p>
+      <p class="mt-6 text-gray-light/50 max-w-2xl mx-auto leading-relaxed" data-gsap="tradition-text">
         Grand Master Chan Kowk Wai emigrated from China to Brazil, bringing with him the
         traditional teachings of Northern Shaolin Kung Fu. He trained numerous disciples,
-        among them Master Gilmar Dantas, who founded the Pak Shao Lin Association in 1984
+        among them Master Gilmar Dantas, who founded the <strong class="text-white/80">Pak Shao Lin</strong> Association in 1984
         and has since dedicated his life to preserving and spreading these teachings.
       </p>
     </div>
   </section>
+
+  <!-- Section 4: CTA -->
+  <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold">Experience Our Lineage Firsthand</h2>
+      <p class="mt-4 text-lg text-white/80">
+        Come train with the direct heirs of this ancient tradition.
+      </p>
+      <a
+        href="/en/contact"
+        class="mt-8 inline-block px-8 py-3.5 bg-gold text-black font-bold rounded-lg hover:bg-gold-light transition-colors text-lg shadow-lg"
+      >
+        {t(lang, 'classes.cta.button')}
+      </a>
+    </div>
+  </section>
+
   <LineageAnimation />
-</ContentLayout>
+</BaseLayout>
 
 <style>
+  .lineage-hero-bg {
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(139, 0, 0, 0.15), transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.05), transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.05), transparent 50%);
+  }
+  .lineage-dark-bg {
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
+  .lineage-dark-bg-alt {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 90% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
   .lineage-tree {
     background-color: #0c0c0c;
     background-image:

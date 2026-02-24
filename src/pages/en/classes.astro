@@ -1,61 +1,230 @@
 ---
-import ContentLayout from '@/layouts/ContentLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import LocationCard from '@/components/LocationCard.astro';
+import ClassesAnimation from '@/components/ClassesAnimation.astro';
 import { t } from '@/i18n/ui';
 
 const lang = 'en';
 ---
 
-<ContentLayout
+<BaseLayout
   title={t(lang, 'classes.title')}
-  description="Find a Pak Shao Lin location near you. Kung Fu classes for all ages."
+  description="Find a Pak Shao Lin location near you. Kung Fu classes for all ages. First trial class is free."
   lang={lang}
-  breadcrumbs={[
-    { label: t(lang, 'nav.home'), href: '/en/' },
-    { label: t(lang, 'nav.classes') },
-  ]}
 >
-  <p class="text-lg text-gray-medium mb-10">
-    Pak Shao Lin has training centers in São Paulo and surrounding areas.
-    We offer classes for all ages, from children aged 5 and up to adults.
-    The first trial class is free.
-  </p>
+  <!-- Section 1: Hero — 练 武 (Train Martial Arts) -->
+  <section class="relative bg-black overflow-hidden py-20 sm:py-28">
+    <div class="absolute inset-0 classes-hero-bg"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="font-chinese text-gold/10 text-7xl sm:text-8xl mb-4 tracking-[0.3em]" aria-hidden="true" data-gsap="hero-zh">练 武</div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight" data-gsap="hero-title">
+        {t(lang, 'classes.title')}
+      </h1>
+      <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-6" data-gsap="hero-divider">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/40"></div>
+        <div class="w-2 h-2 rotate-45 border border-gold/50"></div>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/40"></div>
+      </div>
+      <p class="mt-6 text-lg text-gray-light/50 max-w-2xl mx-auto" data-gsap="hero-desc">
+        {t(lang, 'classes.hero.subtitle')}
+      </p>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+  </section>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 not-prose">
-    <LocationCard
-      lang={lang}
-      name="Santana (Headquarters)"
-      address="Rua Piracema, 156 - Santana, São Paulo - SP"
-      schedule={['Monday & Wednesday: 8:00–10:00 PM', 'Saturday: 11:00 AM–1:00 PM']}
-      instructor="Master Gilmar Dantas"
-      isHQ={true}
-    />
-    <LocationCard
-      lang={lang}
-      name="Vila Maria"
-      address="Av. das Cerejeiras, 632 - Jardim Japão, São Paulo - SP"
-      schedule={['Wednesday: 8:00–10:00 PM', 'Friday: 7:30–9:30 PM']}
-      instructor="Master Gilmar Dantas / Si-Fu Flávio"
-    />
-    <LocationCard
-      lang={lang}
-      name="São José dos Campos"
-      address="DCTA, Praça Marechal Eduardo Gomes, 50 - São José dos Campos - SP"
-      schedule={['Tuesday & Thursday: 6:00–9:00 PM']}
-      instructor="Si-Fu Robson Nobre"
-    />
-  </div>
+  <!-- Section 2: About the Training — 修 行 -->
+  <section class="classes-dark-bg py-16 sm:py-24">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">修 行</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'classes.about.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+        <p class="mt-6 text-gray-light/50 max-w-2xl mx-auto">
+          {t(lang, 'classes.about.description')}
+        </p>
+      </div>
 
-  <div class="mt-12 p-6 bg-red-dark/5 rounded-xl border border-red-primary/10 not-prose">
-    <h3 class="text-lg font-bold text-gray-dark mb-2">Want to try a class?</h3>
-    <p class="text-gray-medium mb-4">
-      Contact us to schedule your free trial class.
-    </p>
-    <a
-      href="/en/contact"
-      class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-primary text-white font-semibold rounded-lg hover:bg-red-dark transition-colors"
-    >
-      {t(lang, 'home.cta.button')}
-    </a>
-  </div>
-</ContentLayout>
+      <!-- Benefits Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" data-gsap="benefits-section">
+        <!-- Tradition -->
+        <div class="relative bg-white/[0.03] border border-gold/10 rounded-lg p-6 sm:p-8" data-gsap="benefit-card">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full border border-gold/20 flex items-center justify-center shrink-0 bg-gold/5">
+              <span class="font-chinese text-gold text-xl">武</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">{t(lang, 'classes.benefits.tradition')}</h3>
+              <p class="text-sm text-gray-light/50 leading-relaxed">{t(lang, 'classes.benefits.traditionDesc')}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- All Ages -->
+        <div class="relative bg-white/[0.03] border border-gold/10 rounded-lg p-6 sm:p-8" data-gsap="benefit-card">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full border border-gold/20 flex items-center justify-center shrink-0 bg-gold/5">
+              <span class="font-chinese text-gold text-xl">人</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">{t(lang, 'classes.benefits.allAges')}</h3>
+              <p class="text-sm text-gray-light/50 leading-relaxed">{t(lang, 'classes.benefits.allAgesDesc')}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trial Class -->
+        <div class="relative bg-white/[0.03] border border-gold/10 rounded-lg p-6 sm:p-8" data-gsap="benefit-card">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full border border-gold/20 flex items-center justify-center shrink-0 bg-gold/5">
+              <span class="font-chinese text-gold text-xl">試</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">{t(lang, 'classes.benefits.trial')}</h3>
+              <p class="text-sm text-gray-light/50 leading-relaxed">{t(lang, 'classes.benefits.trialDesc')}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body & Mind -->
+        <div class="relative bg-white/[0.03] border border-gold/10 rounded-lg p-6 sm:p-8" data-gsap="benefit-card">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full border border-gold/20 flex items-center justify-center shrink-0 bg-gold/5">
+              <span class="font-chinese text-gold text-xl">氣</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">{t(lang, 'classes.benefits.body')}</h3>
+              <p class="text-sm text-gray-light/50 leading-relaxed">{t(lang, 'classes.benefits.bodyDesc')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Locations — 道 場 -->
+  <section class="classes-dark-bg-alt py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center mb-12 sm:mb-16" data-gsap="section-head">
+        <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">道 場</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'classes.locations.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+
+      <!-- Location Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <LocationCard
+          lang={lang}
+          name="Santana"
+          zhChar="聖"
+          address="Rua Piracema, 156 - Santana, São Paulo - SP (alt. 1450 Av. Cons. Moreira de Barros)"
+          instructor="Master Gilmar Dantas"
+          schedule={[
+            { days: 'Sat', time: '11:00 AM–1:00 PM' },
+            { days: 'Mon / Wed', time: '8:00–10:00 PM' },
+          ]}
+          partnership="Academia Movement"
+          hasParking={true}
+          isHQ={true}
+          transit={{
+            metro: {
+              line: 'Line 1-Blue',
+              lineColor: 'blue',
+              stations: ['Parada Inglesa', 'Santana'],
+            },
+            bus: ['1743-10', '1744-10', '1760-10', '178L-10', '178T-10', '2030-10'],
+          }}
+          mapQuery="Rua+Piracema+156+Santana+São+Paulo+SP"
+        />
+
+        <LocationCard
+          lang={lang}
+          name="Vila Maria / Jardim Japão"
+          zhChar="園"
+          address="Av. das Cerejeiras, 632 - Jardim Japão, São Paulo - SP"
+          instructor="Master Gilmar Dantas / Si-Fu Flávio Dantas"
+          schedule={[
+            { days: 'Wed', time: '8:00–10:00 PM' },
+            { days: 'Fri', time: '7:30–9:30 PM' },
+          ]}
+          partnership="Academia Draleon"
+          hasParking={true}
+          transit={{
+            metro: {
+              line: 'Line 1-Blue',
+              lineColor: 'blue',
+              stations: ['Parada Inglesa (~10 min walk)'],
+            },
+            bus: ['119C-10', '172R-10', '175', '2175-10', '2182-10'],
+          }}
+          mapQuery="Av+das+Cerejeiras+632+Jardim+Japão+São+Paulo+SP"
+        />
+
+        <LocationCard
+          lang={lang}
+          name="São José dos Campos"
+          zhChar="軍"
+          address="DCTA, Praça Marechal Eduardo Gomes, 50 - São José dos Campos - SP"
+          instructor="Si-Fu Robson Nobre"
+          schedule={[
+            { days: 'Tue / Thu', time: '6:00–9:00 PM' },
+          ]}
+          partnership="DCTA"
+          hasParking={false}
+          transit={{
+            note: 'Access via DCTA',
+          }}
+          mapQuery="DCTA+Praça+Marechal+Eduardo+Gomes+50+São+José+dos+Campos+SP"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: CTA -->
+  <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold">{t(lang, 'classes.cta.title')}</h2>
+      <p class="mt-4 text-lg text-white/80">
+        {t(lang, 'classes.cta.subtitle')}
+      </p>
+      <a
+        href="/en/contact"
+        class="mt-8 inline-block px-8 py-3.5 bg-gold text-black font-bold rounded-lg hover:bg-gold-light transition-colors text-lg shadow-lg"
+      >
+        {t(lang, 'classes.cta.button')}
+      </a>
+    </div>
+  </section>
+
+  <ClassesAnimation />
+</BaseLayout>
+
+<style>
+  .classes-hero-bg {
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(139, 0, 0, 0.15), transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.05), transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.05), transparent 50%);
+  }
+  .classes-dark-bg {
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
+  .classes-dark-bg-alt {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 90% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
+</style>

@@ -9,42 +9,211 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
+  // Reusable ember glow values (matching AboutAnimation palette)
+  const EMBER_PEAK = '0 0 30px rgba(196, 30, 58, 0.9), 0 0 60px rgba(139, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.7), 0 0 100px rgba(196, 30, 58, 0.3)';
+  const EMBER_WARM = '0 0 12px rgba(212, 175, 55, 0.3), 0 0 30px rgba(196, 30, 58, 0.12), 0 0 4px rgba(212, 175, 55, 0.15)';
+  const EMBER_NONE = '0 0 0px transparent';
+  const EMBER_INTENSE = '0 0 50px rgba(196, 30, 58, 1), 0 0 100px rgba(139, 0, 0, 0.7), 0 0 25px rgba(212, 175, 55, 0.8), 0 0 150px rgba(196, 30, 58, 0.4), 0 0 200px rgba(139, 0, 0, 0.15)';
+
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (!prefersReducedMotion) {
-    // --- Initial states (set via GSAP, not CSS, for progressive enhancement) ---
-    gsap.set('[data-gsap="text"]', { opacity: 0, y: 30 });
-    gsap.set('[data-gsap="tier"]', { opacity: 0 });
-    gsap.set('[data-gsap="photo"]', { opacity: 0, scale: 0 });
-    gsap.set('[data-gsap="connector"]', { opacity: 0, scaleY: 0, transformOrigin: 'top center' });
-    gsap.set('[data-gsap="label"]', { opacity: 0, y: 20 });
-    gsap.set('[data-gsap="card"]', { opacity: 0, y: 40, scale: 0.9 });
+    // ─── Hero entrance (staggered + ember glow) ─────────────────────
+    gsap.set('[data-gsap="hero-zh"]', { opacity: 0, scale: 0.8, textShadow: EMBER_NONE });
+    gsap.set('[data-gsap="hero-title"]', { opacity: 0, y: 30, textShadow: EMBER_NONE });
+    gsap.set('[data-gsap="hero-divider"]', { opacity: 0, scaleX: 0 });
+    gsap.set('[data-gsap="hero-desc"]', { opacity: 0, y: 20 });
 
-    // Hide fork SVG lines for draw-in animation (pathLength="1" on each line)
-    const forkLines = document.querySelectorAll('[data-gsap="fork"] line');
-    forkLines.forEach((line) => {
-      line.style.strokeDasharray = '1';
-      line.style.strokeDashoffset = '1';
-    });
+    const heroTl = gsap.timeline({ delay: 0.2 });
+    heroTl
+      // Watermark burns in with red smolder
+      .to('[data-gsap="hero-zh"]', { opacity: 1, scale: 1, duration: 1.2, ease: 'power2.out' })
+      .to('[data-gsap="hero-zh"]', {
+        textShadow: '0 0 60px rgba(196, 30, 58, 0.4), 0 0 120px rgba(139, 0, 0, 0.2)',
+        duration: 1.0, ease: 'power2.in',
+      }, 0.2)
+      .to('[data-gsap="hero-zh"]', {
+        textShadow: '0 0 20px rgba(196, 30, 58, 0.08), 0 0 60px rgba(139, 0, 0, 0.04)',
+        duration: 1.5, ease: 'power2.out',
+      }, 1.2)
 
-    // --- Text blocks: fade in + slide up ---
-    document.querySelectorAll('[data-gsap="text"]').forEach((el) => {
-      gsap.to(el, {
+      // Title burns in with ember flare
+      .to('[data-gsap="hero-title"]', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.7)
+      .to('[data-gsap="hero-title"]', {
+        textShadow: EMBER_PEAK,
+        duration: 0.6, ease: 'power2.in',
+      }, 0.8)
+      .to('[data-gsap="hero-title"]', {
+        textShadow: EMBER_WARM,
+        duration: 1.2, ease: 'power2.out',
+      }, 1.4)
+
+      // Divider
+      .to('[data-gsap="hero-divider"]', { opacity: 1, scaleX: 1, duration: 0.6, ease: 'power2.out' }, 1.1)
+
+      // Description
+      .to('[data-gsap="hero-desc"]', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 1.3);
+
+    // ─── Section Chinese headings — burning clip-path reveal ────────
+    document.querySelectorAll('[data-gsap="section-zh"]').forEach((el) => {
+      gsap.set(el, {
+        clipPath: 'inset(100% 0 0 0)',
+        textShadow: EMBER_NONE,
         opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power2.out',
+      });
+
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: el,
           start: 'top 90%',
           toggleActions: 'play none none none',
         },
       });
+
+      // Burn in top-to-bottom
+      tl.to(el, {
+        clipPath: 'inset(0% 0 0 0)',
+        duration: 1.0,
+        ease: 'power1.inOut',
+      }, 0);
+
+      // Ember flare during reveal
+      tl.to(el, {
+        textShadow: '0 0 25px rgba(196, 30, 58, 0.7), 0 0 50px rgba(139, 0, 0, 0.4), 0 0 12px rgba(212, 175, 55, 0.5)',
+        duration: 0.5,
+        ease: 'power2.in',
+      }, 0.2);
+
+      // Settle to warm ambient
+      tl.to(el, {
+        textShadow: '0 0 8px rgba(212, 175, 55, 0.15), 0 0 20px rgba(196, 30, 58, 0.06)',
+        duration: 0.8,
+        ease: 'power2.out',
+      }, 0.7);
     });
 
-    // --- Tiers: container fades in, then photo bounces ---
+    // ─── Burning ideogram — 傳 "Transmission/Lineage" ──────────────
+    const ideogram = document.querySelector('[data-gsap="lineage-ideogram"]');
+    const ideogramGlow = document.querySelector('[data-gsap="lineage-ideogram-glow"]');
+
+    if (ideogram) {
+      gsap.set(ideogram, {
+        clipPath: 'inset(100% 0 0 0)',
+        textShadow: EMBER_NONE,
+      });
+      if (ideogramGlow) gsap.set(ideogramGlow, { opacity: 0, scale: 0.3 });
+
+      const ideogramContainer = ideogram.closest('[data-gsap="lineage-ideogram-container"]');
+      const ideoTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ideogramContainer,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      // 1. Background glow expands
+      if (ideogramGlow) {
+        ideoTl.to(ideogramGlow, {
+          opacity: 0.8,
+          scale: 1.1,
+          duration: 1.4,
+          ease: 'power2.out',
+        }, 0);
+      }
+
+      // 2. Character burns in — clip-path top to bottom
+      ideoTl.to(ideogram, {
+        clipPath: 'inset(0% 0 0 0)',
+        duration: 2.0,
+        ease: 'power1.inOut',
+      }, 0.1);
+
+      // 3. First ember wave — fierce red/gold
+      ideoTl.to(ideogram, {
+        textShadow: EMBER_INTENSE,
+        duration: 0.8,
+        ease: 'power2.in',
+      }, 0.3);
+
+      // 4. Brief cool-down then second flare (double-pulse)
+      ideoTl.to(ideogram, {
+        textShadow: '0 0 30px rgba(196, 30, 58, 0.5), 0 0 60px rgba(139, 0, 0, 0.3), 0 0 15px rgba(212, 175, 55, 0.4)',
+        duration: 0.4,
+        ease: 'power2.out',
+      }, 1.1);
+      ideoTl.to(ideogram, {
+        textShadow: EMBER_INTENSE,
+        duration: 0.5,
+        ease: 'power2.in',
+      }, 1.5);
+
+      // 5. Settle to warm persistent glow
+      ideoTl.to(ideogram, {
+        textShadow: '0 0 20px rgba(212, 175, 55, 0.35), 0 0 50px rgba(196, 30, 58, 0.15), 0 0 8px rgba(212, 175, 55, 0.2)',
+        duration: 1.2,
+        ease: 'power2.out',
+      }, 2.0);
+
+      // 6. Background glow settles but stays warm
+      if (ideogramGlow) {
+        ideoTl.to(ideogramGlow, {
+          opacity: 0.3,
+          scale: 1,
+          duration: 1.2,
+          ease: 'power2.out',
+        }, 2.0);
+      }
+
+      // 7. Persistent slow ember pulse
+      ideoTl.add(() => {
+        gsap.to(ideogram, {
+          textShadow: '0 0 28px rgba(212, 175, 55, 0.45), 0 0 60px rgba(196, 30, 58, 0.2), 0 0 12px rgba(212, 175, 55, 0.3)',
+          duration: 2.5,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+        });
+      }, 3.2);
+    }
+
+    // ─── Tradition section text — fade + slide ──────────────────────
+    const traditionTitle = document.querySelector('[data-gsap="tradition-title"]');
+    const traditionText = document.querySelector('[data-gsap="tradition-text"]');
+    if (traditionTitle) {
+      gsap.set(traditionTitle, { opacity: 0, y: 20 });
+      gsap.to(traditionTitle, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+        scrollTrigger: { trigger: traditionTitle, start: 'top 88%', toggleActions: 'play none none none' },
+      });
+    }
+    if (traditionText) {
+      gsap.set(traditionText, { opacity: 0, y: 20 });
+      gsap.to(traditionText, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+        scrollTrigger: { trigger: traditionText, start: 'top 88%', toggleActions: 'play none none none' },
+      });
+    }
+
+    // ─── Lineage tree initial states ────────────────────────────────
+    gsap.set('[data-gsap="tier"]', { opacity: 0 });
+    gsap.set('[data-gsap="photo"]', { opacity: 0, scale: 0 });
+    gsap.set('[data-gsap="connector"]', { opacity: 0, scaleY: 0, transformOrigin: 'top center' });
+    gsap.set('[data-gsap="label"]', { opacity: 0, y: 20 });
+    gsap.set('[data-gsap="card"]', { opacity: 0, y: 40, scale: 0.9 });
+
+    // Hide fork SVG lines for draw-in animation
+    const forkLines = document.querySelectorAll('[data-gsap="fork"] line');
+    forkLines.forEach((line) => {
+      (line as SVGLineElement).style.strokeDasharray = '1';
+      (line as SVGLineElement).style.strokeDashoffset = '1';
+    });
+
+    // ─── Tiers: container fades in, photo bounces, then ember glow ──
     document.querySelectorAll('[data-gsap="tier"]').forEach((tier) => {
       const photo = tier.querySelector('[data-gsap="photo"]');
+      const isGrandmaster = tier.getAttribute('data-tier') === 'grandmaster';
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: tier,
@@ -60,49 +229,130 @@
       });
 
       if (photo) {
+        // Bounce in
         tl.to(photo, {
           opacity: 1,
           scale: 1,
           duration: 0.6,
           ease: 'back.out(1.7)',
         }, '-=0.1');
+
+        // Ember ring glow — flare then settle
+        tl.to(photo, {
+          boxShadow: isGrandmaster
+            ? '0 0 40px rgba(212, 175, 55, 0.7), 0 0 80px rgba(196, 30, 58, 0.4), 0 0 20px rgba(212, 175, 55, 0.5)'
+            : '0 0 25px rgba(196, 30, 58, 0.5), 0 0 50px rgba(139, 0, 0, 0.3), 0 0 12px rgba(212, 175, 55, 0.3)',
+          duration: 0.5,
+          ease: 'power2.in',
+        }, '-=0.1');
+
+        tl.to(photo, {
+          boxShadow: isGrandmaster
+            ? '0 0 15px rgba(212, 175, 55, 0.25), 0 0 35px rgba(196, 30, 58, 0.1)'
+            : EMBER_NONE,
+          duration: 0.8,
+          ease: 'power2.out',
+        });
+
+        // Grand Master: persistent breathing gold pulse
+        if (isGrandmaster) {
+          tl.add(() => {
+            gsap.to(photo, {
+              boxShadow: '0 0 25px rgba(212, 175, 55, 0.4), 0 0 50px rgba(196, 30, 58, 0.15), 0 0 10px rgba(212, 175, 55, 0.25)',
+              duration: 2.5,
+              ease: 'sine.inOut',
+              repeat: -1,
+              yoyo: true,
+            });
+          });
+        }
       }
     });
 
-    // --- Simple connectors: grow downward ---
+    // ─── Connectors: grow downward + warm red glow pulse ────────────
     document.querySelectorAll('[data-gsap="connector"]').forEach((conn) => {
-      gsap.to(conn, {
-        opacity: 1,
-        scaleY: 1,
-        duration: 0.4,
-        ease: 'power2.inOut',
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: conn,
           start: 'top 88%',
           toggleActions: 'play none none none',
         },
       });
+
+      tl.to(conn, {
+        opacity: 1,
+        scaleY: 1,
+        duration: 0.4,
+        ease: 'power2.inOut',
+      });
+
+      // Warm glow pulse
+      tl.to(conn, {
+        boxShadow: '0 0 12px rgba(196, 30, 58, 0.6), 0 0 25px rgba(139, 0, 0, 0.3)',
+        duration: 0.3,
+        ease: 'power2.in',
+      }, '-=0.1');
+
+      tl.to(conn, {
+        boxShadow: EMBER_NONE,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
     });
 
-    // --- Fork connectors: SVG lines draw in sequentially ---
+    // ─── Fork connectors: SVG lines draw in + energy flow pulse ─────
     document.querySelectorAll('[data-gsap="fork"]').forEach((fork) => {
       const lines = fork.querySelectorAll('line');
+      const svgs = fork.querySelectorAll('svg');
       if (lines.length === 0) return;
 
-      gsap.to(lines, {
-        strokeDashoffset: 0,
-        duration: 0.4,
-        stagger: 0.08,
-        ease: 'power2.inOut',
+      const forkTl = gsap.timeline({
         scrollTrigger: {
           trigger: fork,
           start: 'top 85%',
           toggleActions: 'play none none none',
         },
       });
+
+      // Draw-in with stagger
+      forkTl.to(lines, {
+        strokeDashoffset: 0,
+        duration: 0.4,
+        stagger: 0.08,
+        ease: 'power2.inOut',
+      });
+
+      // After draw-in: boost stroke-opacity briefly
+      forkTl.to(lines, {
+        attr: { 'stroke-opacity': 0.85 },
+        duration: 0.3,
+        ease: 'power2.in',
+      });
+
+      // Fire pulse on SVG with drop-shadow
+      svgs.forEach((svg) => {
+        forkTl.to(svg, {
+          filter: 'drop-shadow(0 0 8px rgba(196,30,58,0.7)) drop-shadow(0 0 20px rgba(139,0,0,0.4))',
+          duration: 0.4,
+          ease: 'power2.in',
+        }, '-=0.3');
+
+        forkTl.to(svg, {
+          filter: 'none',
+          duration: 0.6,
+          ease: 'power2.out',
+        });
+      });
+
+      // Settle stroke-opacity back
+      forkTl.to(lines, {
+        attr: { 'stroke-opacity': (i: number, target: SVGLineElement) => target.getAttribute('stroke-opacity') || '0.35' },
+        duration: 0.5,
+        ease: 'power2.out',
+      }, '-=0.6');
     });
 
-    // --- Labels: fade + slide up ---
+    // ─── Labels: fade + slide up ────────────────────────────────────
     document.querySelectorAll('[data-gsap="label"]').forEach((label) => {
       gsap.to(label, {
         opacity: 1,
@@ -117,7 +367,7 @@
       });
     });
 
-    // --- Grid cards: stagger in left to right with bounce ---
+    // ─── Grid cards: stagger in with bounce ─────────────────────────
     document.querySelectorAll('[data-gsap="grid"]').forEach((grid) => {
       const cards = grid.querySelectorAll('[data-gsap="card"]');
       if (cards.length === 0) return;
@@ -136,5 +386,119 @@
         },
       });
     });
+
+    // ─── Card hover fire effects (mouse-only) ──────────────────────
+    if (window.matchMedia('(pointer: fine)').matches) {
+      // Rank-based fire intensity configs
+      const fireConfigs: Record<string, { imgShadow: string; textShadow: string; scale: number }> = {
+        grandmaster: {
+          imgShadow: '0 0 40px rgba(212, 175, 55, 0.8), 0 0 80px rgba(196, 30, 58, 0.5), 0 0 20px rgba(212, 175, 55, 0.6)',
+          textShadow: '0 0 15px rgba(212, 175, 55, 0.6), 0 0 30px rgba(196, 30, 58, 0.3)',
+          scale: 1.08,
+        },
+        master: {
+          imgShadow: '0 0 30px rgba(196, 30, 58, 0.7), 0 0 60px rgba(139, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.4)',
+          textShadow: '0 0 12px rgba(196, 30, 58, 0.5), 0 0 25px rgba(139, 0, 0, 0.2)',
+          scale: 1.06,
+        },
+        sifu: {
+          imgShadow: '0 0 20px rgba(196, 30, 58, 0.5), 0 0 40px rgba(139, 0, 0, 0.25), 0 0 10px rgba(212, 175, 55, 0.2)',
+          textShadow: '0 0 8px rgba(196, 30, 58, 0.3), 0 0 15px rgba(139, 0, 0, 0.12)',
+          scale: 1.05,
+        },
+        sipak: {
+          imgShadow: '0 0 12px rgba(196, 30, 58, 0.3), 0 0 25px rgba(139, 0, 0, 0.15), 0 0 6px rgba(212, 175, 55, 0.1)',
+          textShadow: '0 0 6px rgba(196, 30, 58, 0.2), 0 0 10px rgba(139, 0, 0, 0.08)',
+          scale: 1.04,
+        },
+      };
+
+      function detectRank(el: Element): string {
+        const rankLabel = el.querySelector('[class*="tracking-[0.2em]"]');
+        if (!rankLabel) return 'sipak';
+        const text = rankLabel.textContent?.toLowerCase() || '';
+        if (text.includes('grão') || text.includes('grand')) return 'grandmaster';
+        if (text.includes('mestre') || text.includes('master')) return 'master';
+        if (text.includes('si-fu')) return 'sifu';
+        return 'sipak';
+      }
+
+      // Apply hover to tier elements (Grand Master + Founder)
+      document.querySelectorAll('[data-gsap="tier"]').forEach((tier) => {
+        const rank = tier.getAttribute('data-tier') === 'grandmaster' ? 'grandmaster' : 'master';
+        const config = fireConfigs[rank];
+        const img = tier.querySelector('img');
+        const nameEl = tier.querySelector('.font-black, .font-bold');
+
+        tier.addEventListener('mouseenter', () => {
+          if (img) gsap.to(img, { boxShadow: config.imgShadow, duration: 0.3, ease: 'power2.out' });
+          if (nameEl) gsap.to(nameEl, { textShadow: config.textShadow, duration: 0.3, ease: 'power2.out' });
+          gsap.to(tier, { scale: config.scale, duration: 0.3, ease: 'power2.out' });
+        });
+
+        tier.addEventListener('mouseleave', () => {
+          // Grand Master returns to breathing pulse state
+          if (rank === 'grandmaster') {
+            if (img) {
+              gsap.to(img, {
+                boxShadow: '0 0 15px rgba(212, 175, 55, 0.25), 0 0 35px rgba(196, 30, 58, 0.1)',
+                duration: 0.4, ease: 'power2.out',
+              });
+            }
+          } else {
+            if (img) gsap.to(img, { boxShadow: EMBER_NONE, duration: 0.4, ease: 'power2.out' });
+          }
+          if (nameEl) gsap.to(nameEl, { textShadow: EMBER_NONE, duration: 0.4, ease: 'power2.out' });
+          gsap.to(tier, { scale: 1, duration: 0.4, ease: 'power2.out' });
+        });
+      });
+
+      // Apply hover to grid cards
+      document.querySelectorAll('[data-gsap="card"]').forEach((card) => {
+        const rank = detectRank(card);
+        const config = fireConfigs[rank];
+        const img = card.querySelector('img');
+        const nameEl = card.querySelector('.font-bold, .font-semibold');
+
+        card.addEventListener('mouseenter', () => {
+          if (img) gsap.to(img, { boxShadow: config.imgShadow, duration: 0.3, ease: 'power2.out' });
+          if (nameEl) gsap.to(nameEl, { textShadow: config.textShadow, duration: 0.3, ease: 'power2.out' });
+          gsap.to(card, { scale: config.scale, duration: 0.3, ease: 'power2.out' });
+        });
+
+        card.addEventListener('mouseleave', () => {
+          if (img) gsap.to(img, { boxShadow: EMBER_NONE, duration: 0.4, ease: 'power2.out' });
+          if (nameEl) gsap.to(nameEl, { textShadow: EMBER_NONE, duration: 0.4, ease: 'power2.out' });
+          gsap.to(card, { scale: 1, duration: 0.4, ease: 'power2.out' });
+        });
+      });
+    }
+
+    // ─── CTA section fade ───────────────────────────────────────────
+    const ctaSection = document.querySelector('[data-gsap="cta-section"]');
+    if (ctaSection) {
+      const ctaInner = ctaSection.querySelector(':scope > div');
+      if (ctaInner) {
+        gsap.set(ctaInner.children, { opacity: 0, y: 20 });
+        gsap.to(ctaInner.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: ctaSection,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+    }
+  } else {
+    // ─── Reduced motion: show ideogram statically ───────────────
+    const ideogram = document.querySelector('[data-gsap="lineage-ideogram"]');
+    if (ideogram) {
+      (ideogram as HTMLElement).style.clipPath = 'inset(0% 0 0 0)';
+    }
   }
 </script>

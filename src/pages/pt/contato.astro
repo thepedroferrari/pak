@@ -1,76 +1,296 @@
 ---
-import ContentLayout from '@/layouts/ContentLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import ContactForm from '@/components/ContactForm.astro';
+import LocationCard from '@/components/LocationCard.astro';
+import ContactAnimation from '@/components/ContactAnimation.astro';
 import { t } from '@/i18n/ui';
 
 const lang = 'pt';
 ---
 
-<ContentLayout
+<BaseLayout
   title={t(lang, 'contact.title')}
-  description="Entre em contato com a Pak Shao Lin. Agende sua aula experimental."
+  description="Entre em contato com a Pak Shao Lin. Conheça nossos núcleos em Santana, Vila Maria e São José dos Campos."
   lang={lang}
-  breadcrumbs={[
-    { label: t(lang, 'nav.home'), href: '/pt/' },
-    { label: t(lang, 'nav.contact') },
-  ]}
 >
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 not-prose">
-    <!-- Contact Form -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-dark mb-6">Envie uma Mensagem</h2>
-      <ContactForm lang={lang} />
+  <!-- Section 1: Hero — 联 络 -->
+  <section class="relative bg-black overflow-hidden py-20 sm:py-28">
+    <div class="absolute inset-0 contact-hero-bg"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="font-chinese text-gold/10 text-7xl sm:text-8xl mb-4 tracking-[0.3em]" aria-hidden="true" data-gsap="hero-zh">联 络</div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight" data-gsap="hero-title">
+        {t(lang, 'contact.title')}
+      </h1>
+      <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-6" data-gsap="hero-divider">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/40"></div>
+        <div class="w-2 h-2 rotate-45 border border-gold/50"></div>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/40"></div>
+      </div>
+      <p class="mt-6 text-lg text-gray-light/50 max-w-2xl mx-auto" data-gsap="hero-desc">
+        {t(lang, 'contact.hero.subtitle')}
+      </p>
     </div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+  </section>
 
-    <!-- Contact Info -->
-    <div class="space-y-8">
-      <div>
-        <h2 class="text-2xl font-bold text-gray-dark mb-6">{t(lang, 'contact.info')}</h2>
-
-        <div class="space-y-4">
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-red-primary shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            <div>
-              <p class="font-medium text-gray-dark">E-mail</p>
-              <a href="mailto:pakshaolin@gmail.com" class="text-red-primary hover:text-red-dark transition-colors">
-                pakshaolin@gmail.com
-              </a>
-            </div>
-          </div>
-
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-red-primary shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <div>
-              <p class="font-medium text-gray-dark">Sede (Santana)</p>
-              <p class="text-gray-medium">Rua Piracema, 156 - Santana</p>
-              <p class="text-gray-medium">São Paulo - SP</p>
-            </div>
-          </div>
+  <!-- Section 2: Location Cards — 道 場 -->
+  <section class="contact-dark-bg py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center mb-12 sm:mb-16" data-gsap="section-head">
+        <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">道 場</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'contact.locations.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
         </div>
       </div>
 
-      <div>
-        <h3 class="text-lg font-bold text-gray-dark mb-4">{t(lang, 'contact.social')}</h3>
-        <div class="flex gap-4">
-          <a href="https://instagram.com/pakshaolin" target="_blank" rel="noopener noreferrer"
-             class="flex items-center gap-2 px-4 py-2 bg-gray-light rounded-lg hover:bg-gold/10 transition-colors text-sm font-medium text-gray-dark">
-            Instagram
-          </a>
-          <a href="https://facebook.com/pakshaolin" target="_blank" rel="noopener noreferrer"
-             class="flex items-center gap-2 px-4 py-2 bg-gray-light rounded-lg hover:bg-gold/10 transition-colors text-sm font-medium text-gray-dark">
-            Facebook
-          </a>
-          <a href="https://youtube.com/@pakshaolin" target="_blank" rel="noopener noreferrer"
-             class="flex items-center gap-2 px-4 py-2 bg-gray-light rounded-lg hover:bg-gold/10 transition-colors text-sm font-medium text-gray-dark">
-            YouTube
-          </a>
+      <!-- Location Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <LocationCard
+          lang={lang}
+          name="Santana"
+          zhChar="聖"
+          address="Rua Piracema, 156 - Santana, São Paulo - SP (alt. 1450 da Av. Cons. Moreira de Barros)"
+          instructor="Mestre Gilmar Dantas"
+          schedule={[
+            { days: 'Sáb', time: '11:00–13:00' },
+            { days: 'Seg / Qua', time: '20:00–22:00' },
+          ]}
+          partnership="Academia Movement"
+          hasParking={true}
+          isHQ={true}
+          transit={{
+            metro: {
+              line: 'Linha 1-Azul',
+              lineColor: 'blue',
+              stations: ['Parada Inglesa', 'Santana'],
+            },
+            bus: ['1743-10', '1744-10', '1760-10', '178L-10', '178T-10', '2030-10'],
+          }}
+          mapQuery="Rua+Piracema+156+Santana+São+Paulo+SP"
+        />
+
+        <LocationCard
+          lang={lang}
+          name="Vila Maria / Jardim Japão"
+          zhChar="園"
+          address="Av. das Cerejeiras, 632 - Jardim Japão, São Paulo - SP"
+          instructor="Mestre Gilmar Dantas / Si-Fu Flávio Dantas"
+          schedule={[
+            { days: 'Qua', time: '20:00–22:00' },
+            { days: 'Sex', time: '19:30–21:30' },
+          ]}
+          partnership="Academia Draleon"
+          hasParking={true}
+          transit={{
+            metro: {
+              line: 'Linha 1-Azul',
+              lineColor: 'blue',
+              stations: ['Parada Inglesa (~10 min caminhada)'],
+            },
+            bus: ['119C-10', '172R-10', '175', '2175-10', '2182-10'],
+          }}
+          mapQuery="Av+das+Cerejeiras+632+Jardim+Japão+São+Paulo+SP"
+        />
+
+        <LocationCard
+          lang={lang}
+          name="São José dos Campos"
+          zhChar="軍"
+          address="DCTA, Praça Marechal Eduardo Gomes, 50 - São José dos Campos - SP"
+          instructor="Si-Fu Robson Nobre"
+          schedule={[
+            { days: 'Ter / Qui', time: '18:00–21:00' },
+          ]}
+          partnership="DCTA"
+          hasParking={false}
+          transit={{
+            note: 'Acesso pelo DCTA',
+          }}
+          mapQuery="DCTA+Praça+Marechal+Eduardo+Gomes+50+São+José+dos+Campos+SP"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Contact Form — 传 信 -->
+  <section class="contact-dark-bg-alt py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center mb-10" data-gsap="section-head">
+        <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">传 信</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'contact.form.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+
+      <!-- Ornamental Panel -->
+      <div class="relative p-6 sm:p-10" data-gsap="form-panel">
+        <!-- Corner ornaments -->
+        <div class="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-gold/25" data-gsap="corner-ornament"></div>
+        <div class="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-gold/25" data-gsap="corner-ornament"></div>
+        <div class="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-gold/25" data-gsap="corner-ornament"></div>
+        <div class="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-gold/25" data-gsap="corner-ornament"></div>
+
+        <ContactForm lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Social Media — 社 交 -->
+  <section class="contact-dark-bg py-16 sm:py-20" data-gsap="social-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="text-center mb-10" data-gsap="section-head">
+        <div class="font-chinese text-gold/10 text-5xl mb-2 tracking-[0.3em]" aria-hidden="true">社 交</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'contact.social')}</h2>
+      </div>
+
+      <div class="flex justify-center gap-6 sm:gap-8 mb-8">
+        <!-- Instagram -->
+        <a
+          href="https://instagram.com/pakshaolin"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-white/10 hover:border-gold/50 hover:bg-gold/5 transition-all duration-300"
+          data-gsap="social-icon"
+          aria-label="Instagram"
+        >
+          <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white/70" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+
+        <!-- Facebook -->
+        <a
+          href="https://facebook.com/pakshaolin"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-white/10 hover:border-gold/50 hover:bg-gold/5 transition-all duration-300"
+          data-gsap="social-icon"
+          aria-label="Facebook"
+        >
+          <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white/70" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+
+        <!-- YouTube -->
+        <a
+          href="https://youtube.com/@pakshaolin"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-white/10 hover:border-gold/50 hover:bg-gold/5 transition-all duration-300"
+          data-gsap="social-icon"
+          aria-label="YouTube"
+        >
+          <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white/70" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Email -->
+      <a
+        href="mailto:pakshaolin@gmail.com"
+        class="text-gold hover:text-gold-light transition-colors text-sm"
+      >
+        pakshaolin@gmail.com
+      </a>
+    </div>
+  </section>
+
+  <!-- Section 5: Wuxing (Five Elements) — Decorative -->
+  <section class="contact-dark-bg-alt py-12 sm:py-16" aria-hidden="true" data-gsap="wuxing-section">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-center gap-0">
+        <!-- Connecting line (behind elements) -->
+        <div class="absolute w-full max-w-md h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" style="pointer-events: none;"></div>
+
+        <!-- Wood 木 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-green-500/30 flex items-center justify-center bg-green-500/5">
+            <span class="font-chinese text-green-400 text-xl sm:text-2xl">木</span>
+          </div>
+          <span class="text-[10px] text-green-400/50 uppercase tracking-wider">Wood</span>
+        </div>
+
+        <!-- Fire 火 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-red-primary/30 flex items-center justify-center bg-red-primary/5">
+            <span class="font-chinese text-red-primary text-xl sm:text-2xl">火</span>
+          </div>
+          <span class="text-[10px] text-red-primary/50 uppercase tracking-wider">Fire</span>
+        </div>
+
+        <!-- Earth 土 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5">
+            <span class="font-chinese text-gold text-xl sm:text-2xl">土</span>
+          </div>
+          <span class="text-[10px] text-gold/50 uppercase tracking-wider">Earth</span>
+        </div>
+
+        <!-- Metal 金 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
+            <span class="font-chinese text-white/80 text-xl sm:text-2xl">金</span>
+          </div>
+          <span class="text-[10px] text-white/40 uppercase tracking-wider">Metal</span>
+        </div>
+
+        <!-- Water 水 -->
+        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-blue-400/30 flex items-center justify-center bg-blue-400/5">
+            <span class="font-chinese text-blue-400 text-xl sm:text-2xl">水</span>
+          </div>
+          <span class="text-[10px] text-blue-400/50 uppercase tracking-wider">Water</span>
         </div>
       </div>
     </div>
-  </div>
-</ContentLayout>
+  </section>
+
+  <!-- Section 6: CTA -->
+  <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold">{t(lang, 'contact.cta.title')}</h2>
+      <p class="mt-4 text-lg text-white/80">
+        {t(lang, 'contact.cta.subtitle')}
+      </p>
+      <a
+        href="/pt/aulas"
+        class="mt-8 inline-block px-8 py-3.5 bg-gold text-black font-bold rounded-lg hover:bg-gold-light transition-colors text-lg shadow-lg"
+      >
+        {t(lang, 'contact.cta.button')}
+      </a>
+    </div>
+  </section>
+
+  <ContactAnimation />
+</BaseLayout>
+
+<style>
+  .contact-hero-bg {
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(139, 0, 0, 0.15), transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.05), transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.05), transparent 50%);
+  }
+  .contact-dark-bg {
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
+  .contact-dark-bg-alt {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 90% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
+</style>

@@ -18,6 +18,12 @@ const { lang } = Astro.props;
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
     <div class="text-center">
+      <!-- Chinese watermark with fire glow -->
+      <div class="relative inline-block mb-4">
+        <div class="absolute inset-0 rounded-full ideogram-glow" data-gsap="hero-glow"></div>
+        <div class="font-chinese text-gold/10 text-7xl sm:text-8xl lg:text-9xl tracking-[0.3em] select-none" aria-hidden="true" data-gsap="hero-zh">少林</div>
+      </div>
+
       <!-- Decorative line -->
       <div class="flex items-center justify-center gap-4 mb-8" data-gsap="hero-line">
         <div class="h-px w-12 bg-gold/60"></div>

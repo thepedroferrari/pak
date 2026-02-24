@@ -1,89 +1,610 @@
 ---
-import ContentLayout from '@/layouts/ContentLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import AboutAnimation from '@/components/AboutAnimation.astro';
 import { t } from '@/i18n/ui';
 
 const lang = 'en';
+
+const timeline = [
+  {
+    year: '1976',
+    zh: '始',
+    title: 'First Steps',
+    desc: 'Gilmar Dantas begins his martial arts training, competing in his first championships and discovering the passion that would define his life.',
+    image: '/images/instructors/gilmar-primeiro-campeonato.jpg',
+    imageAlt: 'Gilmar Dantas at his first championship',
+    side: 'left' as const,
+    highlight: false,
+  },
+  {
+    year: '1979',
+    zh: '師',
+    title: 'Meeting the Master',
+    desc: 'A decisive encounter with Grand Master Chan Kowk Wai, who introduced traditional Chinese Kung Fu to Brazil. The beginning of a master-disciple relationship that would transform the martial arts landscape.',
+    image: '/images/instructors/chan-kowk-wai.jpg',
+    imageAlt: 'Grand Master Chan Kowk Wai',
+    side: 'right' as const,
+    highlight: false,
+  },
+  {
+    year: '1984',
+    zh: '創',
+    title: 'Founding of Pak Shao Lin',
+    desc: 'On July 1st, Master Gilmar Dantas founds the Pak Shao Lin Kung Fu Association in São Paulo, fulfilling his dream of preserving and transmitting the traditions of Chinese Kung Fu.',
+    image: '/images/instructors/gilmar-chan-academia.jpg',
+    imageAlt: 'Master Gilmar and Grand Master Chan at the academy',
+    side: 'left' as const,
+    highlight: true,
+  },
+  {
+    year: '1986',
+    zh: '長',
+    title: 'Recognition and Diploma',
+    desc: 'Receiving his diploma from Grand Master Chan Kowk Wai, consolidating the formal recognition of lineage and authority to teach traditional styles.',
+    image: '/images/instructors/gilmar-chan-diploma.jpg',
+    imageAlt: 'Master Gilmar receiving diploma from Grand Master Chan',
+    side: 'right' as const,
+    highlight: false,
+  },
+  {
+    year: '1995',
+    zh: '勝',
+    title: 'Competition Era',
+    desc: 'The Pak Shao Lin competition team makes its debut in official championships, beginning a trajectory of victories in state, national, and international tournaments.',
+    image: '/images/competitions/championships-banner.jpg',
+    imageAlt: 'Championships banner',
+    side: 'left' as const,
+    highlight: false,
+  },
+  {
+    year: '2001',
+    zh: '傳',
+    title: 'Instructor Graduation',
+    desc: 'First class of instructors graduated by Pak Shao Lin, ensuring the continuity and expansion of teachings for future generations of practitioners.',
+    image: '/images/instructors/gilmar-formatura.jpg',
+    imageAlt: 'Instructor graduation ceremony',
+    side: 'right' as const,
+    highlight: false,
+  },
+  {
+    year: '2004',
+    zh: '承',
+    title: 'Expanding Locations',
+    desc: 'Opening of new training locations, bringing traditional Kung Fu to more regions and expanding the school\'s reach.',
+    image: null as string | null,
+    imageAlt: '',
+    side: 'left' as const,
+    highlight: false,
+  },
+  {
+    year: '2007',
+    zh: '榮',
+    title: 'FPKF Honor',
+    desc: 'Master Gilmar Dantas receives a special honor from the São Paulo Kung Fu Federation, recognizing his fundamental contribution to the development of Kung Fu in the state.',
+    image: '/images/instructors/gilmar-homenagem-fpkf-2007.jpg',
+    imageAlt: 'São Paulo Kung Fu Federation honor',
+    side: 'right' as const,
+    highlight: false,
+  },
+  {
+    year: '2014–2018',
+    zh: '拓',
+    title: 'New Horizons',
+    desc: 'A period of renewal and expansion, with the training of new instructors and the consolidation of locations in São José dos Campos and other cities.',
+    image: null as string | null,
+    imageAlt: '',
+    side: 'left' as const,
+    highlight: false,
+  },
+  {
+    year: '2024',
+    zh: '慶',
+    title: '40 Years of Tradition',
+    desc: 'Celebration of Pak Shao Lin\'s 40th anniversary, marking four decades of dedication to preserving traditional Chinese martial arts in Brazil.',
+    image: '/images/instructors/gilmar-40-anos.jpg',
+    imageAlt: 'Pak Shao Lin 40th anniversary celebration',
+    side: 'right' as const,
+    highlight: true,
+  },
+];
+
+const galleryRow1 = [
+  { src: '/images/gallery/instructors-professors/gilfac.jpg', alt: 'Broadsword technique' },
+  { src: '/images/gallery/instructors-professors/gilvoad.jpg', alt: 'Flying kick' },
+  { src: '/images/gallery/instructors-professors/robvoad.jpg', alt: 'Robson - flying kick' },
+  { src: '/images/gallery/instructors-professors/gilfla.jpg', alt: 'Training with Flávio' },
+  { src: '/images/gallery/instructors-professors/gilespadrag.jpg', alt: 'Sword and dragon' },
+  { src: '/images/gallery/instructors-professors/felipe-giorgi-kwantao.jpg', alt: 'Felipe Giorgi - Kwan Tao' },
+  { src: '/images/gallery/instructors-professors/williansbebad.jpg', alt: 'Willians - drunken staff' },
+  { src: '/images/gallery/instructors-professors/gilbast.jpg', alt: 'Staff technique' },
+  { src: '/images/instructors/gilmar-chute-frontal.jpg', alt: 'Front kick' },
+  { src: '/images/instructors/gilmar-facao.jpg', alt: 'Broadsword' },
+];
+
+const galleryRow2 = [
+  { src: '/images/gallery/instructors-professors/chtfrontgil.jpg', alt: 'Front kick' },
+  { src: '/images/gallery/instructors-professors/flav-rob-desarm.jpg', alt: 'Disarming technique' },
+  { src: '/images/gallery/instructors-professors/egon01.jpg', alt: 'Egon in action' },
+  { src: '/images/gallery/instructors-professors/mario-tig.jpg', alt: 'Mario - tiger style' },
+  { src: '/images/gallery/instructors-professors/gilkwant.jpg', alt: 'Kwan Tao' },
+  { src: '/images/gallery/instructors-professors/robserp.jpg', alt: 'Robson - serpent' },
+  { src: '/images/gallery/instructors-professors/giorgi-punhais.jpg', alt: 'Giorgi - daggers' },
+  { src: '/images/gallery/instructors-professors/giltigre.jpg', alt: 'Tiger style' },
+  { src: '/images/instructors/gilmar-chute-coice.jpg', alt: 'Back kick' },
+  { src: '/images/gallery/instructors-professors/gilserp.jpg', alt: 'Serpent' },
+];
+
+const compImages = [
+  { src: '/images/competitions/arnold-classic-2023.jpg', alt: 'Arnold Classic 2023' },
+  { src: '/images/competitions/championships-banner.jpg', alt: 'Championships' },
+  { src: '/images/competitions/extreme-2025.jpg', alt: 'Extreme 2025' },
+  { src: '/images/competitions/interstate-2025.jpg', alt: 'Interstate 2025' },
+];
+
+const stats = [
+  { number: '30+', label: 'Years of Competition', zh: '年' },
+  { number: '100+', label: 'Medals Won', zh: '牌' },
+  { number: '5', label: 'Championship Levels', zh: '級' },
+  { number: '40+', label: 'Years of Tradition', zh: '傳' },
+];
 ---
 
-<ContentLayout
+<BaseLayout
   title={t(lang, 'about.title')}
-  description="Learn about the history of the Pak Shao Lin Association, founded in 1984 by Master Gilmar Dantas."
+  description="Learn about the history of the Pak Shao Lin Association, founded in 1984 by Master Gilmar Dantas — four decades of tradition in Chinese Kung Fu."
   lang={lang}
-  breadcrumbs={[
-    { label: t(lang, 'nav.home'), href: '/en/' },
-    { label: t(lang, 'nav.about') },
-  ]}
 >
-  <section class="space-y-8">
-    <!-- Founder Image -->
-    <div class="not-prose rounded-xl overflow-hidden shadow-lg">
-      <img src="/images/instructors/gilmar-dantas-biography.jpg" alt="Master Gilmar Dantas" class="w-full h-64 sm:h-80 object-cover" loading="lazy" />
+  <!-- ═══ 1. CINEMATIC HERO ═══════════════════════════════════════════ -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <!-- Parallax background -->
+    <div data-gsap="hero-bg" class="absolute inset-0">
+      <img
+        src="/images/instructors/gilmar-dantas-biography.jpg"
+        alt=""
+        class="w-full h-full object-cover opacity-25"
+        aria-hidden="true"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black"></div>
     </div>
 
-    <div>
-      <h2>{t(lang, 'about.history')}</h2>
-      <p>
-        The <strong>Pak Shao Lin Kung Fu Association</strong> was founded on <strong>July 1, 1984</strong> by
-        <strong>Master Gilmar Dantas</strong> in the city of São Paulo, Brazil. The association is
-        affiliated with the Brazilian Kung Fu Confederation and the International Wushu Federation.
-      </p>
-      <p>
-        Master Gilmar Dantas is a direct disciple of <strong>Grand Master Chan Kowk Wai</strong>,
-        who was responsible for introducing and spreading traditional Chinese Kung Fu in Brazil.
-        Under his guidance, Pak Shao Lin has become one of the most respected Chinese martial arts
-        schools in the country.
-      </p>
-    </div>
+    <!-- Content -->
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+      <!-- Ghostly watermark -->
+      <div
+        data-gsap="hero-zh"
+        class="font-chinese text-[10rem] sm:text-[14rem] lg:text-[18rem] text-white/[0.04] leading-none select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none whitespace-nowrap"
+        aria-hidden="true"
+      >關於</div>
 
-    <div>
-      <h2>Tradition and Lineage</h2>
-      <div class="not-prose my-4 flex gap-4 justify-center">
-        <img src="/images/instructors/chan-kowk-wai.jpg" alt="Grand Master Chan Kowk Wai" class="w-32 h-32 rounded-full object-cover border-2 border-gold/30 shadow" loading="lazy" />
-        <img src="/images/instructors/gilmar-chan-diploma.jpg" alt="Master Gilmar and Grand Master Chan" class="w-32 h-32 rounded-full object-cover border-2 border-red-primary/30 shadow" loading="lazy" />
+      <!-- Decorative line -->
+      <div data-gsap="hero-line" class="w-px h-12 bg-gradient-to-b from-transparent via-gold to-transparent mx-auto mb-6"></div>
+
+      <!-- Title -->
+      <h1 data-gsap="hero-title" class="font-display text-4xl sm:text-5xl lg:text-6xl text-white font-bold tracking-tight">
+        {t(lang, 'about.title')}
+      </h1>
+
+      <!-- Ornamental divider -->
+      <div data-gsap="hero-divider" class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-6">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/50"></div>
+        <div class="w-2 h-2 rotate-45 border border-gold/60"></div>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/50"></div>
       </div>
-      <p>
-        Our school follows the lineage of the Northern Shaolin Temple of China, preserving
-        the traditional teachings that have been passed down from generation to generation.
-        Our lineage connects directly to the historic masters of Chinese Kung Fu, ensuring
-        the authenticity and purity of the styles we teach.
+
+      <!-- Subtitle -->
+      <p data-gsap="hero-subtitle" class="mt-6 text-gold text-lg sm:text-xl font-medium tracking-wide">
+        Four Decades of Tradition and Excellence
+      </p>
+
+      <!-- Description -->
+      <p data-gsap="hero-desc" class="mt-4 text-white/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+        Discover the history of the Pak Shao Lin Association, founded in 1984 by Master Gilmar Dantas — a journey of dedication to preserving traditional Chinese martial arts.
       </p>
     </div>
 
-    <div>
-      <h2>Styles We Teach</h2>
-      <p>
-        Pak Shao Lin teaches over 20 traditional Kung Fu styles, including:
-      </p>
-      <ul>
-        <li><strong>Northern Shaolin</strong> — Fundamental training base</li>
-        <li><strong>Praying Mantis (Tang Lang)</strong> — Fast and precise style</li>
-        <li><strong>Eagle Claw (Ying Jow)</strong> — Grappling techniques</li>
-        <li><strong>Tai Chi Chuan</strong> — Internal art for health and combat</li>
-        <li><strong>Pa Kua Chang</strong> — Circular movements and palms</li>
-        <li><strong>Hsing Yi Chuan</strong> — Linear and explosive style</li>
-        <li><strong>Choy Lay Fut</strong> — Long-range style</li>
-        <li><strong>Wing Chun</strong> — Close-range combat</li>
-      </ul>
-    </div>
-
-    <div>
-      <h2>Competitions and Achievements</h2>
-      <p>
-        Since <strong>1995</strong>, the Pak Shao Lin competition team has participated in
-        state, national, and international championships, accumulating hundreds of medals
-        and training high-performance athletes. Our students represent Brazil in
-        world Wushu competitions.
-      </p>
-    </div>
-
-    <div>
-      <h2>{t(lang, 'about.mission')}</h2>
-      <p>
-        Our mission is to preserve and spread traditional Chinese martial arts,
-        promoting the physical, mental, and spiritual development of our students.
-        We believe that Kung Fu is more than a sport — it is a path of
-        self-knowledge, discipline, and respect for millennial tradition.
-      </p>
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <div data-gsap="scroll-indicator" class="w-1.5 h-1.5 rounded-full bg-gold/60"></div>
     </div>
   </section>
-</ContentLayout>
+
+  <!-- ═══ 2. FOUNDER PROFILE ═════════════════════════════════════════ -->
+  <section class="py-20 sm:py-28 about-dark-panel">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative">
+        <!-- Corner ornaments -->
+        <div class="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-gold/25 hidden sm:block"></div>
+        <div class="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-gold/25 hidden sm:block"></div>
+
+        <!-- Section heading -->
+        <div class="text-center mb-16">
+          <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">師父</div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-white">The Founder</h2>
+          <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+            <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+            <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+            <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+          </div>
+        </div>
+
+        <!-- 2-column layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <!-- Portrait with corner ornaments -->
+          <div data-gsap="founder-img" class="relative mx-auto max-w-md">
+            <div class="relative aspect-[3/4] rounded-lg overflow-hidden border border-gold/20 shadow-2xl">
+              <img src="/images/instructors/gilmar-dantas-2.jpg" alt="Master Gilmar Dantas" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-gold/40"></div>
+            <div class="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-gold/40"></div>
+            <div class="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-gold/40"></div>
+            <div class="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-gold/40"></div>
+          </div>
+
+          <!-- Biography + quote -->
+          <div data-gsap="founder-text" class="text-white/80 space-y-4">
+            <h3 class="text-2xl font-bold text-gold mb-4">Master Gilmar Dantas</h3>
+            <p class="leading-relaxed">
+              Master Gilmar Dantas is the founder of the Pak Shao Lin Kung Fu Association,
+              one of the most respected Chinese martial arts schools in Brazil.
+              A direct disciple of Grand Master Chan Kowk Wai, he dedicates his life to
+              preserving and transmitting the traditional styles of Chinese Kung Fu.
+            </p>
+            <p class="leading-relaxed">
+              Since his first steps in martial arts in 1976, Master Gilmar has built
+              a trajectory of excellence, training generations of practitioners and
+              instructors, and carrying the Pak Shao Lin name to national and
+              international competitions.
+            </p>
+
+            <!-- Philosophy quote -->
+            <blockquote data-gsap="founder-quote" class="relative mt-8 pl-6 border-l-4 border-gold/60 bg-white/[0.03] rounded-r-lg p-6">
+              <div class="absolute -top-4 -right-4 font-chinese text-6xl text-gold/10 select-none pointer-events-none" aria-hidden="true">道</div>
+              <p class="text-white/90 italic leading-relaxed">
+                "I remember those were days of great willpower, because Kung Fu was
+                practically unknown. But the passion for martial arts and the certainty
+                that we were preserving something valuable kept us strong."
+              </p>
+              <cite class="block mt-3 text-gold/70 text-sm not-italic">— Master Gilmar Dantas</cite>
+            </blockquote>
+          </div>
+        </div>
+
+        <div class="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-gold/25 hidden sm:block"></div>
+        <div class="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-gold/25 hidden sm:block"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. VISUAL TIMELINE ═════════════════════════════════════════ -->
+  <section class="py-20 sm:py-28 bg-black" data-gsap="timeline-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section heading -->
+      <div class="text-center mb-16">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">歷史</div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white">Our Journey</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline-container relative">
+        <!-- Center / left line -->
+        <div
+          data-gsap="timeline-line"
+          class="timeline-line absolute top-0 bottom-0 w-0.5 bg-gradient-to-b from-gold/40 via-gold/20 to-gold/40"
+        ></div>
+
+        {timeline.map((item) => (
+          <div
+            data-gsap="timeline-milestone"
+            data-side={item.side}
+            class="timeline-item relative mb-12 last:mb-0"
+          >
+            <!-- Dot on the line -->
+            <div
+              data-gsap="timeline-dot"
+              class:list={[
+                'timeline-dot absolute w-4 h-4 rounded-full border-2 z-10',
+                item.highlight
+                  ? 'bg-gold border-gold shadow-[0_0_12px_rgba(212,175,55,0.6)]'
+                  : 'bg-black border-gold/50',
+              ]}
+            >
+              {item.highlight && (
+                <div class="absolute inset-0 rounded-full bg-gold/40 animate-ping"></div>
+              )}
+            </div>
+
+            <!-- Card -->
+            <div
+              class:list={[
+                'relative p-6 rounded-xl border',
+                item.highlight
+                  ? 'bg-gold/[0.06] border-gold/30 shadow-lg shadow-gold/5'
+                  : 'bg-white/[0.03] border-white/10',
+              ]}
+            >
+              <!-- Year + Chinese char badge -->
+              <div class:list={[
+                'inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold mb-3',
+                item.highlight ? 'bg-gold/20 text-gold' : 'bg-white/10 text-white/70',
+              ]}>
+                <span class="font-chinese text-lg">{item.zh}</span>
+                <span>{item.year}</span>
+              </div>
+
+              <h3 class:list={[
+                'text-xl font-bold mb-2',
+                item.highlight ? 'text-gold' : 'text-white',
+              ]}>{item.title}</h3>
+
+              <p class="text-white/70 leading-relaxed text-sm">{item.desc}</p>
+
+              {item.image && (
+                <div class="mt-4 rounded-lg overflow-hidden border border-white/10">
+                  <img src={item.image} alt={item.imageAlt} class="w-full h-40 object-cover" loading="lazy" />
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. GRAND MASTER CHAN MEMORIAL ══════════════════════════════ -->
+  <section class="py-20 sm:py-28 bg-black relative overflow-hidden" data-gsap="memorial-section">
+    <!-- Subtle radial glow -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,0,0,0.08),transparent_70%)]"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <!-- Section heading -->
+      <div class="text-center mb-16">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">敬</div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white">In Memoriam</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+
+      <!-- Memorial card -->
+      <div class="relative bg-white/[0.03] border border-gold/20 rounded-2xl p-8 md:p-12 max-w-4xl mx-auto">
+        <!-- Corner ornaments -->
+        <div class="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-gold/25"></div>
+        <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-gold/25"></div>
+        <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-gold/25"></div>
+        <div class="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-gold/25"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-[260px_1fr] gap-10 items-start">
+          <!-- Portrait with double-border frame -->
+          <div data-gsap="memorial-photo" class="mx-auto">
+            <div class="w-52 h-68 sm:w-56 sm:h-72 rounded-lg overflow-hidden border-2 border-gold/40 shadow-xl ring-4 ring-gold/10 ring-offset-4 ring-offset-black">
+              <img src="/images/instructors/chan-portrait.jpg" alt="Grand Master Chan Kowk Wai" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <p class="text-center mt-4 text-gold/60 text-sm tracking-widest">1936 — 2022</p>
+          </div>
+
+          <!-- Biography + achievements -->
+          <div data-gsap="memorial-text">
+            <h3 class="text-2xl font-bold text-gold mb-1">Grand Master Chan Kowk Wai</h3>
+            <p class="font-chinese text-white/40 text-lg mb-4">陳國威</p>
+            <p class="text-white/80 leading-relaxed mb-6">
+              Grand Master Chan Kowk Wai was responsible for introducing and spreading
+              traditional Chinese Kung Fu in Brazil, dedicating over 60 years of his
+              life to martial arts.
+            </p>
+            <ul class="space-y-2.5 text-white/70 text-sm">
+              <li class="flex items-start gap-2">
+                <span class="text-gold mt-0.5">&#x2022;</span>
+                <span>Arrived in Brazil in 1960, from Canton, China</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-gold mt-0.5">&#x2022;</span>
+                <span>Founded the Sino-Brazilian Kung Fu Academy</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-gold mt-0.5">&#x2022;</span>
+                <span>Grand Master 10th Degree — the highest rank in Kung Fu</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-gold mt-0.5">&#x2022;</span>
+                <span>Trained hundreds of instructors and masters throughout Brazil</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-gold mt-0.5">&#x2022;</span>
+                <span>Preserved the direct lineage of the Northern Shaolin Temple</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 5. PHOTO GALLERY STRIP ════════════════════════════════════ -->
+  <section class="py-20 sm:py-28 bg-black overflow-hidden" data-gsap="gallery-strip">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <div class="text-center">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">影</div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white">Decades in Motion</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <!-- Vignette overlays -->
+      <div class="absolute left-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+
+      <!-- Row 1 — scrolls left -->
+      <div class="mb-4 overflow-hidden">
+        <div data-gsap="gallery-row-1" class="flex gap-3" style="width: max-content;">
+          {[...galleryRow1, ...galleryRow1].map((img) => (
+            <img
+              src={img.src}
+              alt={img.alt}
+              class="h-36 sm:h-44 md:h-52 w-auto rounded-lg object-cover flex-shrink-0"
+              loading="lazy"
+            />
+          ))}
+        </div>
+      </div>
+
+      <!-- Row 2 — scrolls right -->
+      <div class="overflow-hidden">
+        <div data-gsap="gallery-row-2" class="flex gap-3" style="width: max-content;">
+          {[...galleryRow2, ...galleryRow2].map((img) => (
+            <img
+              src={img.src}
+              alt={img.alt}
+              class="h-36 sm:h-44 md:h-52 w-auto rounded-lg object-cover flex-shrink-0"
+              loading="lazy"
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. COMPETITION ACHIEVEMENTS ═══════════════════════════════ -->
+  <section class="py-20 sm:py-28 about-dark-panel relative overflow-hidden">
+    <!-- Faint background image -->
+    <div class="absolute inset-0 opacity-[0.04]">
+      <img src="/images/competitions/championships-banner.jpg" alt="" class="w-full h-full object-cover" aria-hidden="true" />
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <!-- Section heading -->
+      <div class="text-center mb-16">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">勝</div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white">Achievements</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+
+      <!-- Stats grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12" data-gsap="stat-grid">
+        {stats.map((stat) => (
+          <div data-gsap="stat-card" class="text-center p-6 rounded-xl bg-white/[0.03] border border-gold/10">
+            <div class="font-chinese text-gold/20 text-2xl mb-1" aria-hidden="true">{stat.zh}</div>
+            <div class="text-4xl sm:text-5xl font-black text-gold mb-2">{stat.number}</div>
+            <div class="text-white/60 text-sm">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Competition images -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" data-gsap="comp-grid">
+        {compImages.map((img) => (
+          <div data-gsap="comp-img" class="aspect-[4/3] rounded-xl overflow-hidden border border-white/10">
+            <img src={img.src} alt={img.alt} class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 7. MISSION / PHILOSOPHY — BURNING IDEOGRAM ════════════════ -->
+  <section class="py-24 sm:py-32 bg-black relative overflow-hidden" data-gsap="mission-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+      <!-- Glow -->
+      <div
+        data-gsap="about-ideogram-glow"
+        class="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-red-primary/20 blur-3xl pointer-events-none"
+      ></div>
+
+      <!-- Character -->
+      <div class="relative z-10 mb-8">
+        <span
+          data-gsap="about-ideogram"
+          class="font-chinese text-[12rem] sm:text-[16rem] md:text-[20rem] text-gold/90 leading-none select-none inline-block"
+        >道</span>
+      </div>
+
+      <!-- Mission text -->
+      <div data-gsap="mission-text" class="relative z-10 max-w-2xl mx-auto">
+        <p class="text-gold/80 text-sm tracking-[0.3em] uppercase mb-4">The Way</p>
+        <p class="text-white/90 text-lg sm:text-xl leading-relaxed">
+          Our mission is to preserve and spread traditional Chinese martial arts,
+          promoting the physical, mental, and spiritual development of our students.
+          Kung Fu is more than a sport — it is a path of self-knowledge, discipline,
+          and respect for millennial tradition.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 8. BOTTOM CTA ═════════════════════════════════════════════ -->
+  <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold">{t(lang, 'home.cta.title')}</h2>
+      <p class="mt-4 text-lg text-white/80">{t(lang, 'home.cta.description')}</p>
+      <a
+        href="/en/contact"
+        class="mt-8 inline-block px-8 py-3.5 bg-gold text-black font-bold rounded-lg hover:bg-gold-light transition-colors text-lg shadow-lg"
+      >
+        {t(lang, 'home.cta.button')}
+      </a>
+    </div>
+  </section>
+
+  <AboutAnimation />
+</BaseLayout>
+
+<style>
+  .about-dark-panel {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 15% 20%, rgba(139, 0, 0, 0.12), transparent 50%),
+      radial-gradient(ellipse at 85% 70%, rgba(212, 175, 55, 0.06), transparent 50%),
+      repeating-linear-gradient(45deg, transparent, transparent 29px, rgba(212, 175, 55, 0.02) 29px, rgba(212, 175, 55, 0.02) 30px),
+      repeating-linear-gradient(-45deg, transparent, transparent 29px, rgba(212, 175, 55, 0.02) 29px, rgba(212, 175, 55, 0.02) 30px);
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  }
+
+  /* ─── Timeline layout ─────────────────────────────────────────── */
+  .timeline-line {
+    left: 1.25rem;
+    transform: translateX(-50%);
+  }
+  .timeline-dot {
+    top: 1.75rem;
+    left: 1.25rem;
+    transform: translateX(-50%);
+  }
+  .timeline-item {
+    padding-left: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .timeline-line {
+      left: 50%;
+    }
+    .timeline-dot {
+      left: 50%;
+    }
+    .timeline-item {
+      padding-left: 0;
+    }
+    .timeline-item[data-side="left"] {
+      padding-right: calc(50% + 2rem);
+      text-align: right;
+    }
+    .timeline-item[data-side="right"] {
+      padding-left: calc(50% + 2rem);
+    }
+  }
+</style>

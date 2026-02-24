@@ -1,0 +1,172 @@
+---
+// Script-only component — renders no HTML, just client-side animation logic.
+// Imported at the bottom of contact pages to layer GSAP animations on top of static content.
+---
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    // ─── Hero entrance ──────────────────────────────────────────────
+    gsap.set('[data-gsap="hero-zh"]', { opacity: 0, scale: 0.8 });
+    gsap.set('[data-gsap="hero-title"]', { opacity: 0, y: 30 });
+    gsap.set('[data-gsap="hero-divider"]', { opacity: 0, scaleX: 0 });
+    gsap.set('[data-gsap="hero-desc"]', { opacity: 0, y: 20 });
+
+    const heroTl = gsap.timeline({ delay: 0.2 });
+    heroTl
+      .to('[data-gsap="hero-zh"]', { opacity: 1, scale: 1, duration: 1, ease: 'power2.out' })
+      .to('[data-gsap="hero-title"]', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+      .to('[data-gsap="hero-divider"]', { opacity: 1, scaleX: 1, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+      .to('[data-gsap="hero-desc"]', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2');
+
+    // ─── Section headers: fade + slide up ───────────────────────────
+    gsap.set('[data-gsap="section-head"]', { opacity: 0, y: 30 });
+    document.querySelectorAll('[data-gsap="section-head"]').forEach((el) => {
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ─── Location cards: staggered slide up ─────────────────────────
+    const locationCards = document.querySelectorAll('[data-gsap="location-card"]');
+    gsap.set(locationCards, { opacity: 0, y: 40 });
+    locationCards.forEach((card, i) => {
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        delay: i * 0.25,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      // Delayed map iframe reveal
+      const map = card.querySelector('[data-gsap="location-map"]');
+      if (map) {
+        gsap.set(map, { opacity: 0 });
+        gsap.to(map, {
+          opacity: 1,
+          duration: 0.5,
+          delay: i * 0.25 + 0.3,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+    });
+
+    // ─── Form panel: corner ornaments + content fade ────────────────
+    const formPanel = document.querySelector('[data-gsap="form-panel"]');
+    if (formPanel) {
+      const ornaments = formPanel.querySelectorAll('[data-gsap="corner-ornament"]');
+      const formContent = formPanel.querySelector('[data-gsap="contact-form"]');
+
+      gsap.set(ornaments, { opacity: 0, scale: 0.5 });
+      if (formContent) gsap.set(formContent, { opacity: 0, y: 20 });
+
+      const formTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: formPanel,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      formTl.to(ornaments, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        ease: 'power2.out',
+        stagger: 0.08,
+      });
+
+      if (formContent) {
+        formTl.to(formContent, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+        }, '-=0.2');
+      }
+    }
+
+    // ─── Social icons: scale pop ────────────────────────────────────
+    const socialIcons = document.querySelectorAll('[data-gsap="social-icon"]');
+    gsap.set(socialIcons, { opacity: 0, scale: 0 });
+    const socialSection = document.querySelector('[data-gsap="social-section"]');
+    if (socialSection) {
+      gsap.to(socialIcons, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        ease: 'back.out(1.7)',
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: socialSection,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // ─── Wuxing elements: sequential pulse ──────────────────────────
+    const wuxingElements = document.querySelectorAll('[data-gsap="wuxing-element"]');
+    gsap.set(wuxingElements, { opacity: 0, scale: 0.5 });
+    const wuxingSection = document.querySelector('[data-gsap="wuxing-section"]');
+    if (wuxingSection) {
+      gsap.to(wuxingElements, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: 'back.out(1.7)',
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: wuxingSection,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // ─── CTA section fade ───────────────────────────────────────────
+    const ctaSection = document.querySelector('[data-gsap="cta-section"]');
+    if (ctaSection) {
+      const ctaInner = ctaSection.querySelector(':scope > div');
+      if (ctaInner) {
+        gsap.set(ctaInner.children, { opacity: 0, y: 20 });
+        gsap.to(ctaInner.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: ctaSection,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+    }
+  }
+</script>

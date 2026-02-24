@@ -1,0 +1,179 @@
+---
+// Script-only component — renders no HTML, just client-side animation logic.
+// Imported at the bottom of gallery pages to layer GSAP animations on top of static content.
+---
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const EMBER_PEAK = '0 0 30px rgba(196, 30, 58, 0.9), 0 0 60px rgba(139, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.7), 0 0 100px rgba(196, 30, 58, 0.3)';
+  const EMBER_WARM = '0 0 12px rgba(212, 175, 55, 0.3), 0 0 30px rgba(196, 30, 58, 0.12), 0 0 4px rgba(212, 175, 55, 0.15)';
+  const EMBER_NONE = '0 0 0px transparent';
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    // ─── Hero entrance (staggered + ember glow) ─────────────────────
+    gsap.set('[data-gsap="hero-zh"]', { opacity: 0, scale: 0.8, textShadow: EMBER_NONE });
+    gsap.set('[data-gsap="hero-title"]', { opacity: 0, y: 30, textShadow: EMBER_NONE });
+    gsap.set('[data-gsap="hero-divider"]', { opacity: 0, scaleX: 0 });
+    gsap.set('[data-gsap="hero-desc"]', { opacity: 0, y: 20 });
+
+    const heroTl = gsap.timeline({ delay: 0.2 });
+    heroTl
+      .to('[data-gsap="hero-zh"]', { opacity: 1, scale: 1, duration: 1.2, ease: 'power2.out' })
+      .to('[data-gsap="hero-zh"]', {
+        textShadow: '0 0 60px rgba(196, 30, 58, 0.4), 0 0 120px rgba(139, 0, 0, 0.2)',
+        duration: 1.0, ease: 'power2.in',
+      }, 0.2)
+      .to('[data-gsap="hero-zh"]', {
+        textShadow: '0 0 20px rgba(196, 30, 58, 0.08), 0 0 60px rgba(139, 0, 0, 0.04)',
+        duration: 1.5, ease: 'power2.out',
+      }, 1.2)
+      .to('[data-gsap="hero-title"]', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.7)
+      .to('[data-gsap="hero-title"]', {
+        textShadow: EMBER_PEAK,
+        duration: 0.6, ease: 'power2.in',
+      }, 0.8)
+      .to('[data-gsap="hero-title"]', {
+        textShadow: EMBER_WARM,
+        duration: 1.2, ease: 'power2.out',
+      }, 1.4)
+      .to('[data-gsap="hero-divider"]', { opacity: 1, scaleX: 1, duration: 0.6, ease: 'power2.out' }, 1.1)
+      .to('[data-gsap="hero-desc"]', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 1.3);
+
+    // ─── Section Chinese headings — burning reveal ──────────────────
+    document.querySelectorAll('[data-gsap="section-zh"]').forEach((el) => {
+      gsap.set(el, {
+        clipPath: 'inset(100% 0 0 0)',
+        textShadow: EMBER_NONE,
+        opacity: 1,
+      });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      tl.to(el, {
+        clipPath: 'inset(0% 0 0 0)',
+        duration: 1.0,
+        ease: 'power1.inOut',
+      }, 0);
+
+      tl.to(el, {
+        textShadow: '0 0 25px rgba(196, 30, 58, 0.7), 0 0 50px rgba(139, 0, 0, 0.4), 0 0 12px rgba(212, 175, 55, 0.5)',
+        duration: 0.5,
+        ease: 'power2.in',
+      }, 0.2);
+
+      tl.to(el, {
+        textShadow: '0 0 8px rgba(212, 175, 55, 0.15), 0 0 20px rgba(196, 30, 58, 0.06)',
+        duration: 0.8,
+        ease: 'power2.out',
+      }, 0.7);
+    });
+
+    // ─── Section heads: fade + slide up ─────────────────────────────
+    gsap.set('[data-gsap="section-head"]', { opacity: 0, y: 30 });
+    document.querySelectorAll('[data-gsap="section-head"]').forEach((el) => {
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ─── Gallery strips — infinite horizontal scroll ────────────────
+    function createInfiniteScroll(selector: string, reverse: boolean) {
+      const row = document.querySelector(selector);
+      if (!row) return null;
+
+      if (reverse) {
+        gsap.set(row, { xPercent: -50 });
+        return gsap.to(row, {
+          xPercent: 0,
+          duration: 45,
+          ease: 'none',
+          repeat: -1,
+        });
+      }
+
+      return gsap.to(row, {
+        xPercent: -50,
+        duration: 40,
+        ease: 'none',
+        repeat: -1,
+      });
+    }
+
+    const loop1 = createInfiniteScroll('[data-gsap="gallery-row-1"]', false);
+    const loop2 = createInfiniteScroll('[data-gsap="gallery-row-2"]', true);
+
+    const galleryStrip = document.querySelector('[data-gsap="gallery-strip"]');
+    if (galleryStrip && (loop1 || loop2)) {
+      galleryStrip.addEventListener('mouseenter', () => {
+        if (loop1) gsap.to(loop1, { timeScale: 0.2, duration: 0.8 });
+        if (loop2) gsap.to(loop2, { timeScale: 0.2, duration: 0.8 });
+      });
+      galleryStrip.addEventListener('mouseleave', () => {
+        if (loop1) gsap.to(loop1, { timeScale: 1, duration: 0.8 });
+        if (loop2) gsap.to(loop2, { timeScale: 1, duration: 0.8 });
+      });
+    }
+
+    // ─── Gallery grid stagger — bouncy pop-in on scroll ─────────────
+    document.querySelectorAll('[data-gsap="gallery-grid"]').forEach((grid) => {
+      const items = grid.querySelectorAll('[data-gsap="gallery-item"]');
+      if (items.length === 0) return;
+
+      gsap.set(items, { opacity: 0, y: 30, scale: 0.95 });
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        ease: 'back.out(1.4)',
+        stagger: 0.03,
+        scrollTrigger: {
+          trigger: grid,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ─── CTA section fade ───────────────────────────────────────────
+    const ctaSection = document.querySelector('[data-gsap="cta-section"]');
+    if (ctaSection) {
+      const ctaInner = ctaSection.querySelector(':scope > div');
+      if (ctaInner) {
+        gsap.set(ctaInner.children, { opacity: 0, y: 20 });
+        gsap.to(ctaInner.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: ctaSection,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+    }
+  }
+</script>

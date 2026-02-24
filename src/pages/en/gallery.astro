@@ -1,115 +1,440 @@
 ---
-import ContentLayout from '@/layouts/ContentLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import GalleryAnimation from '@/components/GalleryAnimation.astro';
 import { t } from '@/i18n/ui';
 
 const lang = 'en';
+
+// ── Highlight reel images (curated best-of across categories) ──
+const stripRow1 = [
+  { src: '/images/gallery/instructors-professors/giltigre.jpg', alt: 'Tiger Technique' },
+  { src: '/images/gallery/shaolin-monks/mongvoad.jpg', alt: 'Monk flying kick' },
+  { src: '/images/gallery/weapons/kwantao.jpg', alt: 'Kwan Dao' },
+  { src: '/images/gallery/advanced-students/mariovoadora.jpg', alt: 'Flying kick' },
+  { src: '/images/gallery/instructors-professors/gilespadrag.jpg', alt: 'Dragon Sword' },
+  { src: '/images/gallery/shaolin-monks/monges1.jpg', alt: 'Shaolin Monks' },
+  { src: '/images/gallery/advanced-students/filipe-rodrigues-pulo-1.jpg', alt: 'Jump' },
+  { src: '/images/gallery/instructors-professors/flav-rob-desarm.jpg', alt: 'Disarming' },
+  { src: '/images/gallery/weapons/tridente.jpg', alt: 'Trident' },
+  { src: '/images/gallery/shaolin-monks/mongecorrendoparede.jpg', alt: 'Running on wall' },
+  { src: '/images/gallery/instructors-professors/gilnunch.jpg', alt: 'Nunchaku' },
+  { src: '/images/gallery/advanced-students/gustavochtalto.jpg', alt: 'High kick' },
+];
+
+const stripRow2 = [
+  { src: '/images/gallery/instructors-professors/robvoad.jpg', alt: 'Flying kick' },
+  { src: '/images/gallery/shaolin-monks/mongkwant.jpg', alt: 'Monk Kwan Dao' },
+  { src: '/images/gallery/weapons/lana.jpg', alt: 'Spear' },
+  { src: '/images/gallery/advanced-students/diego-5kt.jpg', alt: 'Kata' },
+  { src: '/images/gallery/instructors-professors/gilserp.jpg', alt: 'Snake' },
+  { src: '/images/gallery/shaolin-monks/mongscav.jpg', alt: 'Monk' },
+  { src: '/images/gallery/instructors-professors/mario-tig.jpg', alt: 'Tiger' },
+  { src: '/images/gallery/weapons/espada-do-dragao.jpg', alt: 'Dragon Sword' },
+  { src: '/images/gallery/advanced-students/willfernvoad.jpg', alt: 'Flying kick' },
+  { src: '/images/gallery/shaolin-monks/mongeextremeflex.jpg', alt: 'Extreme flexibility' },
+  { src: '/images/gallery/instructors-professors/giorgi-luta-solo.jpg', alt: 'Solo fight' },
+  { src: '/images/gallery/advanced-students/lobowagn.jpg', alt: 'Training' },
+];
+
+// ── All image arrays per section ──
+const instructors = [
+  'chtfrontgil', 'chtlatgil', 'egon01', 'egon02', 'egon03', 'egon04', 'egon05', 'egon06', 'egon07',
+  'felipe-giorgi-kwantao', 'flaegor', 'flafac', 'flav-rob-desarm', 'flav-voad', 'flav6kt', 'flavlouv',
+  'gil-mario', 'gil2mach', 'gil2mach1', 'gil4louv', 'gil7sh', 'gilaula', 'gilbast',
+  'gilespadrag', 'gilespdragzulai', 'gilespzulai05', 'gilfac', 'gilfacdupl', 'gilfla', 'gilflarob',
+  'gilflavatdef', 'gilflavtaichi', 'gilflavtaichi1', 'gilimob', 'gilimobfla', 'gilimobrob',
+  'gilkwant', 'gilmacac', 'gilmoniqbast', 'gilmoniqbast1', 'gilnunch', 'gilrobwil', 'gilserp',
+  'gilserp2', 'gilserprob', 'gilsocsol', 'giltigre', 'giltonfa', 'gilvoad',
+  'giorgi-luta-solo', 'giorgi-mario-imob-perna', 'giorgi-punhais', 'girobwil1',
+  'mario-cavalini-imob-bra', 'mario-cht-front', 'mario-coic', 'mario-pul-for', 'mario-tig', 'mario-tig1',
+  'mestre-gilmar-dantas-e-sifu-wilians-correia-tecnica-imob-bra',
+  'mestre-gilmar-dantas-tecnica-cotovelo', 'mestre-gilmar-dantas-tecnica-imob1', 'mestre-gilmar-dantas-tecnica-imob2',
+  'rob2mach', 'rob2punhais', 'robgilkantaolan', 'robimobegilens', 'robpulalan', 'robserp', 'robserp1',
+  'robsricardo', 'robvoad', 'robvoad1', 'robvoad2', 'robwant',
+  'willians2tig1', 'williansbebad', 'willianskwant', 'wilrobfaclan',
+];
+
+const groupTraining = [
+  'col-matriz2', 'colabcan', 'colabd', 'colbatebarr', 'colbtbra', 'colcass1', 'colcass2', 'colcass3',
+  'colcass5', 'colcass6', 'colcegonh', 'coletvarforms', 'colflex1', 'colflx', 'colmat', 'colmat1',
+  'colmat2', 'colmatriz', 'colmatriz1', 'colmedt', 'colpercruz', 'colsantana', 'colvila', 'combts',
+  'hortcoletmedit',
+];
+
+const advancedStudents = [
+  'alexandre-fatu-bast', 'allan-assan-bast', 'andre-f2-2k', 'caio-f2-3k', 'carloswag', 'celso', 'celso1',
+  'chtlatwilfern', 'diego-5kt', 'diego-e-glaucia-base-cav', 'dr-joao-tecnica-do-tigre', 'drjotigr',
+  'eduardo-tant', 'egon-f2-4k', 'erick-munekata-louva-deus', 'fernwillchcox-biogr', 'fernwillchcox',
+  'fernwillsolo', 'filipe-rodrigues-3kat', 'filipe-rodrigues-pulo-1', 'filipe-rodrigues-pulo-2',
+  'gustavochtalto', 'gustavofac2', 'gustavolouvadeus', 'jorgericardrast', 'jorgesolo',
+  'loboabert', 'lobowagn', 'luarodr', 'marcelo-carvalho-tecnica-louva-deus', 'mariovoadora',
+  'naldo-tig', 'naldo-tig1', 'naldo-tig2', 'renatoflick', 'renatoflick1', 'ricardcarlos',
+  'ricardocoicerobs', 'ricarwalmi', 'rodr', 'rodrigo1', 'ti',
+  'veronaldo-cht', 'veronaldo-e-eduardo-cht-lat', 'veronaldo-sc-sol', 'wagtijo', 'wilfernarast', 'willfernvoad',
+];
+
+const monks = [
+  'mongaber', 'mongbana2ded', 'mongbeb', 'mongcabferr', 'mongcav', 'mongchikun1', 'mongchikung', 'mongcruz',
+  'mongecorrendoparede', 'mongecorrendoparede1', 'mongeemlanc', 'mongeextremeflex', 'mongelingbrasa',
+  'mongemed1perna', 'mongemeditbana', 'mongemeditbanan', 'mongemeditriacho',
+  'monges1', 'monges2', 'monges3', 'monges4', 'monges5', 'monges6', 'mongesc', 'mongesp',
+  'mongkwant', 'mongnev', 'mongpedr', 'mongporttem', 'mongpost', 'mongpreg', 'mongpunhsol', 'mongscav', 'mongvoad',
+];
+
+const weapons = [
+  { file: 'bastao', pt: 'Bastão', en: 'Staff' },
+  { file: 'lana', pt: 'Lança', en: 'Spear' },
+  { file: 'espada-do-dragao', pt: 'Espada do Dragão', en: 'Dragon Sword' },
+  { file: 'kwantao', pt: 'Kwan Tao', en: 'Kwan Dao' },
+  { file: 'faca-lingua-do-dragao', pt: 'Faca Língua do Dragão', en: 'Dragon Tongue Knife' },
+  { file: 'faca-rabo-de-peixe', pt: 'Faca Rabo de Peixe', en: 'Fish Tail Knife' },
+  { file: 'facao', pt: 'Facão', en: 'Broadsword' },
+  { file: 'facao-duplo', pt: 'Facão Duplo', en: 'Double Broadsword' },
+  { file: 'banco', pt: 'Banco', en: 'Bench' },
+  { file: 'bengala', pt: 'Bengala', en: 'Cane' },
+  { file: 'corrente', pt: 'Corrente', en: 'Chain' },
+  { file: 'espada-gancho--orelha-de-tigre', pt: 'Espada Gancho / Orelha de Tigre', en: 'Hook Sword / Tiger Ear' },
+  { file: 'caneta', pt: 'Caneta', en: 'Pen' },
+  { file: 'flauta', pt: 'Flauta', en: 'Flute' },
+  { file: 'lana-cobra', pt: 'Lança Cobra', en: 'Snake Spear' },
+  { file: 'leque', pt: 'Leque', en: 'Fan' },
+  { file: 'machado-longo', pt: 'Machado Longo', en: 'Long Axe' },
+  { file: '2-machado-curto', pt: 'Machado Curto (par)', en: 'Short Axe (pair)' },
+  { file: 'marretas', pt: 'Marretas', en: 'Hammers' },
+  { file: 'nunchaku', pt: 'Nunchaku', en: 'Nunchaku' },
+  { file: 'pa', pt: 'Pá', en: 'Shovel' },
+  { file: 'punhais', pt: 'Punhais', en: 'Daggers' },
+  { file: 'santinquan', pt: 'San Tin Quan', en: 'San Tin Quan' },
+  { file: 'say', pt: 'Sai', en: 'Sai' },
+  { file: 'shuriken', pt: 'Shuriken', en: 'Shuriken' },
+  { file: 'taikati', pt: 'Tai Ka Ti', en: 'Tai Ka Ti' },
+  { file: 'tonfa', pt: 'Tonfa', en: 'Tonfa' },
+  { file: 'tridente', pt: 'Tridente', en: 'Trident' },
+];
+
+const competitions = [
+  { file: 'arnold-classic-2023', alt: 'Arnold Classic 2023' },
+  { file: 'championships-banner', alt: 'Championships' },
+  { file: 'extreme-2025', alt: 'Extreme 2025' },
+  { file: 'interstate-2025', alt: 'Interstate 2025' },
+];
 ---
 
-<ContentLayout
-  title="Gallery"
-  description="Photos and videos from Pak Shao Lin."
+<BaseLayout
+  title={t(lang, 'gallery.title')}
+  description="Pak Shao Lin photo gallery: training sessions, competitions, Shaolin monks, traditional weapons, and special moments."
   lang={lang}
-  breadcrumbs={[
-    { label: t(lang, 'nav.home'), href: '/en/' },
-    { label: t(lang, 'nav.gallery') },
-  ]}
 >
-  <p class="text-lg text-gray-medium mb-10">
-    Explore moments from our training sessions, competitions, events, and cultural celebrations.
-  </p>
-
-  <div class="space-y-12 not-prose">
-    <!-- Instructors & Professors -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-dark mb-4">Instructors & Professors</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {[
-          'chtfrontgil', 'chtlatgil', 'egon01', 'egon02', 'egon03',
-          'felipe-giorgi-kwantao', 'flafac', 'flav-rob-desarm', 'flav6kt',
-          'gil-mario', 'gil2mach', 'gil4louv',
-        ].map((name) => (
-          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
-            <img src={`/images/gallery/instructors-professors/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
-          </div>
-        ))}
+  <!-- ═══ 1. HERO ═══════════════════════════════════════════════════ -->
+  <section class="relative bg-black overflow-hidden py-20 sm:py-28">
+    <div class="absolute inset-0 gallery-hero-bg"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="font-chinese text-gold/10 text-7xl sm:text-8xl mb-4 tracking-[0.3em]" aria-hidden="true" data-gsap="hero-zh">攝 影</div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight" data-gsap="hero-title">
+        {t(lang, 'gallery.title')}
+      </h1>
+      <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-6" data-gsap="hero-divider">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/40"></div>
+        <div class="w-2 h-2 rotate-45 border border-gold/50"></div>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/40"></div>
       </div>
+      <p class="mt-6 text-lg text-gray-light/50 max-w-2xl mx-auto" data-gsap="hero-desc">
+        {t(lang, 'gallery.hero.subtitle')}
+      </p>
     </div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+  </section>
 
-    <!-- Group Training -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-dark mb-4">Group Training</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {[
-          'col-matriz2', 'colabcan', 'colabd', 'colbatebarr',
-          'colbtbra', 'colcass1', 'colcass2', 'colcass3',
-        ].map((name) => (
-          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
-            <img src={`/images/gallery/group-training/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Advanced Students -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-dark mb-4">Advanced Students</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {[
-          'alexandre-fatu-bast', 'allan-assan-bast', 'andre-f2-2k', 'caio-f2-3k',
-          'diego-5kt', 'diego-e-glaucia-base-cav', 'dr-joao-tecnica-do-tigre',
-          'erick-munekata-louva-deus',
-        ].map((name) => (
-          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
-            <img src={`/images/gallery/advanced-students/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Shaolin Monks -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-dark mb-4">Shaolin Monks</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {[
-          'mongaber', 'mongbana2ded', 'mongbeb', 'mongcabferr',
-          'mongcav', 'mongchikun1', 'mongchikung', 'mongcruz',
-        ].map((name) => (
-          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
-            <img src={`/images/gallery/shaolin-monks/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Traditional Weapons -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-dark mb-4">Traditional Weapons</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {[
-          'bastao', 'espada-do-dragao', 'faca-lingua-do-dragao', 'faca-rabo-de-peixe',
-          'banco', 'bengala', 'corrente', 'espada-gancho--orelha-de-tigre',
-        ].map((name) => (
-          <div class="aspect-square rounded-lg overflow-hidden bg-gray-light shadow-sm">
-            <img src={`/images/gallery/weapons/${name}.jpg`} alt="" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Special Moments -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-dark mb-4">Special Moments</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        <div class="aspect-[4/3] rounded-lg overflow-hidden bg-gray-light shadow-sm">
-          <img src="/images/gallery/40th-anniversary.jpg" alt="40th Anniversary" class="w-full h-full object-cover" loading="lazy" />
-        </div>
-        <div class="aspect-[4/3] rounded-lg overflow-hidden bg-gray-light shadow-sm">
-          <img src="/images/gallery/training.jpg" alt="Training" class="w-full h-full object-cover" loading="lazy" />
-        </div>
-        <div class="aspect-[4/3] rounded-lg overflow-hidden bg-gray-light shadow-sm">
-          <img src="/images/gallery/athlete-room.jpg" alt="Athlete Room" class="w-full h-full object-cover" loading="lazy" />
+  <!-- ═══ 2. HIGHLIGHT REEL — Infinite Scroll Strip ═════════════════ -->
+  <section class="py-16 sm:py-24 bg-black overflow-hidden" data-gsap="gallery-strip">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <div class="text-center" data-gsap="section-head">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">精 選</div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white">{t(lang, 'gallery.featured.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
         </div>
       </div>
     </div>
-  </div>
-</ContentLayout>
+
+    <div class="relative">
+      <div class="absolute left-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+
+      <div class="mb-4 overflow-hidden">
+        <div data-gsap="gallery-row-1" class="flex gap-3" style="width: max-content;">
+          {[...stripRow1, ...stripRow1].map((img) => (
+            <img src={img.src} alt={img.alt} class="h-36 sm:h-44 md:h-52 w-auto rounded-lg object-cover flex-shrink-0" loading="lazy" />
+          ))}
+        </div>
+      </div>
+
+      <div class="overflow-hidden">
+        <div data-gsap="gallery-row-2" class="flex gap-3" style="width: max-content;">
+          {[...stripRow2, ...stripRow2].map((img) => (
+            <img src={img.src} alt={img.alt} class="h-36 sm:h-44 md:h-52 w-auto rounded-lg object-cover flex-shrink-0" loading="lazy" />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. INSTRUCTORS & PROFESSORS ═══════════════════════════════ -->
+  <section class="gallery-dark-bg py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">師 範</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'gallery.instructors.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 sm:gap-3" data-gsap="gallery-grid">
+        {instructors.map((name) => (
+          <div
+            class="gallery-card aspect-square rounded-lg overflow-hidden border border-white/5 cursor-pointer"
+            data-gsap="gallery-item"
+            onclick={`document.getElementById('gallery-lightbox').querySelector('img').src='/images/gallery/instructors-professors/${name}.jpg';document.getElementById('gallery-lightbox').showModal()`}
+          >
+            <img src={`/images/gallery/instructors-professors/${name}.jpg`} alt="" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. GROUP TRAINING ═════════════════════════════════════════ -->
+  <section class="gallery-dark-bg-alt py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">集 訓</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'gallery.groupTraining.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3" data-gsap="gallery-grid">
+        {groupTraining.map((name) => (
+          <div
+            class="gallery-card aspect-square rounded-lg overflow-hidden border border-white/5 cursor-pointer"
+            data-gsap="gallery-item"
+            onclick={`document.getElementById('gallery-lightbox').querySelector('img').src='/images/gallery/group-training/${name}.jpg';document.getElementById('gallery-lightbox').showModal()`}
+          >
+            <img src={`/images/gallery/group-training/${name}.jpg`} alt="" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 5. ADVANCED STUDENTS ══════════════════════════════════════ -->
+  <section class="gallery-dark-bg py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">高 徒</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'gallery.advancedStudents.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 sm:gap-3" data-gsap="gallery-grid">
+        {advancedStudents.map((name) => (
+          <div
+            class="gallery-card aspect-square rounded-lg overflow-hidden border border-white/5 cursor-pointer"
+            data-gsap="gallery-item"
+            onclick={`document.getElementById('gallery-lightbox').querySelector('img').src='/images/gallery/advanced-students/${name}.jpg';document.getElementById('gallery-lightbox').showModal()`}
+          >
+            <img src={`/images/gallery/advanced-students/${name}.jpg`} alt="" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. SHAOLIN MONKS ══════════════════════════════════════════ -->
+  <section class="gallery-dark-bg-alt py-16 sm:py-24 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.03]">
+      <img src="/images/gallery/shaolin-monks/monges1.jpg" alt="" class="w-full h-full object-cover" aria-hidden="true" />
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">僧 侶</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'gallery.monks.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 sm:gap-3" data-gsap="gallery-grid">
+        {monks.map((name) => (
+          <div
+            class="gallery-card aspect-square rounded-lg overflow-hidden border border-white/5 cursor-pointer"
+            data-gsap="gallery-item"
+            onclick={`document.getElementById('gallery-lightbox').querySelector('img').src='/images/gallery/shaolin-monks/${name}.jpg';document.getElementById('gallery-lightbox').showModal()`}
+          >
+            <img src={`/images/gallery/shaolin-monks/${name}.jpg`} alt="" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 7. TRADITIONAL WEAPONS (Special Treatment) ════════════════ -->
+  <section class="gallery-dark-bg py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">兵 器</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'gallery.weapons.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+        <p class="mt-4 text-sm text-gray-light/40">{t(lang, 'gallery.weapons.subtitle')}</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4" data-gsap="gallery-grid">
+        {weapons.map((w) => (
+          <div
+            class="gallery-card aspect-[4/3] rounded-lg overflow-hidden border border-gold/10 cursor-pointer relative group"
+            data-gsap="gallery-item"
+            onclick={`document.getElementById('gallery-lightbox').querySelector('img').src='/images/gallery/weapons/${w.file}.jpg';document.getElementById('gallery-lightbox').showModal()`}
+          >
+            <img src={`/images/gallery/weapons/${w.file}.jpg`} alt={w.en} class="w-full h-full object-cover" loading="lazy" />
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 pt-8">
+              <p class="text-sm font-semibold text-white">{w.en}</p>
+              <p class="text-xs text-gold/60">{w.pt}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 8. COMPETITIONS ═══════════════════════════════════════════ -->
+  <section class="gallery-dark-bg-alt py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">競 技</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'gallery.competitions.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" data-gsap="gallery-grid">
+        {competitions.map((c) => (
+          <div
+            class="gallery-card aspect-[4/3] rounded-lg overflow-hidden border border-white/5 cursor-pointer"
+            data-gsap="gallery-item"
+            onclick={`document.getElementById('gallery-lightbox').querySelector('img').src='/images/competitions/${c.file}.jpg';document.getElementById('gallery-lightbox').showModal()`}
+          >
+            <img src={`/images/competitions/${c.file}.jpg`} alt={c.alt} class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 9. SPECIAL MOMENTS ════════════════════════════════════════ -->
+  <section class="gallery-dark-bg py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12" data-gsap="section-head">
+        <div class="font-chinese text-gold/15 text-5xl mb-2 tracking-[0.3em]" data-gsap="section-zh" aria-hidden="true">珍 藏</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gold">{t(lang, 'gallery.special.title')}</h2>
+        <div class="flex items-center justify-center gap-3 max-w-xs mx-auto mt-4">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold/30"></div>
+          <div class="w-2 h-2 rotate-45 border border-gold/40"></div>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold/30"></div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4" data-gsap="gallery-grid">
+        <div
+          class="gallery-card sm:col-span-2 aspect-[16/9] rounded-lg overflow-hidden border border-gold/10 cursor-pointer"
+          data-gsap="gallery-item"
+          onclick="document.getElementById('gallery-lightbox').querySelector('img').src='/images/gallery/40th-anniversary.jpg';document.getElementById('gallery-lightbox').showModal()"
+        >
+          <img src="/images/gallery/40th-anniversary.jpg" alt="40th Anniversary of Pak Shao Lin" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        {[
+          { file: 'training', alt: 'Training' },
+          { file: 'athlete-room', alt: 'Athlete Room' },
+          { file: 'genealogy-tree', alt: 'Genealogy Tree' },
+          { file: 'video-thumb', alt: 'Video' },
+        ].map((img) => (
+          <div
+            class="gallery-card aspect-[4/3] rounded-lg overflow-hidden border border-white/5 cursor-pointer"
+            data-gsap="gallery-item"
+            onclick={`document.getElementById('gallery-lightbox').querySelector('img').src='/images/gallery/${img.file}.jpg';document.getElementById('gallery-lightbox').showModal()`}
+          >
+            <img src={`/images/gallery/${img.file}.jpg`} alt={img.alt} class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 10. CTA ═══════════════════════════════════════════════════ -->
+  <section class="py-16 sm:py-20 bg-red-dark text-white" data-gsap="cta-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold">{t(lang, 'gallery.cta.title')}</h2>
+      <p class="mt-4 text-lg text-white/80">{t(lang, 'gallery.cta.subtitle')}</p>
+      <a
+        href="/en/contact"
+        class="mt-8 inline-block px-8 py-3.5 bg-gold text-black font-bold rounded-lg hover:bg-gold-light transition-colors text-lg shadow-lg"
+      >
+        {t(lang, 'gallery.cta.button')}
+      </a>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <dialog id="gallery-lightbox" class="bg-transparent p-0 max-w-[90vw] max-h-[90vh] m-auto" onclick="if(event.target===this)this.close()">
+    <img src="" alt="" class="max-w-full max-h-[90vh] rounded-lg object-contain" />
+  </dialog>
+
+  <GalleryAnimation />
+</BaseLayout>
+
+<style>
+  .gallery-hero-bg {
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(139, 0, 0, 0.15), transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.05), transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.05), transparent 50%);
+  }
+  .gallery-dark-bg {
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+  }
+  .gallery-dark-bg-alt {
+    background-color: #0c0c0c;
+    background-image:
+      radial-gradient(ellipse at 90% 20%, rgba(139, 0, 0, 0.08), transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 175, 55, 0.04), transparent 50%);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  .gallery-card {
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .gallery-card:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+  }
+  #gallery-lightbox::backdrop {
+    background: rgba(0, 0, 0, 0.92);
+  }
+</style>
