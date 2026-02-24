@@ -378,6 +378,7 @@
 
       <!-- Trigram ring: 8 I Ching trigrams -->
       <g id="trigram-ring" opacity="0">
+        <g id="trigram-rotator">
         <!-- 0° 離 Fire: solid, broken, solid -->
         <g transform="rotate(0, 250, 250)">
           <line x1="238" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
@@ -437,6 +438,7 @@
           <line x1="238" y1="85" x2="247" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
           <line x1="253" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
           <line x1="238" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
         </g>
       </g>
 
@@ -747,13 +749,13 @@
       tl.to('#ring-outer', { opacity: 0.4, duration: 0.6 }, 2.4);
       // Trigram symbols scale in
       tl.fromTo('#trigram-ring',
-        { opacity: 0, scale: 0.8 },
-        { opacity: 0.8, scale: 1, duration: 0.8, transformOrigin: '250px 250px' },
+        { opacity: 0, scale: 0.8, svgOrigin: '250 250' },
+        { opacity: 0.8, scale: 1, duration: 0.8, svgOrigin: '250 250' },
         2.5);
       // Chinese characters fade in
       tl.fromTo('#character-ring',
         { opacity: 0 },
-        { opacity: 0.6, duration: 0.8, transformOrigin: '250px 250px' },
+        { opacity: 0.6, duration: 0.8 },
         2.8);
 
       // Phase 3: 12 Instructors appear around yin-yang (3–6s)
@@ -836,18 +838,26 @@
       // Yin-yang core: 60s clockwise
       gsap.to('#yinyang-core', {
         rotation: 360, duration: 60, repeat: -1, ease: 'none',
-        transformOrigin: '100px 100px',
+        svgOrigin: '250 250',
       });
       // Trigram ring: 90s clockwise
-      gsap.to('#trigram-ring', {
-        rotation: 360, duration: 90, repeat: -1, ease: 'none',
-        transformOrigin: '250px 250px',
-      });
+      gsap.fromTo('#trigram-rotator',
+        { attr: { transform: 'rotate(0 250 250)' } },
+        {
+          attr: { transform: 'rotate(360 250 250)' },
+          duration: 90,
+          repeat: -1,
+          ease: 'none',
+        });
       // Character ring: 120s counter-clockwise
-      gsap.to('#character-ring', {
-        rotation: -360, duration: 120, repeat: -1, ease: 'none',
-        transformOrigin: '250px 250px',
-      });
+      gsap.fromTo('#character-ring',
+        { attr: { transform: 'rotate(0 250 250)' } },
+        {
+          attr: { transform: 'rotate(-360 250 250)' },
+          duration: 120,
+          repeat: -1,
+          ease: 'none',
+        });
 
       // ── Skip Button ──
       const skipBtn = document.getElementById('skip');
