@@ -207,49 +207,46 @@ const lang = 'en';
 
   <!-- Section 5: Wuxing (Five Elements) — Decorative -->
   <section class="contact-dark-bg-alt py-12 sm:py-16" aria-hidden="true" data-gsap="wuxing-section">
-    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-center gap-0">
-        <!-- Connecting line (behind elements) -->
-        <div class="absolute w-full max-w-md h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" style="pointer-events: none;"></div>
-
+    <div class="max-w-md sm:max-w-lg md:max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-5 place-items-center">
         <!-- Wood 木 -->
-        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-green-500/30 flex items-center justify-center bg-green-500/5">
-            <span class="font-chinese text-green-400 text-xl sm:text-2xl">木</span>
+        <div class="flex flex-col items-center gap-1.5 sm:gap-2" data-gsap="wuxing-element" data-wuxing-color="#4ade80">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border border-green-500/30 flex items-center justify-center bg-green-500/5 transition-shadow duration-500" data-wuxing-circle>
+            <span class="font-chinese text-green-400 text-lg sm:text-xl md:text-2xl">木</span>
           </div>
-          <span class="text-[10px] text-green-400/50 uppercase tracking-wider">Wood</span>
+          <span class="text-[9px] sm:text-[10px] text-green-400/50 uppercase tracking-wider">{t(lang, 'home.wuxing.wood')}</span>
         </div>
 
         <!-- Fire 火 -->
-        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-red-primary/30 flex items-center justify-center bg-red-primary/5">
-            <span class="font-chinese text-red-primary text-xl sm:text-2xl">火</span>
+        <div class="flex flex-col items-center gap-1.5 sm:gap-2" data-gsap="wuxing-element" data-wuxing-color="#C41E3A">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border border-red-primary/30 flex items-center justify-center bg-red-primary/5 transition-shadow duration-500" data-wuxing-circle>
+            <span class="font-chinese text-red-primary text-lg sm:text-xl md:text-2xl">火</span>
           </div>
-          <span class="text-[10px] text-red-primary/50 uppercase tracking-wider">Fire</span>
+          <span class="text-[9px] sm:text-[10px] text-red-primary/50 uppercase tracking-wider">{t(lang, 'home.wuxing.fire')}</span>
         </div>
 
         <!-- Earth 土 -->
-        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5">
-            <span class="font-chinese text-gold text-xl sm:text-2xl">土</span>
+        <div class="flex flex-col items-center gap-1.5 sm:gap-2" data-gsap="wuxing-element" data-wuxing-color="#D4AF37">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 transition-shadow duration-500" data-wuxing-circle>
+            <span class="font-chinese text-gold text-lg sm:text-xl md:text-2xl">土</span>
           </div>
-          <span class="text-[10px] text-gold/50 uppercase tracking-wider">Earth</span>
+          <span class="text-[9px] sm:text-[10px] text-gold/50 uppercase tracking-wider">{t(lang, 'home.wuxing.earth')}</span>
         </div>
 
         <!-- Metal 金 -->
-        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
-            <span class="font-chinese text-white/80 text-xl sm:text-2xl">金</span>
+        <div class="flex flex-col items-center gap-1.5 sm:gap-2" data-gsap="wuxing-element" data-wuxing-color="#e0e0e0">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border border-white/20 flex items-center justify-center bg-white/5 transition-shadow duration-500" data-wuxing-circle>
+            <span class="font-chinese text-white/80 text-lg sm:text-xl md:text-2xl">金</span>
           </div>
-          <span class="text-[10px] text-white/40 uppercase tracking-wider">Metal</span>
+          <span class="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">{t(lang, 'home.wuxing.metal')}</span>
         </div>
 
         <!-- Water 水 -->
-        <div class="relative flex flex-col items-center gap-2 px-4 sm:px-6" data-gsap="wuxing-element">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-blue-400/30 flex items-center justify-center bg-blue-400/5">
-            <span class="font-chinese text-blue-400 text-xl sm:text-2xl">水</span>
+        <div class="flex flex-col items-center gap-1.5 sm:gap-2" data-gsap="wuxing-element" data-wuxing-color="#60a5fa">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border border-blue-400/30 flex items-center justify-center bg-blue-400/5 transition-shadow duration-500" data-wuxing-circle>
+            <span class="font-chinese text-blue-400 text-lg sm:text-xl md:text-2xl">水</span>
           </div>
-          <span class="text-[10px] text-blue-400/50 uppercase tracking-wider">Water</span>
+          <span class="text-[9px] sm:text-[10px] text-blue-400/50 uppercase tracking-wider">{t(lang, 'home.wuxing.water')}</span>
         </div>
       </div>
     </div>
