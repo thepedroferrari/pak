@@ -1,3 +1,838 @@
 ---
-return Astro.redirect('/pt/');
+// Cinematic Landing Page — no BaseLayout, fully self-contained
 ---
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pak Shao Lin — Kung Fu Tradicional</title>
+  <meta name="description" content="Associação Pak Shao Lin de Kung Fu — Desde 1984. Kung Fu tradicional chinês em São Paulo." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/src/styles/global.css" />
+  <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
+  <style is:global>
+    /* ── Base ── */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: #0A0A0A;
+      color: #fff;
+    }
+
+    /* ── Skip Button ── */
+    #skip {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.5rem;
+      z-index: 100;
+      background: none;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: rgba(212, 175, 55, 0.7);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      border-radius: 2rem;
+      transition: all 0.3s ease;
+    }
+    #skip:hover {
+      border-color: rgba(212, 175, 55, 0.7);
+      color: #D4AF37;
+    }
+    #skip.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ── Particles ── */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: #D4AF37;
+      opacity: 0;
+      pointer-events: none;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-60px) translateX(10px); }
+      100% { transform: translateY(-120px) translateX(-5px); }
+    }
+
+    /* ── Yin-Yang ── */
+    #yinyang-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 1000px;
+      z-index: 10;
+    }
+    #yinyang {
+      width: clamp(280px, 50vmin, 500px);
+      height: clamp(280px, 50vmin, 500px);
+      transform-style: preserve-3d;
+      opacity: 0;
+      filter: drop-shadow(0 0 0px rgba(212, 175, 55, 0));
+    }
+
+    /* ── Title ── */
+    #title-wrapper {
+      position: absolute;
+      top: 75%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 30;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    #title {
+      font-family: 'Cinzel Decorative', 'Georgia', serif;
+      font-size: clamp(1.4rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: 0.25em;
+      color: #D4AF37;
+      margin: 0;
+      line-height: 1.2;
+      text-shadow:
+        0 0 8px rgba(0,0,0,0.9),
+        0 0 20px rgba(0,0,0,0.7),
+        0 2px 4px rgba(0,0,0,0.8);
+    }
+    #title .letter {
+      display: inline-block;
+      opacity: 0;
+    }
+    #subtitle-cn {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: rgba(212, 175, 55, 0.5);
+      margin: 0.2em 0 0;
+      opacity: 0;
+      text-shadow: 0 0 12px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.5);
+    }
+    #subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.7rem, 1.5vw, 0.95rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin: 0.6em 0 0;
+      opacity: 0;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    /* ── Instructor Circle ── */
+    #circle-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0;
+      height: 0;
+      z-index: 12;
+    }
+    .instructor {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      opacity: 0;
+    }
+    #gilmar {
+      z-index: 5;
+    }
+    .instructor img {
+      width: clamp(50px, 9vmin, 80px);
+      height: clamp(50px, 9vmin, 80px);
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+    }
+    .instructor .name {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.5rem, 1.2vmin, 0.7rem);
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 0.35rem;
+      white-space: nowrap;
+    }
+
+    /* Default: muted/ghostly state */
+    .instructor img,
+    .instructor .initials {
+      filter: grayscale(60%) brightness(0.7);
+      transition: filter 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    /* Hover: full color reveal */
+    .instructor:hover img,
+    .instructor:hover .initials {
+      filter: grayscale(0%) brightness(1);
+    }
+
+    /* Ring colors by rank */
+    .instructor.rank-master img {
+      border: 3px solid #C41E3A;
+    }
+    .instructor.rank-sifu img {
+      border: 3px solid #D4AF37;
+    }
+    .instructor.rank-sipak img {
+      border: 2px solid rgba(255, 255, 255, 0.6);
+    }
+
+    /* Rank-specific hover glows */
+    .instructor.rank-master:hover img {
+      box-shadow: 0 0 15px rgba(196,30,58,0.6), 0 0 30px rgba(196,30,58,0.2);
+    }
+    .instructor.rank-sifu:hover img {
+      box-shadow: 0 0 15px rgba(212,175,55,0.6), 0 0 30px rgba(212,175,55,0.2);
+    }
+    .instructor.rank-sipak:hover img,
+    .instructor.rank-sipak:hover .initials {
+      box-shadow: 0 0 15px rgba(255,255,255,0.4), 0 0 25px rgba(255,255,255,0.15);
+    }
+
+    /* Center (Gilmar) — portrait baked into SVG */
+    .instructor.center .name {
+      font-size: clamp(0.65rem, 1.6vmin, 0.85rem);
+      color: #D4AF37;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(0,0,0,0.8);
+      margin-top: clamp(50px, 9.5vmin, 95px);
+    }
+
+    /* Initials fallback */
+    .initials {
+      width: clamp(50px, 9vmin, 80px);
+      height: clamp(50px, 9vmin, 80px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      background: #1A1A1A;
+      color: #D4AF37;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(0.9rem, 2vmin, 1.3rem);
+      font-weight: 700;
+    }
+
+    /* ── Portal ── */
+    #portal {
+      position: absolute;
+      bottom: clamp(1.5rem, 5vh, 3rem);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      text-align: center;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    #portal a {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      color: #D4AF37;
+      text-decoration: none;
+      letter-spacing: 0.15em;
+      padding: 0.4rem 0;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    #portal a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #D4AF37;
+      transition: width 0.4s ease;
+    }
+    #portal a:hover {
+      color: #F0D060;
+    }
+    #portal a:hover::after {
+      width: 100%;
+    }
+    #portal .divider {
+      color: rgba(212, 175, 55, 0.3);
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    /* ── Energy Path Animation ── */
+    @keyframes energy-flow {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -16; }
+    }
+    #energy-paths line {
+      filter: drop-shadow(0 0 3px rgba(212,175,55,0.4));
+    }
+    #energy-paths line.active {
+      animation: energy-flow 0.8s linear infinite;
+    }
+
+    /* ── Gilmar Portrait (HTML overlay) ── */
+    #gilmar-portrait {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      /* 196/500 = 39.2% — matches yin-yang core diameter (r=98) */
+      width: 39.2%;
+      aspect-ratio: 1;
+      margin-left: -19.6%;
+      margin-top: -19.6%;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    #gilmar-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      mix-blend-mode: luminosity;
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+    }
+    .gilmar-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 4px solid #C41E3A;
+      pointer-events: none;
+    }
+    #gilmar-glow-ring {
+      position: absolute;
+      inset: -4%;
+      border-radius: 50%;
+      border: 2px solid rgba(212,175,55,0.5);
+      pointer-events: none;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .instructor .name {
+        display: none;
+      }
+      .instructor.center .name {
+        display: block;
+        font-size: 0.55rem;
+      }
+      /* Smaller circles, no borders on mobile */
+      .instructor img,
+      .instructor .initials {
+        width: clamp(36px, 7vmin, 50px);
+        height: clamp(36px, 7vmin, 50px);
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip Button -->
+  <button id="skip">Skip →</button>
+
+  <!-- Particle Layer -->
+  <div id="particles"></div>
+
+  <!-- Yin-Yang -->
+  <div id="yinyang-wrapper">
+    <svg id="yinyang" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer ring -->
+      <circle id="ring-outer" cx="250" cy="250" r="230" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0"/>
+
+      <!-- Character ring: 8 Chinese characters -->
+      <g id="character-ring" opacity="0">
+        <!-- 0°: 離 Fire (top) -->
+        <text x="250" y="44" text-anchor="middle" dominant-baseline="central" fill="#D4AF37" font-size="22" font-family="'Ma Shan Zheng', cursive">離</text>
+        <!-- 45°: 坤 Earth -->
+        <text x="250" y="44" text-anchor="middle" dominant-baseline="central" fill="#D4AF37" font-size="22" font-family="'Ma Shan Zheng', cursive" transform="rotate(45, 250, 250)">坤</text>
+        <!-- 90°: 兌 Lake -->
+        <text x="250" y="44" text-anchor="middle" dominant-baseline="central" fill="#D4AF37" font-size="22" font-family="'Ma Shan Zheng', cursive" transform="rotate(90, 250, 250)">兌</text>
+        <!-- 135°: 乾 Heaven (bottom-right, rotate text 180° to keep readable) -->
+        <text x="250" y="44" text-anchor="middle" dominant-baseline="central" fill="#D4AF37" font-size="22" font-family="'Ma Shan Zheng', cursive" transform="rotate(135, 250, 250) rotate(180, 250, 44)">乾</text>
+        <!-- 180°: 巽 Wind (bottom, rotate text 180°) -->
+        <text x="250" y="44" text-anchor="middle" dominant-baseline="central" fill="#D4AF37" font-size="22" font-family="'Ma Shan Zheng', cursive" transform="rotate(180, 250, 250) rotate(180, 250, 44)">巽</text>
+        <!-- 225°: 坎 Water (bottom-left, rotate text 180°) -->
+        <text x="250" y="44" text-anchor="middle" dominant-baseline="central" fill="#D4AF37" font-size="22" font-family="'Ma Shan Zheng', cursive" transform="rotate(225, 250, 250) rotate(180, 250, 44)">坎</text>
+        <!-- 270°: 艮 Mountain -->
+        <text x="250" y="44" text-anchor="middle" dominant-baseline="central" fill="#D4AF37" font-size="22" font-family="'Ma Shan Zheng', cursive" transform="rotate(270, 250, 250)">艮</text>
+        <!-- 315°: 震 Thunder -->
+        <text x="250" y="44" text-anchor="middle" dominant-baseline="central" fill="#D4AF37" font-size="22" font-family="'Ma Shan Zheng', cursive" transform="rotate(315, 250, 250)">震</text>
+      </g>
+
+      <!-- Middle ring -->
+      <circle id="ring-middle" cx="250" cy="250" r="185" fill="none" stroke="#D4AF37" stroke-width="0.8" opacity="0"/>
+
+      <!-- Trigram ring: 8 I Ching trigrams -->
+      <g id="trigram-ring" opacity="0">
+        <!-- 0° 離 Fire: solid, broken, solid -->
+        <g transform="rotate(0, 250, 250)">
+          <line x1="238" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="85" x2="247" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <!-- 45° 坤 Earth: broken, broken, broken -->
+        <g transform="rotate(45, 250, 250)">
+          <line x1="238" y1="78" x2="247" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="85" x2="247" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="92" x2="247" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <!-- 90° 兌 Lake: broken, solid, solid -->
+        <g transform="rotate(90, 250, 250)">
+          <line x1="238" y1="78" x2="247" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <!-- 135° 乾 Heaven: solid, solid, solid -->
+        <g transform="rotate(135, 250, 250)">
+          <line x1="238" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <!-- 180° 巽 Wind: solid, solid, broken -->
+        <g transform="rotate(180, 250, 250)">
+          <line x1="238" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="92" x2="247" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <!-- 225° 坎 Water: broken, solid, broken -->
+        <g transform="rotate(225, 250, 250)">
+          <line x1="238" y1="78" x2="247" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="92" x2="247" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <!-- 270° 艮 Mountain: solid, broken, broken -->
+        <g transform="rotate(270, 250, 250)">
+          <line x1="238" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="85" x2="247" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="92" x2="247" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <!-- 315° 震 Thunder: broken, broken, solid -->
+        <g transform="rotate(315, 250, 250)">
+          <line x1="238" y1="78" x2="247" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="78" x2="262" y2="78" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="85" x2="247" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="253" y1="85" x2="262" y2="85" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="238" y1="92" x2="262" y2="92" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+      </g>
+
+      <!-- Inner ring -->
+      <circle id="ring-inner" cx="250" cy="250" r="120" fill="none" stroke="#D4AF37" stroke-width="0.8" opacity="0"/>
+
+      <!-- Yin-Yang core (translated to center at 250,250) -->
+      <g id="yinyang-core" transform="translate(150,150)">
+        <!-- Outer gold ring -->
+        <circle cx="100" cy="100" r="98" fill="none" stroke="#D4AF37" stroke-width="2.5"/>
+        <!-- Black half (left) -->
+        <path d="M100,2 A98,98 0 0,1 100,198 A49,49 0 0,1 100,100 A49,49 0 0,0 100,2" fill="#0A0A0A"/>
+        <!-- White half (right) -->
+        <path d="M100,2 A98,98 0 0,0 100,198 A49,49 0 0,0 100,100 A49,49 0 0,1 100,2" fill="#F5F5F0"/>
+        <!-- White dot in black half -->
+        <circle cx="100" cy="51" r="12" fill="#F5F5F0"/>
+        <!-- Black dot in white half -->
+        <circle cx="100" cy="149" r="12" fill="#0A0A0A"/>
+      </g>
+
+    </svg>
+    <!-- Gilmar portrait — HTML overlay, always perfectly round -->
+    <div id="gilmar-portrait">
+      <img src="/images/instructors/gilmar-dantas.jpg" alt="Mestre Gilmar Dantas" />
+      <div class="gilmar-border"></div>
+      <div id="gilmar-glow-ring"></div>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div id="title-wrapper">
+    <h1 id="title"></h1>
+    <p id="subtitle-cn">北少林</p>
+    <p id="subtitle">Kung Fu Tradicional</p>
+  </div>
+
+  <!-- Instructor Circle -->
+  <div id="circle-container">
+    <!-- Energy path lines (center → instructors) -->
+    <svg id="energy-paths" style="position:absolute;top:0;left:0;width:1px;height:1px;overflow:visible;pointer-events:none;z-index:-1;"></svg>
+    <!-- Center: Mestre Gilmar (portrait baked into SVG above) -->
+    <div class="instructor center" id="gilmar">
+      <div class="name">Mestre Gilmar Dantas</div>
+    </div>
+
+    <!-- 12 orbiting instructors -->
+    <div class="instructor rank-master" data-index="0">
+      <img src="/images/instructors/robson-nobre.jpg" alt="Mestre Robson Nobre" />
+      <div class="name">Me. Robson</div>
+    </div>
+    <div class="instructor rank-master" data-index="1">
+      <img src="/images/instructors/willians-correia.jpg" alt="Mestre Willians Correia" />
+      <div class="name">Me. Willians</div>
+    </div>
+    <div class="instructor rank-sifu" data-index="2">
+      <img src="/images/instructors/flavio-dantas.jpg" alt="Si-Fu Flávio Dantas" />
+      <div class="name">Si-Fu Flávio</div>
+    </div>
+    <div class="instructor rank-sifu" data-index="3">
+      <img src="/images/instructors/egon.jpg" alt="Si-Fu Égon Ferreira" />
+      <div class="name">Si-Fu Égon</div>
+    </div>
+    <div class="instructor rank-sifu" data-index="4">
+      <img src="/images/instructors/felipe-giorgi.jpg" alt="Si-Fu Felipe Giorgi" />
+      <div class="name">Si-Fu Giorgi</div>
+    </div>
+    <div class="instructor rank-sifu" data-index="5">
+      <img src="/images/instructors/novack.jpg" alt="Si-Fu Felipe Novack" />
+      <div class="name">Si-Fu Novack</div>
+    </div>
+    <div class="instructor rank-sifu" data-index="6">
+      <img src="/images/instructors/erick.jpg" alt="Si-Fu Érick Munekata" />
+      <div class="name">Si-Fu Érick</div>
+    </div>
+    <div class="instructor rank-sifu" data-index="7">
+      <img src="/images/instructors/naldo.jpg" alt="Si-Fu Veronaldo Félix" />
+      <div class="name">Si-Fu Naldo</div>
+    </div>
+    <div class="instructor rank-sipak" data-index="8">
+      <img src="/images/instructors/mario.jpg" alt="Si-Pak Mário Cavalini" />
+      <div class="name">Si-Pak Mário</div>
+    </div>
+    <div class="instructor rank-sipak" data-index="9">
+      <div class="initials" style="border: 2px solid rgba(255,255,255,0.6);">PF</div>
+      <div class="name">Si-Pak Pedro</div>
+    </div>
+    <div class="instructor rank-sipak" data-index="10">
+      <img src="/images/instructors/santini.jpg" alt="Si-Pak Felipe Santini" />
+      <div class="name">Si-Pak Santini</div>
+    </div>
+    <div class="instructor rank-sipak" data-index="11">
+      <img src="/images/instructors/gustavo.jpg" alt="Si-Pak Gustavo Plácido" />
+      <div class="name">Si-Pak Gustavo</div>
+    </div>
+  </div>
+
+  <!-- Entry Portal -->
+  <div id="portal">
+    <a href="/pt/">Entrar</a>
+    <span class="divider">│</span>
+    <a href="/en/">Enter</a>
+  </div>
+
+  <!-- GSAP Animation -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ── Create Particles ──
+      const particlesEl = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = 2 + Math.random() * 3;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.animation = `float ${8 + Math.random() * 7}s ease-in-out infinite`;
+        p.style.animationDelay = Math.random() * 5 + 's';
+        particlesEl.appendChild(p);
+      }
+
+      // ── Build Title Letters ──
+      const titleEl = document.getElementById('title');
+      const titleText = 'PAK  SHAO  LIN';
+      titleText.split('').forEach(char => {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        titleEl.appendChild(span);
+      });
+      const letters = titleEl.querySelectorAll('.letter');
+
+      // ── Position Instructors on Circle ──
+      const orbitEls = document.querySelectorAll('.instructor[data-index]');
+      const vmin = Math.min(window.innerWidth, window.innerHeight);
+      const radius = Math.max(vmin * 0.32, 140);
+
+      orbitEls.forEach(el => {
+        const i = parseInt(el.dataset.index);
+        const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        gsap.set(el, { x, y });
+      });
+
+      // ── Create Energy Path Lines ──
+      const pathsSvg = document.getElementById('energy-paths');
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const pathLines = {};
+
+      orbitEls.forEach(el => {
+        const i = parseInt(el.dataset.index);
+        const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const line = document.createElementNS(svgNS, 'line');
+        line.setAttribute('x1', '0');
+        line.setAttribute('y1', '0');
+        line.setAttribute('x2', String(x));
+        line.setAttribute('y2', String(y));
+        line.setAttribute('stroke', '#D4AF37');
+        line.setAttribute('stroke-width', '1');
+        line.setAttribute('stroke-dasharray', '4 4');
+        line.setAttribute('opacity', '0');
+        line.id = 'path-line-' + i;
+        pathsSvg.appendChild(line);
+        pathLines[i] = line;
+      });
+
+      // ── Hover Handlers (Energy Paths) ──
+      let activeInstructor = null;
+
+      orbitEls.forEach(el => {
+        const i = parseInt(el.dataset.index);
+        const line = pathLines[i];
+
+        // Mouse hover
+        el.addEventListener('mouseenter', () => {
+          gsap.to(line, { opacity: 0.7, duration: 0.3 });
+          line.classList.add('active');
+          // Pulse Gilmar's glow ring + fade portrait to reveal yin-yang
+          gsap.to('#gilmar-glow-ring', {
+            borderWidth: 4,
+            borderColor: 'rgba(212,175,55,0.9)',
+            duration: 0.3,
+          });
+          gsap.to('#gilmar-portrait img', { opacity: 0.45, duration: 0.3 });
+        });
+        el.addEventListener('mouseleave', () => {
+          gsap.to(line, { opacity: 0, duration: 0.3 });
+          line.classList.remove('active');
+          gsap.to('#gilmar-glow-ring', {
+            borderWidth: 2,
+            borderColor: 'rgba(212,175,55,0.5)',
+            duration: 0.3,
+          });
+          gsap.to('#gilmar-portrait img', { opacity: 0.85, duration: 0.3 });
+        });
+
+        // Mobile touch support: tap-to-toggle
+        el.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          if (activeInstructor === i) {
+            // Deactivate current
+            gsap.to(line, { opacity: 0, duration: 0.3 });
+            line.classList.remove('active');
+            gsap.to('#gilmar-portrait img', { opacity: 0.85, duration: 0.3 });
+            gsap.to('#gilmar-glow-ring', {
+              borderWidth: 2,
+              borderColor: 'rgba(212,175,55,0.5)',
+              duration: 0.3,
+            });
+            activeInstructor = null;
+          } else {
+            // Deactivate previous
+            if (activeInstructor !== null && pathLines[activeInstructor]) {
+              gsap.to(pathLines[activeInstructor], { opacity: 0, duration: 0.3 });
+              pathLines[activeInstructor].classList.remove('active');
+            }
+            // Activate new
+            gsap.to(line, { opacity: 0.7, duration: 0.3 });
+            line.classList.add('active');
+            gsap.to('#gilmar-portrait img', { opacity: 0.45, duration: 0.3 });
+            gsap.to('#gilmar-glow-ring', {
+              borderWidth: 4,
+              borderColor: 'rgba(212,175,55,0.9)',
+              duration: 0.3,
+            });
+            activeInstructor = i;
+          }
+        }, { passive: false });
+      });
+
+      // ── Master Timeline ──
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      // Phase 1: Particles fade in (0–1s)
+      tl.to('.particle', {
+        opacity: () => 0.2 + Math.random() * 0.5,
+        duration: 0.8,
+        stagger: 0.03,
+      }, 0);
+
+      // Phase 2: Yin-Yang BIG reveal at center (0.5–3s)
+      tl.fromTo('#yinyang',
+        { rotateY: 90, scale: 0.3, opacity: 0 },
+        { rotateY: 0, scale: 1, opacity: 1, duration: 2, ease: 'power3.out' },
+        0.5);
+
+      // Gold glow on yin-yang
+      tl.to('#yinyang', {
+        filter: 'drop-shadow(0 0 15px rgba(212, 175, 55, 0.5))',
+        duration: 1,
+      }, 1.5);
+
+      // Phase 2.5: Trigram ring reveal (2.0–3.0s)
+      // Rings fade in sequentially (inside → out)
+      tl.to('#ring-inner', { opacity: 0.6, duration: 0.6 }, 2.0);
+      tl.to('#ring-middle', { opacity: 0.5, duration: 0.6 }, 2.2);
+      tl.to('#ring-outer', { opacity: 0.4, duration: 0.6 }, 2.4);
+      // Trigram symbols scale in
+      tl.fromTo('#trigram-ring',
+        { opacity: 0, scale: 0.8 },
+        { opacity: 0.8, scale: 1, duration: 0.8, transformOrigin: '250px 250px' },
+        2.5);
+      // Chinese characters fade in
+      tl.fromTo('#character-ring',
+        { opacity: 0 },
+        { opacity: 0.6, duration: 0.8, transformOrigin: '250px 250px' },
+        2.8);
+
+      // Phase 3: 12 Instructors appear around yin-yang (3–6s)
+      // Mestres first (indices 0-1)
+      tl.fromTo('.instructor[data-index="0"], .instructor[data-index="1"]',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.7, stagger: 0.2, ease: 'back.out(1.4)' },
+        3.0);
+
+      // Si-Fus (indices 2-7)
+      tl.fromTo('.instructor[data-index="2"], .instructor[data-index="3"], .instructor[data-index="4"], .instructor[data-index="5"], .instructor[data-index="6"], .instructor[data-index="7"]',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'back.out(1.2)' },
+        3.5);
+
+      // Si-Paks (indices 8-11)
+      tl.fromTo('.instructor[data-index="8"], .instructor[data-index="9"], .instructor[data-index="10"], .instructor[data-index="11"]',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'back.out(1)' },
+        4.5);
+
+      // Phase 4: Gilmar materializes at center (6–7.5s)
+      tl.fromTo('#gilmar-portrait',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1, ease: 'elastic.out(1, 0.5)', transformOrigin: 'center center' },
+        6.0);
+      // Name label
+      tl.fromTo('#gilmar',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6 },
+        6.5);
+
+      // Phase 5: Composition shifts up slightly, title reveals below (7.5–10s)
+      // Yin-yang scales down slightly, shifts up (backdrop for instructors)
+      tl.to('#yinyang-wrapper', {
+        top: '38%',
+        scale: 0.85,
+        duration: 1.2,
+        ease: 'power2.inOut',
+      }, 7.5);
+
+      // Circle container shifts up to match
+      tl.to('#circle-container', {
+        top: '38%',
+        duration: 1.2,
+        ease: 'power2.inOut',
+      }, 7.5);
+
+      // Title wrapper becomes visible
+      tl.fromTo('#title-wrapper',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.1 },
+        7.8);
+
+      // Letter-by-letter animation
+      tl.fromTo(letters,
+        { y: 40, opacity: 0, rotateX: -90 },
+        { y: 0, opacity: 1, rotateX: 0, duration: 0.5, stagger: 0.05, ease: 'back.out(1.7)' },
+        8.0);
+
+      // Chinese subtitle
+      tl.fromTo('#subtitle-cn',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8 },
+        8.8);
+
+      // Latin subtitle
+      tl.fromTo('#subtitle',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8 },
+        9.0);
+
+      // Phase 6: Portal appears (10–11s)
+      tl.fromTo('#portal',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        10.0);
+
+      // ── Continuous Rotations ──
+      // Yin-yang core: 60s clockwise
+      gsap.to('#yinyang-core', {
+        rotation: 360, duration: 60, repeat: -1, ease: 'none',
+        transformOrigin: '100px 100px',
+      });
+      // Trigram ring: 90s clockwise
+      gsap.to('#trigram-ring', {
+        rotation: 360, duration: 90, repeat: -1, ease: 'none',
+        transformOrigin: '250px 250px',
+      });
+      // Character ring: 120s counter-clockwise
+      gsap.to('#character-ring', {
+        rotation: -360, duration: 120, repeat: -1, ease: 'none',
+        transformOrigin: '250px 250px',
+      });
+
+      // ── Skip Button ──
+      const skipBtn = document.getElementById('skip');
+      skipBtn.addEventListener('click', () => {
+        tl.progress(1);
+        skipBtn.classList.add('hidden');
+      });
+
+      // Hide skip button after animation completes
+      tl.call(() => {
+        setTimeout(() => skipBtn.classList.add('hidden'), 2000);
+      });
+
+      // ── Resize Handler ──
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          const newVmin = Math.min(window.innerWidth, window.innerHeight);
+          const newRadius = Math.max(newVmin * 0.32, 140);
+          orbitEls.forEach(el => {
+            const i = parseInt(el.dataset.index);
+            const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
+            const newX = Math.cos(angle) * newRadius;
+            const newY = Math.sin(angle) * newRadius;
+            gsap.to(el, { x: newX, y: newY, duration: 0.5 });
+            const line = pathLines[i];
+            if (line) {
+              gsap.to(line, { attr: { x2: newX, y2: newY }, duration: 0.5 });
+            }
+          });
+        }, 250);
+      });
+    });
+  </script>
+</body>
+</html>
