@@ -9,7 +9,7 @@ const allInstructors = (await getCollection('instructors')).sort((a, b) => a.dat
 
 // Tier groups
 const spotlights = allInstructors.filter((i) => i.data.tier === 'grandmaster' || i.data.tier === 'founder');
-const masters = allInstructors.filter((i) => i.data.tier === 'master');
+const masters = allInstructors.filter((i) => i.data.tier === 'master' || i.data.tier === 'founder');
 const sifus = allInstructors.filter((i) => i.data.tier === 'sifu');
 const sipaks = allInstructors.filter((i) => i.data.tier === 'sipak');
 
